@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
+import com.hellostore.ecommerce.dto.ProductCategoryDto;
 import com.hellostore.ecommerce.entity.ProductCategory;
 import com.hellostore.ecommerce.service.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
     @GetMapping("/getProductCategories")
-    public List<ProductCategory> getProductCategories() {
+    public List<ProductCategoryDto> getProductCategories() {
         return productCategoryService.getProductCategories();
     }
 }

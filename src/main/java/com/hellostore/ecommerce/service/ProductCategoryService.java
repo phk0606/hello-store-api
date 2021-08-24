@@ -1,20 +1,23 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.ProductCategoryDto;
 import com.hellostore.ecommerce.entity.ProductCategory;
-import com.hellostore.ecommerce.repository.ProductCategoryRepository;
+import com.hellostore.ecommerce.repository.ProductCategoryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductCategoryService {
 
-    private final ProductCategoryRepository productCategoryRepository;
+    private final ProductCategoryDslRepository repository;
 
-    public List<ProductCategory> getProductCategories() {
+    public List<ProductCategoryDto> getProductCategories() {
 
-        return productCategoryRepository.findAll();
+        List<ProductCategory> allWithQuerydsl = repository.findAllWithQuerydsl();
+        return allWithQuerydsl.stream().map(ProductCategoryDto::new).collect(Collectors.toList());
     }
 }
