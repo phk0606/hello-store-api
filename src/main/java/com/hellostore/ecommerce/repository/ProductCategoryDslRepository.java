@@ -6,6 +6,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
@@ -13,8 +14,9 @@ import java.util.List;
 public class ProductCategoryDslRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager em;
 
-    public List<ProductCategory> findAllWithQuerydsl() {
+    public List<ProductCategory> getProductCategories() {
         QProductCategory parent = new QProductCategory("parent");
         QProductCategory child = new QProductCategory("child");
 
@@ -25,5 +27,9 @@ public class ProductCategoryDslRepository {
                 .where(parent.parent.isNull())
                 .orderBy(parent.sequence.asc(), child.sequence.asc())
                 .fetch();
+    }
+
+    public void createProductCategory(ProductCategory productCategory) {
+        em.persist(productCategory);
     }
 }

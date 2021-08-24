@@ -25,4 +25,11 @@ class ProductCategoryDslRepositoryTest {
         List<ProductCategory> allWithQuerydsl = repository.findAllWithQuerydsl();
         log.debug("getProductCategories: {}", allWithQuerydsl);
     }
+
+    @Test
+    public void testInsertProductCategory() {
+        ProductCategory productCategory = new ProductCategory(null, "테스트 카테고리", 9999, "Y");
+        repository.create(productCategory);
+
+    }
 }
