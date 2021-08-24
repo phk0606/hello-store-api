@@ -22,14 +22,24 @@ class ProductCategoryDslRepositoryTest {
     @Test
     public void testGetProductCategory() {
 
-        List<ProductCategory> allWithQuerydsl = repository.findAllWithQuerydsl();
+        List<ProductCategory> allWithQuerydsl = repository.getProductCategories();
         log.debug("getProductCategories: {}", allWithQuerydsl);
     }
 
     @Test
     public void testInsertProductCategory() {
         ProductCategory productCategory = new ProductCategory(null, "테스트 카테고리", 9999, "Y");
-        repository.create(productCategory);
+        repository.createProductCategory(productCategory);
+    }
 
+    @Test
+    public void testGetFirstCategoryMaxSequence() {
+        Integer categoryId = 1;
+        Integer categoryMaxSequence = repository.getCategoryMaxSequence(categoryId);
+        log.debug("categoryMaxSequence: {}", categoryMaxSequence);
+
+        Integer categoryId1 = 10;
+        Integer categoryMaxSequence1 = repository.getCategoryMaxSequence(categoryId1);
+        log.debug("categoryMaxSequence1: {}", categoryMaxSequence1);
     }
 }

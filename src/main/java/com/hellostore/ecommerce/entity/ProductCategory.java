@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +22,7 @@ public class ProductCategory extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
     private ProductCategory parent;
-    private String categoryName;
+    private String name;
 
     private Integer sequence;
     private String showYn;
@@ -34,9 +31,10 @@ public class ProductCategory extends BaseEntity {
     @OneToMany(mappedBy = "parent")
     private List<ProductCategory> children = new ArrayList<>();
 
-    public ProductCategory(ProductCategory parent, String categoryName, Integer sequence, String showYn) {
+    @Builder
+    public ProductCategory(ProductCategory parent, String name, Integer sequence, String showYn) {
         this.parent = parent;
-        this.categoryName = categoryName;
+        this.name = name;
         this.sequence = sequence;
         this.showYn = showYn;
     }

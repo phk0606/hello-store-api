@@ -29,6 +29,28 @@ public class ProductCategoryDslRepository {
                 .fetch();
     }
 
+    public Integer getCategoryMaxSequence(Integer categoryId) {
+        QProductCategory productCategory = QProductCategory.productCategory;
+
+        Integer maxSequence = 0;
+        if(categoryId == null) {
+
+            maxSequence = queryFactory.select(productCategory.sequence.max())
+                    .from(productCategory)
+                    .where(productCategory.parent.isNull())
+                    .fetchOne();
+        } else {
+            ProductCategory parent = queryFactory.select(productCategory.parent).from(productCategory)
+                    .where(productCategory.id.eq(categoryId)).fetchOne();
+
+            maxSequence = queryFactory.select(productCategory.sequence.max())
+                    .from(productCategory)
+                    .where(productCategory.parent.eq(parent))
+                    .fetchOne();
+        }
+        return maxSequence;
+    }
+
     public void createProductCategory(ProductCategory productCategory) {
         em.persist(productCategory);
     }
