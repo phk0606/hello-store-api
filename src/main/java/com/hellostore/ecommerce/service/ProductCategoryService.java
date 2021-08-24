@@ -22,6 +22,7 @@ public class ProductCategoryService {
     public List<ProductCategoryDto> getProductCategories() {
 
         List<ProductCategory> productCategories = repository.getProductCategories();
+        log.debug("!! productCategories: {}",productCategories);
         return productCategories.stream().map(ProductCategoryDto::new).collect(Collectors.toList());
     }
 

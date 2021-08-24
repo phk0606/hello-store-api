@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,16 +14,24 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 @ToString
+@Slf4j
 public class ProductCategoryDto {
 
     private Integer id;
     private String name;
     private Integer sequence;
     private String showYn;
+    private Integer parentId;
+    private String parentName;
 
     private List<ProductCategoryDto> children;
 
     public ProductCategoryDto(final ProductCategory productCategory) {
+
+        if(productCategory.getParent() != null) {
+            this.parentId = productCategory.getParent().getId();
+            this.parentName = productCategory.getParent().getName();
+        }
         this.id = productCategory.getId();
         this.name = productCategory.getName();
         this.sequence = productCategory.getSequence();
