@@ -35,7 +35,7 @@ public class Product extends BaseEntity {
 
     private String description;
 
-    @OneToMany
+    @OneToMany(mappedBy = "product")
     @JoinColumn(name = "image_id")
     private List<ProductImage> productImages = new ArrayList<>();
 }

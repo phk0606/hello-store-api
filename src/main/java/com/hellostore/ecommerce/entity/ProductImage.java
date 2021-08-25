@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,4 +26,8 @@ public class ProductImage extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private ImageType imageType;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
