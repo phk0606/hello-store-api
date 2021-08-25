@@ -1,13 +1,11 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.enumType.ImageType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -24,5 +22,6 @@ public class ProductImage extends BaseEntity {
 
     private long fileSize;
 
-    private String imageType; // 리스트: l, 대표: d, 메인: m
+    @Enumerated(EnumType.STRING)
+    private ImageType imageType;
 }
