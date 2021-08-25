@@ -12,16 +12,16 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name", "sequence", "showYn"})
-public class ProductCategory extends BaseEntity {
+public class Category extends BaseEntity {
 
     @Id
     @GeneratedValue
     @Column(name = "category_id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "parent_id")
-    private ProductCategory parent;
+    private Category parent;
     private String name;
 
     private Integer sequence;
@@ -29,13 +29,17 @@ public class ProductCategory extends BaseEntity {
 
     @OrderBy("sequence asc ")
     @OneToMany(mappedBy = "parent")
-    private List<ProductCategory> children = new ArrayList<>();
+    private List<Category> children = new ArrayList<>();
 
-    public ProductCategory(Integer id) {
+    @OneToMany(mappedBy = "category")
+    private List<CategoryProduct> categoryProducts;
+
+    public Category(Long id) {
         this.id = id;
     }
+
     @Builder
-    public ProductCategory(Integer id, ProductCategory parent, String name, Integer sequence, String showYn) {
+    public Category(Long id, Category parent, String name, Integer sequence, String showYn) {
         this.id = id;
         this.parent = parent;
         this.name = name;

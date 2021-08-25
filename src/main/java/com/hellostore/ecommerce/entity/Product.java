@@ -1,6 +1,8 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
+import com.hellostore.ecommerce.enumType.ShippingFeeType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,18 +19,18 @@ public class Product extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "product_id")
-    private Integer id;
+    private Long id;
 
     private String name;
 
     private int price;
     private int stockQuantity;
 
-    private String pointType;
+    private PointType pointType;
     private int pointPerPrice;
 
-    private String shippingCostType;
-    private int eachShippingCost;
+    private ShippingFeeType shippingFeeType;
+    private int eachShippingFee;
 
     private String newArrivalYn;
     private String bestYn;
@@ -41,6 +43,9 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<CategoryProduct> categoryProducts = new ArrayList<>();
 
     @Lob
     private String detailInfo;

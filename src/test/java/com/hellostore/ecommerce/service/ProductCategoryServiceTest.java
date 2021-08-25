@@ -13,11 +13,11 @@ import javax.transaction.Transactional;
 class ProductCategoryServiceTest {
 
     @Autowired
-    ProductCategoryService productCategoryService;
+    CategoryService productCategoryService;
 
     @Test
     public void getProductCategories() {
 
-        log.debug("productCategories: {}", productCategoryService.getProductCategories());
+        log.debug("productCategories: {}", productCategoryService.getCategories());
     }
 }

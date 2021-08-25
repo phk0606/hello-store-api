@@ -1,7 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.entity.ProductCategory;
-import com.hellostore.ecommerce.entity.QProductCategory;
+import com.hellostore.ecommerce.entity.Category;
+import com.hellostore.ecommerce.entity.QCategory;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -12,14 +12,14 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ProductCategoryDslRepository {
+public class CategoryDslRepository {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
-    public List<ProductCategory> getProductCategories() {
-        QProductCategory parent = new QProductCategory("parent");
-        QProductCategory child = new QProductCategory("child");
+    public List<Category> getCategories() {
+        QCategory parent = new QCategory("parent");
+        QCategory child = new QCategory("child");
 
         return queryFactory.selectFrom(parent)
                 .distinct()
@@ -30,8 +30,8 @@ public class ProductCategoryDslRepository {
                 .fetch();
     }
 
-    public List<ProductCategory> getProductCategory(Integer parentId) {
-        QProductCategory productCategory = QProductCategory.productCategory;
+    public List<Category> getCategory(Long parentId) {
+        QCategory productCategory = QCategory.category;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -48,8 +48,8 @@ public class ProductCategoryDslRepository {
                 .fetch();
     }
 
-    public Integer getCategoryMaxSequence(Integer categoryId, Integer parentId) {
-        QProductCategory productCategory = QProductCategory.productCategory;
+    public Integer getCategoryMaxSequence(Long categoryId, Long parentId) {
+        QCategory productCategory = QCategory.category;
 
         Integer maxSequence = 0;
         if(parentId == null && categoryId == null) {
@@ -69,23 +69,23 @@ public class ProductCategoryDslRepository {
         return maxSequence;
     }
 
-    public void createProductCategory(ProductCategory productCategory) {
-        em.persist(productCategory);
+    public void createProductCategory(Category category) {
+        em.persist(category);
     }
 
-    public void modifyProductCategory(ProductCategory productCategory) {
-        QProductCategory qProductCategory = QProductCategory.productCategory;
+    public void modifyProductCategory(Category category) {
+        QCategory qProductCategory = QCategory.category;
         queryFactory.update(qProductCategory)
-                .where(qProductCategory.id.eq(productCategory.getId()))
-                .set(qProductCategory.name, productCategory.getName())
-                .set(qProductCategory.showYn, productCategory.getShowYn())
+                .where(qProductCategory.id.eq(category.getId()))
+                .set(qProductCategory.name, category.getName())
+                .set(qProductCategory.showYn, category.getShowYn())
                 .execute();
     }
 
-    public void deleteProductCategory(ProductCategory productCategory) {
-        QProductCategory qProductCategory = QProductCategory.productCategory;
+    public void deleteProductCategory(Category category) {
+        QCategory qProductCategory = QCategory.category;
         queryFactory.delete(qProductCategory)
-                .where(qProductCategory.id.eq(productCategory.getId()))
+                .where(qProductCategory.id.eq(category.getId()))
                 .execute();
     }
 

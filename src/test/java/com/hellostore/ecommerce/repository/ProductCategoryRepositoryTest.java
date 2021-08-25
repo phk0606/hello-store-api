@@ -1,6 +1,6 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.entity.ProductCategory;
+import com.hellostore.ecommerce.entity.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,24 +17,24 @@ import java.util.List;
 class ProductCategoryRepositoryTest {
 
     @Autowired
-    ProductCategoryRepository productCategoryRepository;
+    CategoryRepository productCategoryRepository;
 
     @Test
     public void testProductCategory() {
 
-        ProductCategory productCategory1 = new ProductCategory(null,null, "OUTER", 1, "Y");
-        ProductCategory productCategory2 = new ProductCategory(null,null, "TOP", 2, "Y");
-        ProductCategory productCategory3 = new ProductCategory(null,null, "BOTTOM", 3, "Y");
-        ProductCategory productCategory4 = new ProductCategory(null,null, "DRESS", 4, "Y");
+        Category productCategory1 = new Category(null,null, "OUTER", 1, "Y");
+        Category productCategory2 = new Category(null,null, "TOP", 2, "Y");
+        Category productCategory3 = new Category(null,null, "BOTTOM", 3, "Y");
+        Category productCategory4 = new Category(null,null, "DRESS", 4, "Y");
 
-        ProductCategory productCategory11 = new ProductCategory(null,productCategory1, "CARDIGAN", 1, "Y");
-        ProductCategory productCategory12 = new ProductCategory(null,productCategory1, "JAKET/JUMPER", 2, "Y");
-        ProductCategory productCategory13 = new ProductCategory(null,productCategory1, "COAT", 3, "Y");
-        ProductCategory productCategory14 = new ProductCategory(null,productCategory1, "VEST", 4, "Y");
-        ProductCategory productCategory15 = new ProductCategory(null,productCategory1, "PADDING", 5, "y");
+        Category productCategory11 = new Category(null,productCategory1, "CARDIGAN", 1, "Y");
+        Category productCategory12 = new Category(null,productCategory1, "JAKET/JUMPER", 2, "Y");
+        Category productCategory13 = new Category(null,productCategory1, "COAT", 3, "Y");
+        Category productCategory14 = new Category(null,productCategory1, "VEST", 4, "Y");
+        Category productCategory15 = new Category(null,productCategory1, "PADDING", 5, "y");
 
-        ProductCategory productCategory31 = new ProductCategory(null,productCategory3, "PANTS", 1, "Y");
-        ProductCategory productCategory32 = new ProductCategory(null,productCategory3, "SKIRT", 2, "Y");
+        Category productCategory31 = new Category(null,productCategory3, "PANTS", 1, "Y");
+        Category productCategory32 = new Category(null,productCategory3, "SKIRT", 2, "Y");
 
         productCategoryRepository.save(productCategory1);
         productCategoryRepository.save(productCategory2);
@@ -50,7 +50,7 @@ class ProductCategoryRepositoryTest {
         productCategoryRepository.save(productCategory31);
         productCategoryRepository.save(productCategory32);
 
-        List<ProductCategory> all = productCategoryRepository.findAll();
+        List<Category> all = productCategoryRepository.findAll();
         log.debug("productCategoryList: {}", all);
 
     }
