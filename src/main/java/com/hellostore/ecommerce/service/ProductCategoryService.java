@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCategoryDto;
+import com.hellostore.ecommerce.dto.ProductCategorySelectDto;
 import com.hellostore.ecommerce.entity.ProductCategory;
 import com.hellostore.ecommerce.repository.ProductCategoryDslRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,13 @@ public class ProductCategoryService {
         List<ProductCategory> productCategories = repository.getProductCategories();
         log.debug("!! productCategories: {}",productCategories);
         return productCategories.stream().map(ProductCategoryDto::new).collect(Collectors.toList());
+    }
+
+    public List<ProductCategorySelectDto> getProductCategory(Integer parentId) {
+
+        List<ProductCategory> productCategory = repository.getProductCategory(parentId);
+        log.debug("productCategory: {}",productCategory);
+        return productCategory.stream().map(ProductCategorySelectDto::new).collect(Collectors.toList());
     }
 
     @Transactional

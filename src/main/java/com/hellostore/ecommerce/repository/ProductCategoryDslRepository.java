@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.ProductCategory;
 import com.hellostore.ecommerce.entity.QProductCategory;
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,24 @@ public class ProductCategoryDslRepository {
                 .fetchJoin()
                 .where(parent.parent.isNull())
                 .orderBy(parent.sequence.asc(), child.sequence.asc())
+                .fetch();
+    }
+
+    public List<ProductCategory> getProductCategory(Integer parentId) {
+        QProductCategory productCategory = QProductCategory.productCategory;
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        if(parentId != null) {
+            builder.and(productCategory.parent.id.eq(parentId));
+        } else {
+            builder.and(productCategory.parent.isNull());
+        }
+
+        return queryFactory.selectFrom(productCategory)
+                .from(productCategory)
+                .where(builder)
+                .orderBy(productCategory.sequence.asc())
                 .fetch();
     }
 
@@ -69,4 +88,6 @@ public class ProductCategoryDslRepository {
                 .where(qProductCategory.id.eq(productCategory.getId()))
                 .execute();
     }
+
+
 }

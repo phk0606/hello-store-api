@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.enumType.ProductShowType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,21 @@ public class Product extends BaseEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "product")
-    @JoinColumn(name = "image_id")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductOption> productOptions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImages = new ArrayList<>();
+
+    @Lob
+    private String detailInfo;
+
+    @Lob
+    private String shippingInfo;
+
+    @Lob
+    private String exchangeReturnInfo;
+
+    @Enumerated
+    private ProductShowType productShowType;
 }

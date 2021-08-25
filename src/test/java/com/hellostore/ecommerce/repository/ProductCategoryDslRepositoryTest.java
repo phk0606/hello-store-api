@@ -54,4 +54,10 @@ class ProductCategoryDslRepositoryTest {
         ProductCategory productCategory = new ProductCategory(13,null, "테스트 카테고리", 9999, "N");
         repository.deleteProductCategory(productCategory);
     }
+
+    @Test
+    public void testGetCategory() {
+        List<ProductCategory> productCategory = repository.getProductCategory(1);
+        log.debug("productCategory: {}", productCategory);
+    }
 }
