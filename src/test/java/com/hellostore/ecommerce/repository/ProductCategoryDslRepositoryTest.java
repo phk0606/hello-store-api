@@ -28,18 +28,30 @@ class ProductCategoryDslRepositoryTest {
 
     @Test
     public void testInsertProductCategory() {
-        ProductCategory productCategory = new ProductCategory(null, "테스트 카테고리", 9999, "Y");
+        ProductCategory productCategory = new ProductCategory(null,null, "테스트 카테고리", 9999, "Y");
         repository.createProductCategory(productCategory);
     }
 
     @Test
     public void testGetFirstCategoryMaxSequence() {
         Integer categoryId = 1;
-        Integer categoryMaxSequence = repository.getCategoryMaxSequence(categoryId);
+        Integer categoryMaxSequence = repository.getCategoryMaxSequence(categoryId, 11);
         log.debug("categoryMaxSequence: {}", categoryMaxSequence);
 
         Integer categoryId1 = 10;
-        Integer categoryMaxSequence1 = repository.getCategoryMaxSequence(categoryId1);
+        Integer categoryMaxSequence1 = repository.getCategoryMaxSequence(categoryId1, 11);
         log.debug("categoryMaxSequence1: {}", categoryMaxSequence1);
+    }
+
+    @Test
+    public void testModifyFirstCategory() {
+        ProductCategory productCategory = new ProductCategory(20,null, "테스트 카테고리", 9999, "N");
+        repository.modifyProductCategory(productCategory);
+    }
+
+    @Test
+    public void testDeleteFirstCategory() {
+        ProductCategory productCategory = new ProductCategory(13,null, "테스트 카테고리", 9999, "N");
+        repository.deleteProductCategory(productCategory);
     }
 }

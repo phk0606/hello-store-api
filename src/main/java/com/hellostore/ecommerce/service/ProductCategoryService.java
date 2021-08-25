@@ -5,6 +5,7 @@ import com.hellostore.ecommerce.entity.ProductCategory;
 import com.hellostore.ecommerce.repository.ProductCategoryDslRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class ProductCategoryService {
 
     private final ProductCategoryDslRepository repository;
+    private final ModelMapper modelMapper;
 
     public List<ProductCategoryDto> getProductCategories() {
 
@@ -29,11 +31,27 @@ public class ProductCategoryService {
     @Transactional
     public void createProductCategory(final ProductCategoryDto productCategoryDto) {
 
-        Integer CategoryMaxSequence = repository.getCategoryMaxSequence(productCategoryDto.getId());
+        Integer id = productCategoryDto.getId();
+        Integer parentId = productCategoryDto.getParentId();
+
+        Integer CategoryMaxSequence = repository.getCategoryMaxSequence(id, parentId);
         productCategoryDto.setSequence(CategoryMaxSequence + 1);
+        log.debug("productCategoryDto: {}", productCategoryDto);
+//        ProductCategory category = modelMapper.map(productCategoryDto, ProductCategory.class);
         ProductCategory productCategory = productCategoryDto.toEntity(productCategoryDto);
         log.debug("productCategory: {}", productCategory);
         repository.createProductCategory(productCategory);
     }
 
+    @Transactional
+    public void modifyProductCategory(final ProductCategoryDto productCategoryDto) {
+        ProductCategory productCategory = productCategoryDto.toEntity(productCategoryDto);
+        repository.modifyProductCategory(productCategory);
+    }
+
+    @Transactional
+    public void deleteProductCategory(final ProductCategoryDto productCategoryDto) {
+        ProductCategory productCategory = productCategoryDto.toEntity(productCategoryDto);
+        repository.deleteProductCategory(productCategory);
+    }
 }

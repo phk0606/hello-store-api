@@ -31,8 +31,12 @@ public class ProductCategory extends BaseEntity {
     @OneToMany(mappedBy = "parent")
     private List<ProductCategory> children = new ArrayList<>();
 
+    public ProductCategory(Integer id) {
+        this.id = id;
+    }
     @Builder
-    public ProductCategory(ProductCategory parent, String name, Integer sequence, String showYn) {
+    public ProductCategory(Integer id, ProductCategory parent, String name, Integer sequence, String showYn) {
+        this.id = id;
         this.parent = parent;
         this.name = name;
         this.sequence = sequence;

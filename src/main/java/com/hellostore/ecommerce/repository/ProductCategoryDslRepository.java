@@ -29,29 +29,44 @@ public class ProductCategoryDslRepository {
                 .fetch();
     }
 
-    public Integer getCategoryMaxSequence(Integer categoryId) {
+    public Integer getCategoryMaxSequence(Integer categoryId, Integer parentId) {
         QProductCategory productCategory = QProductCategory.productCategory;
 
         Integer maxSequence = 0;
-        if(categoryId == null) {
+        if(parentId == null && categoryId == null) {
 
             maxSequence = queryFactory.select(productCategory.sequence.max())
                     .from(productCategory)
                     .where(productCategory.parent.isNull())
                     .fetchOne();
-        } else {
-            ProductCategory parent = queryFactory.select(productCategory.parent).from(productCategory)
-                    .where(productCategory.id.eq(categoryId)).fetchOne();
+        } else if (parentId != null && categoryId == null) {
 
             maxSequence = queryFactory.select(productCategory.sequence.max())
                     .from(productCategory)
-                    .where(productCategory.parent.eq(parent))
+                    .where(productCategory.parent.id.eq(parentId))
                     .fetchOne();
+            maxSequence = maxSequence == null ? 0 : maxSequence;
         }
         return maxSequence;
     }
 
     public void createProductCategory(ProductCategory productCategory) {
         em.persist(productCategory);
+    }
+
+    public void modifyProductCategory(ProductCategory productCategory) {
+        QProductCategory qProductCategory = QProductCategory.productCategory;
+        queryFactory.update(qProductCategory)
+                .where(qProductCategory.id.eq(productCategory.getId()))
+                .set(qProductCategory.name, productCategory.getName())
+                .set(qProductCategory.showYn, productCategory.getShowYn())
+                .execute();
+    }
+
+    public void deleteProductCategory(ProductCategory productCategory) {
+        QProductCategory qProductCategory = QProductCategory.productCategory;
+        queryFactory.delete(qProductCategory)
+                .where(qProductCategory.id.eq(productCategory.getId()))
+                .execute();
     }
 }

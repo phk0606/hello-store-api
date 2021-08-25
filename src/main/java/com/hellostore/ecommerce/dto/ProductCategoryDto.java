@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @ToString
 @Slf4j
@@ -19,6 +18,7 @@ public class ProductCategoryDto {
 
     private Integer id;
     private String name;
+    @Setter
     private Integer sequence;
     private String showYn;
     private Integer parentId;
@@ -40,10 +40,23 @@ public class ProductCategoryDto {
     }
 
     public ProductCategory toEntity(ProductCategoryDto productCategoryDto) {
-        return ProductCategory.builder()
-                .name(productCategoryDto.getName())
-                .showYn(productCategoryDto.getShowYn())
-                .sequence(productCategoryDto.getSequence())
-                .build();
+
+        if(productCategoryDto.getParentId() != null) {
+
+            return ProductCategory.builder()
+                    .id(productCategoryDto.getId())
+                    .parent(new ProductCategory(productCategoryDto.getParentId()))
+                    .name(productCategoryDto.getName())
+                    .showYn(productCategoryDto.getShowYn())
+                    .sequence(productCategoryDto.getSequence())
+                    .build();
+        } else {
+            return ProductCategory.builder()
+                    .id(productCategoryDto.getId())
+                    .name(productCategoryDto.getName())
+                    .showYn(productCategoryDto.getShowYn())
+                    .sequence(productCategoryDto.getSequence())
+                    .build();
+        }
     }
 }

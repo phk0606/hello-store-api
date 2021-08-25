@@ -28,4 +28,14 @@ public class ProductCategoryController {
         log.debug("productCategoryDto: {}", productCategoryDto);
         productCategoryService.createProductCategory(productCategoryDto);
     }
+
+    @PostMapping("/modifyProductCategory")
+    public void modifyProductCategory(@RequestBody ProductCategoryDto productCategoryDto) {
+        productCategoryService.modifyProductCategory(productCategoryDto);
+    }
+
+    @PostMapping("/deleteProductCategory")
+    public void deleteProductCategory(@RequestBody ProductCategoryDto productCategoryDto) {
+        productCategoryService.deleteProductCategory(productCategoryDto);
+    }
 }

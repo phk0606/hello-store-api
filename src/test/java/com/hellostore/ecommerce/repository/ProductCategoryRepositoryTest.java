@@ -22,19 +22,19 @@ class ProductCategoryRepositoryTest {
     @Test
     public void testProductCategory() {
 
-        ProductCategory productCategory1 = new ProductCategory(null, "OUTER", 1, "y");
-        ProductCategory productCategory2 = new ProductCategory(null, "TOP", 2, "y");
-        ProductCategory productCategory3 = new ProductCategory(null, "BOTTOM", 3, "y");
-        ProductCategory productCategory4 = new ProductCategory(null, "DRESS", 4, "y");
+        ProductCategory productCategory1 = new ProductCategory(null,null, "OUTER", 1, "Y");
+        ProductCategory productCategory2 = new ProductCategory(null,null, "TOP", 2, "Y");
+        ProductCategory productCategory3 = new ProductCategory(null,null, "BOTTOM", 3, "Y");
+        ProductCategory productCategory4 = new ProductCategory(null,null, "DRESS", 4, "Y");
 
-        ProductCategory productCategory11 = new ProductCategory(productCategory1, "CARDIGAN", 1, "y");
-        ProductCategory productCategory12 = new ProductCategory(productCategory1, "JAKET/JUMPER", 2, "y");
-        ProductCategory productCategory13 = new ProductCategory(productCategory1, "COAT", 3, "y");
-        ProductCategory productCategory14 = new ProductCategory(productCategory1, "VEST", 4, "y");
-        ProductCategory productCategory15 = new ProductCategory(productCategory1, "PADDING", 5, "y");
+        ProductCategory productCategory11 = new ProductCategory(null,productCategory1, "CARDIGAN", 1, "Y");
+        ProductCategory productCategory12 = new ProductCategory(null,productCategory1, "JAKET/JUMPER", 2, "Y");
+        ProductCategory productCategory13 = new ProductCategory(null,productCategory1, "COAT", 3, "Y");
+        ProductCategory productCategory14 = new ProductCategory(null,productCategory1, "VEST", 4, "Y");
+        ProductCategory productCategory15 = new ProductCategory(null,productCategory1, "PADDING", 5, "y");
 
-        ProductCategory productCategory31 = new ProductCategory(productCategory3, "PANTS", 1, "y");
-        ProductCategory productCategory32 = new ProductCategory(productCategory3, "SKIRT", 2, "y");
+        ProductCategory productCategory31 = new ProductCategory(null,productCategory3, "PANTS", 1, "Y");
+        ProductCategory productCategory32 = new ProductCategory(null,productCategory3, "SKIRT", 2, "Y");
 
         productCategoryRepository.save(productCategory1);
         productCategoryRepository.save(productCategory2);
