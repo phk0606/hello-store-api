@@ -1,12 +1,10 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.entity.Category;
-import com.hellostore.ecommerce.entity.CategoryProduct;
-import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.entity.ProductOption;
+import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
+import com.querydsl.core.Tuple;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +59,16 @@ class ProductRepositoryTest {
         categoryProductRepository
                 .createCategoryProduct(CategoryProduct.builder().category(category1).product(product1).build());
 
+    }
+
+    @Test
+    public void 상품에_대한_카테고리_가져오기 () {
+        QCategory category = QCategory.category;
+        Tuple categoryForProduct = categoryDslRepository.getCategoryForProduct(65l);
+        Object[] objects = categoryForProduct.toArray();
+        for (Object object : objects) {
+
+            log.debug("categoryForProduct: {}", object);
+        }
     }
 }
