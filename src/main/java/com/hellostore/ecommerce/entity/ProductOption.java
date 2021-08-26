@@ -19,7 +19,7 @@ public class ProductOption {
     private Integer id;
 
     private String optionName;
-    private String description;
+    private String optionValue;
 
     private String useYn;
 
