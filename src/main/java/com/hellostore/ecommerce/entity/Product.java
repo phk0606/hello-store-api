@@ -23,8 +23,10 @@ public class Product extends BaseEntity {
 
     private String name;
 
-    private int price;
-    private int stockQuantity;
+    private int salePrice;
+    private int regularPrice;
+
+    private int maxPurchaseQuantity;
 
     private PointType pointType;
     private int pointPerPrice;
@@ -32,9 +34,9 @@ public class Product extends BaseEntity {
     private ShippingFeeType shippingFeeType;
     private int eachShippingFee;
 
-    private String newArrivalYn;
-    private String bestYn;
-    private String discountYn;
+    private Boolean newArrival;
+    private Boolean best;
+    private Boolean discount;
 
     private String description;
 
