@@ -3,9 +3,7 @@ package com.hellostore.ecommerce.entity;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseEntity {
 
@@ -23,16 +22,17 @@ public class Product extends BaseEntity {
 
     private String name;
 
-    private int salePrice;
-    private int regularPrice;
+    private Integer salePrice;
+    private Integer regularPrice;
 
-    private int maxPurchaseQuantity;
+    private Integer maxPurchaseQuantity;
 
     private PointType pointType;
-    private int pointPerPrice;
+    private Integer pointPerPrice;
 
     private ShippingFeeType shippingFeeType;
-    private int eachShippingFee;
+
+    private Integer eachShippingFee;
 
     private Boolean newArrival;
     private Boolean best;
@@ -46,8 +46,8 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<CategoryProduct> categoryProducts = new ArrayList<>();
+//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+//    private List<CategoryProduct> categoryProducts = new ArrayList<>();
 
     @Lob
     private String detailInfo;
@@ -60,4 +60,29 @@ public class Product extends BaseEntity {
 
     @Enumerated
     private ProductShowType productShowType;
+
+
+    @Builder
+    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, List<ProductOption> productOptions, List<ProductImage> productImages,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+
+        this.name = name;
+        this.salePrice = salePrice;
+        this.regularPrice = regularPrice;
+        this.maxPurchaseQuantity = maxPurchaseQuantity;
+        this.pointType = pointType;
+        this.pointPerPrice = pointPerPrice;
+        this.shippingFeeType = shippingFeeType;
+        this.eachShippingFee = eachShippingFee;
+        this.newArrival = newArrival;
+        this.best = best;
+        this.discount = discount;
+        this.description = description;
+        this.productOptions = productOptions;
+        this.productImages = productImages;
+//        this.categoryProducts = categoryProducts;
+        this.detailInfo = detailInfo;
+        this.shippingInfo = shippingInfo;
+        this.exchangeReturnInfo = exchangeReturnInfo;
+        this.productShowType = productShowType;
+    }
 }

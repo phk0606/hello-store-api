@@ -10,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name", "sequence", "showYn"})
 public class Category extends BaseEntity {
@@ -30,9 +31,6 @@ public class Category extends BaseEntity {
     @OrderBy("sequence asc ")
     @OneToMany(mappedBy = "parent")
     private List<Category> children = new ArrayList<>();
-
-    @OneToMany(mappedBy = "category")
-    private List<CategoryProduct> categoryProducts;
 
     public Category(Long id) {
         this.id = id;

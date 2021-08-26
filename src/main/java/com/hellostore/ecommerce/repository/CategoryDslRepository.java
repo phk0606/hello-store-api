@@ -48,6 +48,14 @@ public class CategoryDslRepository {
                 .fetch();
     }
 
+    public Category getCategoryOne(Long id) {
+        QCategory category = QCategory.category;
+
+        return queryFactory.selectFrom(category)
+                .where(category.id.eq(id))
+                .fetchOne();
+    }
+
     public Integer getCategoryMaxSequence(Long categoryId, Long parentId) {
         QCategory productCategory = QCategory.category;
 
