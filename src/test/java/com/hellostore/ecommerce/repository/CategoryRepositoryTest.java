@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 @Rollback(value = false)
 @Slf4j
-class ProductCategoryRepositoryTest {
+class CategoryRepositoryTest {
 
     @Autowired
     CategoryRepository productCategoryRepository;

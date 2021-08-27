@@ -26,4 +26,5 @@ public class ProductRepository {
         return queryFactory.selectFrom(product)
                 .where(product.id.eq(id)).fetchOne();
     }
+
 }

@@ -10,14 +10,14 @@ import javax.transaction.Transactional;
 @SpringBootTest
 @Transactional
 @Slf4j
-class ProductCategoryServiceTest {
+class CategoryServiceTest {
 
     @Autowired
-    CategoryService productCategoryService;
+    CategoryService categoryService;
 
     @Test
     public void getProductCategories() {
 
-        log.debug("productCategories: {}", productCategoryService.getCategories());
+        log.debug("productCategories: {}", categoryService.getCategories());
     }
 }

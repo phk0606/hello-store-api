@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter
 @EqualsAndHashCode
@@ -19,6 +21,10 @@ public class Product extends BaseEntity {
     @GeneratedValue
     @Column(name = "product_id")
     private Long id;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     private String name;
 
@@ -46,8 +52,7 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductImage> productImages = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-//    private List<CategoryProduct> categoryProducts = new ArrayList<>();
+
 
     @Lob
     private String detailInfo;
@@ -63,8 +68,8 @@ public class Product extends BaseEntity {
 
 
     @Builder
-    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, List<ProductOption> productOptions, List<ProductImage> productImages,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
-
+    public Product(Category category, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+        this.category = category;
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
@@ -77,9 +82,6 @@ public class Product extends BaseEntity {
         this.best = best;
         this.discount = discount;
         this.description = description;
-        this.productOptions = productOptions;
-        this.productImages = productImages;
-//        this.categoryProducts = categoryProducts;
         this.detailInfo = detailInfo;
         this.shippingInfo = shippingInfo;
         this.exchangeReturnInfo = exchangeReturnInfo;

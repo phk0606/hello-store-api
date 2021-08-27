@@ -27,37 +27,37 @@ public class CategoryService {
         return categories.stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
-    public List<CategorySelectDto> getProductCategory(Long parentId) {
+    public List<CategorySelectDto> getCategory(Long parentId) {
 
-        List<Category> productCategory = repository.getCategory(parentId);
-        log.debug("productCategory: {}",productCategory);
-        return productCategory.stream().map(CategorySelectDto::new).collect(Collectors.toList());
+        List<Category> category = repository.getCategory(parentId);
+        log.debug("productCategory: {}",category);
+        return category.stream().map(CategorySelectDto::new).collect(Collectors.toList());
     }
 
     @Transactional
-    public void createProductCategory(final CategoryDto categoryDto) {
+    public void createCategory(final CategoryDto categoryDto) {
 
         Long id = categoryDto.getId();
         Long parentId = categoryDto.getParentId();
 
         Integer CategoryMaxSequence = repository.getCategoryMaxSequence(id, parentId);
         categoryDto.setSequence(CategoryMaxSequence + 1);
-        log.debug("productCategoryDto: {}", categoryDto);
+        log.debug("categoryDto: {}", categoryDto);
 //        ProductCategory category = modelMapper.map(productCategoryDto, ProductCategory.class);
-        Category productCategory = categoryDto.toEntity(categoryDto);
-        log.debug("productCategory: {}", productCategory);
-        repository.createProductCategory(productCategory);
-    }
-
-    @Transactional
-    public void modifyProductCategory(final CategoryDto productCategoryDto) {
-        Category productCategory = productCategoryDto.toEntity(productCategoryDto);
-        repository.modifyProductCategory(productCategory);
-    }
-
-    @Transactional
-    public void deleteProductCategory(final CategoryDto categoryDto) {
         Category category = categoryDto.toEntity(categoryDto);
-        repository.deleteProductCategory(category);
+        log.debug("category: {}", category);
+        repository.createCategory(category);
+    }
+
+    @Transactional
+    public void modifyCategory(final CategoryDto categoryDto) {
+        Category category = categoryDto.toEntity(categoryDto);
+        repository.modifyCategory(category);
+    }
+
+    @Transactional
+    public void deleteCategory(final CategoryDto categoryDto) {
+        Category category = categoryDto.toEntity(categoryDto);
+        repository.deleteCategory(category);
     }
 }

@@ -26,8 +26,14 @@ public class ProductOption {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    public void setProduct(Product product) {
+        this.product = product;
+        product.getProductOptions().add(this);
+    }
+
     @Builder
-    public ProductOption(String optionName, String optionValue, String useYn) {
+    public ProductOption(Product product, String optionName, String optionValue, String useYn) {
+        this.product = product;
         this.optionName = optionName;
         this.optionValue = optionValue;
         this.useYn = useYn;

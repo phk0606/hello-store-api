@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 @Rollback(value = false)
 @Slf4j
-class ProductCategoryDslRepositoryTest {
+class CategoryDslRepositoryTest {
 
     @Autowired
     CategoryDslRepository repository;
@@ -29,7 +29,7 @@ class ProductCategoryDslRepositoryTest {
     @Test
     public void testInsertProductCategory() {
         Category productCategory = new Category(null,null, "테스트 카테고리", 9999, "Y");
-        repository.createProductCategory(productCategory);
+        repository.createCategory(productCategory);
     }
 
     @Test
@@ -46,13 +46,13 @@ class ProductCategoryDslRepositoryTest {
     @Test
     public void testModifyFirstCategory() {
         Category productCategory = new Category(20l,null, "테스트 카테고리", 9999, "N");
-        repository.modifyProductCategory(productCategory);
+        repository.modifyCategory(productCategory);
     }
 
     @Test
     public void testDeleteFirstCategory() {
         Category productCategory = new Category(13l,null, "테스트 카테고리", 9999, "N");
-        repository.deleteProductCategory(productCategory);
+        repository.deleteCategory(productCategory);
     }
 
     @Test

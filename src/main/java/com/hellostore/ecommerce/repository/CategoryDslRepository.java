@@ -2,11 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.QCategory;
-import com.hellostore.ecommerce.entity.QCategoryProduct;
-import com.hellostore.ecommerce.entity.QProduct;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -35,37 +31,37 @@ public class CategoryDslRepository {
     }
 
     public List<Category> getCategory(Long parentId) {
-        QCategory productCategory = QCategory.category;
+        QCategory category = QCategory.category;
 
         BooleanBuilder builder = new BooleanBuilder();
 
         if(parentId != null) {
-            builder.and(productCategory.parent.id.eq(parentId));
+            builder.and(category.parent.id.eq(parentId));
         } else {
-            builder.and(productCategory.parent.isNull());
+            builder.and(category.parent.isNull());
         }
 
-        return queryFactory.selectFrom(productCategory)
-                .from(productCategory)
+        return queryFactory.selectFrom(category)
+                .from(category)
                 .where(builder)
-                .orderBy(productCategory.sequence.asc())
+                .orderBy(category.sequence.asc())
                 .fetch();
     }
 
-    public Tuple getCategoryForProduct(Long productId) {
-        QCategory category = QCategory.category;
-        QCategoryProduct categoryProduct = QCategoryProduct.categoryProduct;
-        QProduct product = QProduct.product;
-
-        Tuple fetch = queryFactory.select(category, category.parent)
-                .from(category)
-                .join(categoryProduct).on(category.id.eq(categoryProduct.category.id))
-                .join(product).on(categoryProduct.product.id.eq(product.id))
-                .where(product.id.eq(productId))
-                .fetchOne();
-
-        return fetch;
-    }
+//    public Tuple getCategoryForProduct(Long productId) {
+//        QCategory category = QCategory.category;
+//        QCategoryProduct categoryProduct = QCategoryProduct.categoryProduct;
+//        QProduct product = QProduct.product;
+//
+//        Tuple fetch = queryFactory.select(category, category.parent)
+//                .from(category)
+//                .join(categoryProduct).on(category.id.eq(categoryProduct.category.id))
+//                .join(product).on(categoryProduct.product.id.eq(product.id))
+//                .where(product.id.eq(productId))
+//                .fetchOne();
+//
+//        return fetch;
+//    }
 
     public Category getCategoryOne(Long id) {
         QCategory category = QCategory.category;
@@ -96,11 +92,11 @@ public class CategoryDslRepository {
         return maxSequence;
     }
 
-    public void createProductCategory(Category category) {
+    public void createCategory(Category category) {
         em.persist(category);
     }
 
-    public void modifyProductCategory(Category category) {
+    public void modifyCategory(Category category) {
         QCategory qProductCategory = QCategory.category;
         queryFactory.update(qProductCategory)
                 .where(qProductCategory.id.eq(category.getId()))
@@ -109,10 +105,10 @@ public class CategoryDslRepository {
                 .execute();
     }
 
-    public void deleteProductCategory(Category category) {
-        QCategory qProductCategory = QCategory.category;
-        queryFactory.delete(qProductCategory)
-                .where(qProductCategory.id.eq(category.getId()))
+    public void deleteCategory(Category category) {
+        QCategory qCategory = QCategory.category;
+        queryFactory.delete(qCategory)
+                .where(qCategory.id.eq(category.getId()))
                 .execute();
     }
 
