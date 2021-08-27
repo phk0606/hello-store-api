@@ -53,7 +53,6 @@ public class Product extends BaseEntity {
     private List<ProductImage> productImages = new ArrayList<>();
 
 
-
     @Lob
     private String detailInfo;
 

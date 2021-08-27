@@ -10,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(of = {"optionName", "optionValue", "useYn"})
 public class ProductOption {
 
     @Id
