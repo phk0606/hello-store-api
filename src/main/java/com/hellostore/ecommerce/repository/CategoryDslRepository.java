@@ -48,21 +48,6 @@ public class CategoryDslRepository {
                 .fetch();
     }
 
-//    public Tuple getCategoryForProduct(Long productId) {
-//        QCategory category = QCategory.category;
-//        QCategoryProduct categoryProduct = QCategoryProduct.categoryProduct;
-//        QProduct product = QProduct.product;
-//
-//        Tuple fetch = queryFactory.select(category, category.parent)
-//                .from(category)
-//                .join(categoryProduct).on(category.id.eq(categoryProduct.category.id))
-//                .join(product).on(categoryProduct.product.id.eq(product.id))
-//                .where(product.id.eq(productId))
-//                .fetchOne();
-//
-//        return fetch;
-//    }
-
     public Category getCategoryOne(Long id) {
         QCategory category = QCategory.category;
 
@@ -92,24 +77,27 @@ public class CategoryDslRepository {
         return maxSequence;
     }
 
-    public void createCategory(Category category) {
+    public Category createCategory(Category category) {
         em.persist(category);
+        return category;
     }
 
-    public void modifyCategory(Category category) {
+    public Category modifyCategory(Category category) {
         QCategory qProductCategory = QCategory.category;
         queryFactory.update(qProductCategory)
                 .where(qProductCategory.id.eq(category.getId()))
                 .set(qProductCategory.name, category.getName())
                 .set(qProductCategory.showYn, category.getShowYn())
                 .execute();
+        return category;
     }
 
-    public void deleteCategory(Category category) {
+    public Category deleteCategory(Category category) {
         QCategory qCategory = QCategory.category;
         queryFactory.delete(qCategory)
                 .where(qCategory.id.eq(category.getId()))
                 .execute();
+        return category;
     }
 
 

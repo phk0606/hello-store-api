@@ -15,9 +15,9 @@ public class ProductRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
-    public Long createProduct(Product product) {
+    public Product createProduct(Product product) {
         em.persist(product);
-        return product.getId();
+        return product;
     }
 
     public Product findProductById(Long id) {
