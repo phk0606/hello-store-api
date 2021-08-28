@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.entity.ProductImage;
+import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.repository.ProductImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,10 @@ public class ProductImageService {
         for (MultipartFile productImage : productImages) {
 
             log.debug("OriginalFilename: {}", productImage.getOriginalFilename());
-            String originalFileName = productImage.getOriginalFilename();
+            String fileNameWithImageType[] = productImage.getOriginalFilename().split("_");
+            ImageType imageType = ImageType.valueOf(fileNameWithImageType[0]);
+            String originalFileName = fileNameWithImageType[1];
+
             String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
             long fileSize = productImage.getSize();
 
@@ -57,6 +61,7 @@ public class ProductImageService {
             ProductImage productImage1 = ProductImage.builder().originalFileName(originalFileName)
                     .fileName(fileName).filePath(fileStorePath)
                     .fileSize(fileSize)
+                    .imageType(imageType)
                     .build();
 
             log.debug("productImage1: {}", productImage1);

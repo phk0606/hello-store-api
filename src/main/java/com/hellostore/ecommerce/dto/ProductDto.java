@@ -37,7 +37,6 @@ public class ProductDto {
 
     private List<ProductOption> firstOptions = new ArrayList<>();
     private List<ProductOption> secondOptions = new ArrayList<>();
-//    private List<MultipartFile> productImages = new ArrayList<>();
 
     private ProductShowType productShowType;
 }

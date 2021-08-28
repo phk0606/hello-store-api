@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
@@ -58,20 +59,14 @@ class ProductRepositoryTest {
 
     }
 
-//    @Test
-//    public void 상품에_대한_카테고리_가져오기 () {
-//        QCategory category = QCategory.category;
-//        Tuple categoryForProduct = categoryDslRepository.getCategoryForProduct(65l);
-//        Object[] objects = categoryForProduct.toArray();
-//        for (Object object : objects) {
-//
-//            log.debug("categoryForProduct: {}", object);
-//        }
-//    }
-
     @Test
     public void getProductWithCategory() {
         Product productById = productRepository.findProductById(65l);
         log.debug("productById: {}", productById);
+    }
+
+    @Test
+    public void test() {
+        log.debug("ImageType: {}", ImageType.LIST);
     }
 }

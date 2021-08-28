@@ -21,6 +21,14 @@ public class ProductController {
     @PostMapping("/createProduct")
     public void createProduct(@RequestPart ProductDto productDto, @RequestParam List<MultipartFile> productImages) {
 
+        // 카테고리 조회
+
+        // 상품 저장
+
+        // 상품 옵션 저장
+
+        // 상품 이미지 저장
+
         log.debug("productDto: {}", productDto);
 
         productImageService.uploadProductImage(productImages);
