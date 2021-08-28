@@ -21,7 +21,7 @@ public class ProductOption {
     private String optionName;
     private String optionValue;
 
-    private String useYn;
+//    private String useYn;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
@@ -33,10 +33,10 @@ public class ProductOption {
     }
 
     @Builder
-    public ProductOption(Product product, String optionName, String optionValue, String useYn) {
+    public ProductOption(Product product, String optionName, String optionValue) {
         this.product = product;
         this.optionName = optionName;
         this.optionValue = optionValue;
-        this.useYn = useYn;
+//        this.useYn = useYn;
     }
 }

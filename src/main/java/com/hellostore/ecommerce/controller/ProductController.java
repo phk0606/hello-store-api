@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductDto;
+import com.hellostore.ecommerce.service.ProductImageService;
 import com.hellostore.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,16 +15,15 @@ import java.util.List;
 @Slf4j
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private final ProductImageService productImageService;
 
     @PostMapping("/createProduct")
     public void createProduct(@RequestPart ProductDto productDto, @RequestParam List<MultipartFile> productImages) {
 
         log.debug("productDto: {}", productDto);
 
-        for (MultipartFile productImage : productImages) {
+        productImageService.uploadProductImage(productImages);
 
-            log.debug("productImages: {}", productImage.getOriginalFilename());
-        }
     }
 }

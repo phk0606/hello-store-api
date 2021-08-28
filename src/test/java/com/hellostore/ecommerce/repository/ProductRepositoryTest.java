@@ -42,12 +42,12 @@ class ProductRepositoryTest {
         Product product = new Product(category1,"긴팔 티셔츠", 10000, 12000, 10, PointType.DEFAULT, null, ShippingFeeType.DEFAULT, null, true, false, true, "바디라인에 달라붙지 않아 시원하게 입기 좋은 데일리 반팔 티셔츠",  null, null, null, ProductShowType.SHOW);
         Product product1 = productRepository.createProduct(product);
 
-        ProductOption productOption1 = new ProductOption(product1, "color", "black", "Y");
-        ProductOption productOption2 = new ProductOption(product1, "color", "white", "Y");
-        ProductOption productOption3 = new ProductOption(product1, "color", "blue", "Y");
-        ProductOption productOption4 = new ProductOption(product1, "size", "large", "Y");
-        ProductOption productOption5 = new ProductOption(product1, "size", "medium", "Y");
-        ProductOption productOption6 = new ProductOption(product1, "size", "small", "Y");
+        ProductOption productOption1 = new ProductOption(product1, "color", "black");
+        ProductOption productOption2 = new ProductOption(product1, "color", "white");
+        ProductOption productOption3 = new ProductOption(product1, "color", "blue");
+        ProductOption productOption4 = new ProductOption(product1, "size", "large");
+        ProductOption productOption5 = new ProductOption(product1, "size", "medium");
+        ProductOption productOption6 = new ProductOption(product1, "size", "small");
 
         productOptionRepository.createProductOption(productOption1);
         productOptionRepository.createProductOption(productOption2);
