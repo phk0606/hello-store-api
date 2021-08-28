@@ -33,11 +33,12 @@ public class ProductImage extends BaseEntity {
     private Product product;
 
     @Builder
-    public ProductImage(String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
+    public ProductImage(String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType, Product product) {
         this.originalFileName = originalFileName;
         this.fileName = fileName;
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.imageType = imageType;
+        this.product = product;
     }
 }

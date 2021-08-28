@@ -39,6 +39,10 @@ public class ProductDto {
     private List<ProductOption> firstOptions = new ArrayList<>();
     private List<ProductOption> secondOptions = new ArrayList<>();
 
+    private String detailInfo;
+    private String shippingInfo;
+    private String exchangeReturnInfo;
+
     private ProductShowType productShowType;
 
     public Product toEntity(ProductDto productDto, Category category) {
@@ -48,7 +52,7 @@ public class ProductDto {
                 .name(productDto.getName())
                 .salePrice(productDto.getSalePrice())
                 .regularPrice(productDto.getRegularPrice())
-                .maxPurchaseQuantity(productDto.maxPurchaseQuantity)
+                .maxPurchaseQuantity(productDto.getMaxPurchaseQuantity())
                 .pointType(productDto.getPointType())
                 .pointPerPrice(productDto.getPointPerPrice())
                 .shippingFeeType(productDto.getShippingFeeType())
@@ -57,6 +61,9 @@ public class ProductDto {
                 .best(productDto.getBest())
                 .discount(productDto.getDiscount())
                 .description(productDto.getDescription())
+                .detailInfo(productDto.getDetailInfo())
+                .shippingInfo(productDto.getShippingInfo())
+                .exchangeReturnInfo(productDto.getExchangeReturnInfo())
                 .productShowType(productDto.getProductShowType()).build();
     }
 }

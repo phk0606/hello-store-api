@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.repository.ProductImageRepository;
@@ -30,7 +31,7 @@ public class ProductImageService {
     private String fileStorePath;
 
     @Transactional
-    public void uploadProductImage(List<MultipartFile> productImages) {
+    public void uploadProductImage(List<MultipartFile> productImages, Product product) {
 
 
         for (MultipartFile productImage : productImages) {
@@ -62,6 +63,7 @@ public class ProductImageService {
                     .fileName(fileName).filePath(fileStorePath)
                     .fileSize(fileSize)
                     .imageType(imageType)
+                    .product(product)
                     .build();
 
             log.debug("productImage1: {}", productImage1);

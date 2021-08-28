@@ -33,9 +33,11 @@ public class Product extends BaseEntity {
 
     private Integer maxPurchaseQuantity;
 
+    @Enumerated(EnumType.STRING)
     private PointType pointType;
     private Integer pointPerPrice;
 
+    @Enumerated(EnumType.STRING)
     private ShippingFeeType shippingFeeType;
 
     private Integer eachShippingFee;
@@ -62,7 +64,7 @@ public class Product extends BaseEntity {
     @Lob
     private String exchangeReturnInfo;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private ProductShowType productShowType;
 
 
