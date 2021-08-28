@@ -34,6 +34,11 @@ public class CategoryService {
         return category.stream().map(CategorySelectDto::new).collect(Collectors.toList());
     }
 
+    public Category getCategoryOne(Long id) {
+
+        return repository.getCategoryOne(id);
+    }
+
     @Transactional
     public void createCategory(final CategoryDto categoryDto) {
 

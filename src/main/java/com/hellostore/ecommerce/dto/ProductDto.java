@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.dto;
 
 import com.hellostore.ecommerce.entity.Category;
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
@@ -21,7 +22,7 @@ import java.util.List;
 @Slf4j
 public class ProductDto {
 
-    private Integer categoryId;
+    private Long categoryId;
     private String name;
     private Integer salePrice;
     private Integer regularPrice;
@@ -39,4 +40,23 @@ public class ProductDto {
     private List<ProductOption> secondOptions = new ArrayList<>();
 
     private ProductShowType productShowType;
+
+    public Product toEntity(ProductDto productDto, Category category) {
+
+        return Product.builder()
+                .category(category)
+                .name(productDto.getName())
+                .salePrice(productDto.getSalePrice())
+                .regularPrice(productDto.getRegularPrice())
+                .maxPurchaseQuantity(productDto.maxPurchaseQuantity)
+                .pointType(productDto.getPointType())
+                .pointPerPrice(productDto.getPointPerPrice())
+                .shippingFeeType(productDto.getShippingFeeType())
+                .eachShippingFee(productDto.getEachShippingFee())
+                .newArrival(productDto.getNewArrival())
+                .best(productDto.getBest())
+                .discount(productDto.getDiscount())
+                .description(productDto.getDescription())
+                .productShowType(productDto.getProductShowType()).build();
+    }
 }
