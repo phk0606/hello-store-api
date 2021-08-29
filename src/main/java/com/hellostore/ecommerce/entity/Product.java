@@ -22,10 +22,6 @@ public class Product extends BaseEntity {
     @Column(name = "product_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
     private String name;
 
     private Integer salePrice;
@@ -69,8 +65,8 @@ public class Product extends BaseEntity {
 
 
     @Builder
-    public Product(Category category, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
-        this.category = category;
+    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;

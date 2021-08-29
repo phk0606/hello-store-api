@@ -22,7 +22,8 @@ import java.util.List;
 @Slf4j
 public class ProductDto {
 
-    private Long categoryId;
+    private Long category1Id;
+    private Long category2Id;
     private String name;
     private Integer salePrice;
     private Integer regularPrice;
@@ -45,10 +46,9 @@ public class ProductDto {
 
     private ProductShowType productShowType;
 
-    public Product toEntity(ProductDto productDto, Category category) {
+    public Product toEntity(ProductDto productDto) {
 
         return Product.builder()
-                .category(category)
                 .name(productDto.getName())
                 .salePrice(productDto.getSalePrice())
                 .regularPrice(productDto.getRegularPrice())

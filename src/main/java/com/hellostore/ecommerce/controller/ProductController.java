@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 public class ProductController {
 
-    private final CategoryService categoryService;
     private final ProductService productService;
     private final ProductOptionService productOptionService;
     private final ProductImageService productImageService;
@@ -29,11 +28,8 @@ public class ProductController {
 
         log.debug("productDto: {}", productDto);
 
-        // 카테고리 조회
-        Category category = categoryService.getCategoryOne(productDto.getCategoryId());
-
         // 상품 저장
-        Product product = productService.createProduct(productDto, category);
+        Product product = productService.createProduct(productDto);
 
         // 상품 옵션 저장
         productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product);
