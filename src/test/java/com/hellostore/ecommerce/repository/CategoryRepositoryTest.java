@@ -31,13 +31,13 @@ class CategoryRepositoryTest {
         Category productCategory12 = new Category(null,productCategory1, "JACKET/JUMPER", 2, "Y");
         Category productCategory13 = new Category(null,productCategory1, "COAT", 3, "Y");
         Category productCategory14 = new Category(null,productCategory1, "VEST", 4, "Y");
-        Category productCategory15 = new Category(null,productCategory1, "PADDING", 5, "y");
+        Category productCategory15 = new Category(null,productCategory1, "PADDING", 5, "Y");
 
         Category productCategory21 = new Category(null,productCategory2, "BLOUSE/SHIRT", 1, "Y");
         Category productCategory22 = new Category(null,productCategory2, "TEE", 2, "Y");
         Category productCategory23 = new Category(null,productCategory2, "MTM/HOOD", 3, "Y");
         Category productCategory24 = new Category(null,productCategory2, "KNIT/SWEATER", 4, "Y");
-        Category productCategory25 = new Category(null,productCategory2, "SLEEVELESS", 5, "y");
+        Category productCategory25 = new Category(null,productCategory2, "SLEEVELESS", 5, "Y");
 
         Category productCategory31 = new Category(null,productCategory3, "PANTS", 1, "Y");
         Category productCategory32 = new Category(null,productCategory3, "SKIRT", 2, "Y");
@@ -46,15 +46,15 @@ class CategoryRepositoryTest {
         Category productCategory42 = new Category(null,productCategory4, "LONG", 2, "Y");
         Category productCategory43 = new Category(null,productCategory4, "FLOWER", 3, "Y");
         Category productCategory44 = new Category(null,productCategory4, "STRIPE", 4, "Y");
-        Category productCategory45 = new Category(null,productCategory4, "OFF SHOULDER", 5, "y");
-        Category productCategory46 = new Category(null,productCategory4, "LINEN", 6, "y");
-        Category productCategory47 = new Category(null,productCategory4, "MINI/MIDI", 7, "y");
-        Category productCategory48 = new Category(null,productCategory4, "HOOD", 8, "y");
-        Category productCategory49 = new Category(null,productCategory4, "SEE-THROUGH", 9, "y");
-        Category productCategory50 = new Category(null,productCategory4, "CHIFFON", 10, "y");
-        Category productCategory51 = new Category(null,productCategory4, "SLEEVELESS", 11, "y");
-        Category productCategory52 = new Category(null,productCategory4, "PATTERN", 12, "y");
-        Category productCategory53 = new Category(null,productCategory4, "SUSPENDERS", 13, "y");
+        Category productCategory45 = new Category(null,productCategory4, "OFF SHOULDER", 5, "Y");
+        Category productCategory46 = new Category(null,productCategory4, "LINEN", 6, "Y");
+        Category productCategory47 = new Category(null,productCategory4, "MINI/MIDI", 7, "Y");
+        Category productCategory48 = new Category(null,productCategory4, "HOOD", 8, "Y");
+        Category productCategory49 = new Category(null,productCategory4, "SEE-THROUGH", 9, "Y");
+        Category productCategory50 = new Category(null,productCategory4, "CHIFFON", 10, "Y");
+        Category productCategory51 = new Category(null,productCategory4, "SLEEVELESS", 11, "Y");
+        Category productCategory52 = new Category(null,productCategory4, "PATTERN", 12, "Y");
+        Category productCategory53 = new Category(null,productCategory4, "SUSPENDERS", 13, "Y");
 
         productCategoryRepository.save(productCategory1);
         productCategoryRepository.save(productCategory2);

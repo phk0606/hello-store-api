@@ -43,6 +43,7 @@ public class Product extends BaseEntity {
     private Boolean discount;
 
     private String description;
+    private Integer clickCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductOption> productOptions = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
+import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.Product;
@@ -12,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -37,5 +41,15 @@ public class ProductController {
         // 상품 이미지 저장
         productImageService.uploadProductImage(productImages, product);
 
+    }
+
+    @GetMapping("/searchProducts")
+    public List<ProductCategoryImageDto> searchProducts() {
+        return productService.searchProducts();
+    }
+
+    @GetMapping("/getImage")
+    public byte[] getImage() throws IOException {
+        return Files.readAllBytes(Paths.get("d:","aaa.jpeg"));
     }
 }

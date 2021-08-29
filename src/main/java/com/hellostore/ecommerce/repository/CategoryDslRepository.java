@@ -11,11 +11,15 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 @Repository
-@RequiredArgsConstructor
 public class CategoryDslRepository {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
+
+    public CategoryDslRepository(EntityManager em) {
+        this.queryFactory = new JPAQueryFactory(em);
+        this.em = em;
+    }
 
     public List<Category> getCategories() {
         QCategory parent = new QCategory("parent");

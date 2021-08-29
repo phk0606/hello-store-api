@@ -22,8 +22,7 @@ import java.util.List;
 @Slf4j
 public class ProductDto {
 
-    private Long category1Id;
-    private Long category2Id;
+    private Long categoryId;
     private String name;
     private Integer salePrice;
     private Integer regularPrice;
@@ -45,6 +44,8 @@ public class ProductDto {
     private String exchangeReturnInfo;
 
     private ProductShowType productShowType;
+
+    private Integer clickCount;
 
     public Product toEntity(ProductDto productDto) {
 

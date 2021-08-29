@@ -17,7 +17,7 @@ public class ProductImage extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "image_id")
-    private Integer id;
+    private Long id;
 
     private String originalFileName;
     private String fileName;

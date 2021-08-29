@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.CategoryProduct;
@@ -10,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +28,19 @@ public class ProductService {
     public Product createProduct(ProductDto productDto) {
 
         // 카테고리 조회
-        Category category1 = categoryService.getCategoryOne(productDto.getCategory1Id());
-        Category category2 = categoryService.getCategoryOne(productDto.getCategory2Id());
+        Category category = categoryService.getCategoryOne(productDto.getCategoryId());
 
         Product product = productDto.toEntity(productDto);
 
         categoryProductRepository.createCategoryProduct(
                 CategoryProduct.builder()
                         .product(product)
-                        .category(category1).build());
-
-        categoryProductRepository.createCategoryProduct(
-                CategoryProduct.builder()
-                        .product(product)
-                        .category(category2).build());
+                        .category(category).build());
 
         return productRepository.createProduct(product);
+    }
+
+    public List<ProductCategoryImageDto> searchProducts() {
+        return productRepository.searchProducts();
     }
 }

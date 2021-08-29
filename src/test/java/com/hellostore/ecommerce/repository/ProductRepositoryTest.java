@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.PointType;
@@ -72,7 +73,9 @@ class ProductRepositoryTest {
     }
 
     @Test
-    public void test() {
-        log.debug("ImageType: {}", ImageType.LIST);
+    public void getProductList() {
+        List<ProductCategoryImageDto> products = productRepository.searchProducts();
+
+        log.debug("products: {}, count: {}", products, products.size());
     }
 }
