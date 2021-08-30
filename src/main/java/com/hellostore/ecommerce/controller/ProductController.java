@@ -43,9 +43,9 @@ public class ProductController {
 
     }
 
-    @GetMapping("/searchProducts")
-    public List<ProductCategoryImageDto> searchProducts() throws IOException {
-        return productService.searchProducts();
+    @GetMapping("/getProducts")
+    public List<ProductCategoryImageDto> getProducts() throws IOException {
+        return productService.getProducts();
     }
 
 

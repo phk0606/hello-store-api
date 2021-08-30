@@ -4,7 +4,11 @@ import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -36,7 +40,7 @@ public class ProductRepository {
                 .where(product.id.eq(id)).fetchOne();
     }
 
-    public List<ProductCategoryImageDto> searchProducts() {
+    public List<ProductCategoryImageDto> getProducts() {
 
         return queryFactory
                 .select(new QProductCategoryImageDto(
@@ -56,5 +60,34 @@ public class ProductRepository {
                     .on(product.id.eq(productImage.product.id))
                     .on(productImage.imageType.eq(ImageType.LIST))
                 .fetch();
+    }
+
+    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) {
+
+        QueryResults<ProductCategoryImageDto> results = queryFactory
+                .select(new QProductCategoryImageDto(
+                        categoryProduct.category.id,
+                        category.name,
+                        product.id, product.name,
+                        product.salePrice, product.productShowType, product.clickCount,
+                        product.createdDate,
+                        product.lastModifiedDate, product.createdBy,
+                        productImage.id, productImage.originalFileName, productImage.fileName,
+                        productImage.filePath, productImage.fileSize,
+                        productImage.imageType))
+                .from(product)
+                .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
+                .join(category).on(categoryProduct.category.id.eq(category.id))
+                .leftJoin(productImage)
+                .on(product.id.eq(productImage.product.id))
+                .on(productImage.imageType.eq(ImageType.LIST))
+                .orderBy(product.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<ProductCategoryImageDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 }

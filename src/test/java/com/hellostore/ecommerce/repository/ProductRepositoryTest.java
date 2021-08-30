@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
@@ -81,8 +83,21 @@ class ProductRepositoryTest {
 
     @Test
     public void getProductList() {
-        List<ProductCategoryImageDto> products = productRepository.searchProducts();
+        List<ProductCategoryImageDto> products = productRepository.getProducts();
 
         log.debug("products: {}, count: {}", products, products.size());
+    }
+
+    @Test
+    public void getProductListPage() {
+
+        PageRequest pageRequest = PageRequest.of(1, 3);
+        Page<ProductCategoryImageDto> result = productRepository.getProductsPage(pageRequest);
+
+        List<ProductCategoryImageDto> content = result.getContent();
+        for (ProductCategoryImageDto productCategoryImageDto : content) {
+
+            log.debug("productId: {}", productCategoryImageDto.getProductId());
+        }
     }
 }

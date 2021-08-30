@@ -44,9 +44,9 @@ public class ProductService {
         return productRepository.createProduct(product);
     }
 
-    public List<ProductCategoryImageDto> searchProducts() throws IOException {
+    public List<ProductCategoryImageDto> getProducts() throws IOException {
 
-        List<ProductCategoryImageDto> productCategoryImageDtos = productRepository.searchProducts();
+        List<ProductCategoryImageDto> productCategoryImageDtos = productRepository.getProducts();
 
         for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
             if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
