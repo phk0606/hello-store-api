@@ -4,17 +4,19 @@ import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.FetchType.*;
-
 @Entity
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
+@DynamicUpdate
 public class Product extends BaseEntity {
 
     @Id
