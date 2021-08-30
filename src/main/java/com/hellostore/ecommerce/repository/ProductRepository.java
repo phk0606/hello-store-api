@@ -10,6 +10,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCategory.*;
+import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
+import static com.hellostore.ecommerce.entity.QProduct.*;
+import static com.hellostore.ecommerce.entity.QProductImage.*;
+
 @Repository
 public class ProductRepository {
 
@@ -26,17 +31,12 @@ public class ProductRepository {
     }
 
     public Product findProductById(Long id) {
-        QProduct product = QProduct.product;
 
         return queryFactory.selectFrom(product)
                 .where(product.id.eq(id)).fetchOne();
     }
 
     public List<ProductCategoryImageDto> searchProducts() {
-        QProduct product = QProduct.product;
-        QCategoryProduct categoryProduct = QCategoryProduct.categoryProduct;
-        QCategory category = QCategory.category;
-        QProductImage productImage = QProductImage.productImage;
 
         return queryFactory
                 .select(new QProductCategoryImageDto(
@@ -55,7 +55,6 @@ public class ProductRepository {
                 .leftJoin(productImage)
                     .on(product.id.eq(productImage.product.id))
                     .on(productImage.imageType.eq(ImageType.LIST))
-               // .where(productImage.imageType.eq(ImageType.LIST))
                 .fetch();
     }
 }
