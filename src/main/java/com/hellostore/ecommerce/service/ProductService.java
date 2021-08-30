@@ -9,6 +9,9 @@ import com.hellostore.ecommerce.repository.CategoryProductRepository;
 import com.hellostore.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -46,7 +49,8 @@ public class ProductService {
 
     public List<ProductCategoryImageDto> getProducts() throws IOException {
 
-        List<ProductCategoryImageDto> productCategoryImageDtos = productRepository.getProducts();
+        List<ProductCategoryImageDto> productCategoryImageDtos =
+                productRepository.getProducts();
 
         for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
             if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
@@ -58,5 +62,22 @@ public class ProductService {
         }
 
         return productCategoryImageDtos;
+    }
+
+    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) throws IOException {
+
+        Page<ProductCategoryImageDto> result =
+                productRepository.getProductsPage(pageable);
+
+        for (ProductCategoryImageDto productCategoryImageDto : result.getContent()) {
+            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
+                productCategoryImageDto.setImage(
+                        Files.readAllBytes(
+                                Paths.get(productCategoryImageDto.getFilePath(),
+                                        productCategoryImageDto.getFileName())));
+            }
+        }
+
+        return result;
     }
 }

@@ -10,6 +10,9 @@ import com.hellostore.ecommerce.service.ProductOptionService;
 import com.hellostore.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,5 +51,10 @@ public class ProductController {
         return productService.getProducts();
     }
 
+    @GetMapping("/getProductsPage")
+    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) throws IOException {
+
+        return productService.getProductsPage(pageable);
+    }
 
 }
