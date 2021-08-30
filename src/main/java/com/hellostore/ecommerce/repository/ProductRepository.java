@@ -44,6 +44,8 @@ public class ProductRepository {
                         category.name,
                         product.id, product.name,
                         product.salePrice, product.productShowType.stringValue(), product.clickCount,
+                        product.createdDate,
+                        product.lastModifiedDate, product.createdBy,
                         productImage.id, productImage.originalFileName, productImage.fileName,
                         productImage.filePath, productImage.fileSize,
                         productImage.imageType.stringValue()))

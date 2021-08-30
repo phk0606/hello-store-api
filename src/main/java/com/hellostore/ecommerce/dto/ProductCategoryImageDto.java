@@ -1,11 +1,15 @@
 package com.hellostore.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -34,6 +38,12 @@ public class ProductCategoryImageDto {
     private String exchangeReturnInfo;
 
     private String productShowType;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime lastModifiedDate;
+    private String createBy;
 
     @Setter
     private byte[] image;
@@ -78,7 +88,7 @@ public class ProductCategoryImageDto {
     }
 
     @QueryProjection
-    public ProductCategoryImageDto(Long categoryId, String categoryName, Long productId, String name, Integer salePrice, String productShowType, Integer clickCount, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, String imageType) {
+    public ProductCategoryImageDto(Long categoryId, String categoryName, Long productId, String name, Integer salePrice, String productShowType, Integer clickCount, LocalDateTime createdDate, LocalDateTime lastModifiedDate, String createBy, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, String imageType) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.productId = productId;
@@ -86,6 +96,9 @@ public class ProductCategoryImageDto {
         this.salePrice = salePrice;
         this.productShowType = productShowType;
         this.clickCount = clickCount;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.createBy = createBy;
         this.imageId = imageId;
         this.originalFileName = originalFileName;
         this.fileName = fileName;
