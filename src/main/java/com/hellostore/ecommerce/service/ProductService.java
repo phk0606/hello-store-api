@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -48,10 +49,12 @@ public class ProductService {
         List<ProductCategoryImageDto> productCategoryImageDtos = productRepository.searchProducts();
 
         for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
-            productCategoryImageDto.setImage(
-                    Files.readAllBytes(
-                            Paths.get(productCategoryImageDto.getFilePath(),
-                                    productCategoryImageDto.getFileName())));
+            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
+                productCategoryImageDto.setImage(
+                        Files.readAllBytes(
+                                Paths.get(productCategoryImageDto.getFilePath(),
+                                        productCategoryImageDto.getFileName())));
+            }
         }
 
         return productCategoryImageDtos;

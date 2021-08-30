@@ -43,17 +43,19 @@ public class ProductRepository {
                         categoryProduct.category.id,
                         category.name,
                         product.id, product.name,
-                        product.salePrice, product.productShowType.stringValue(), product.clickCount,
+                        product.salePrice, product.productShowType, product.clickCount,
                         product.createdDate,
                         product.lastModifiedDate, product.createdBy,
                         productImage.id, productImage.originalFileName, productImage.fileName,
                         productImage.filePath, productImage.fileSize,
-                        productImage.imageType.stringValue()))
+                        productImage.imageType))
                 .from(product)
                 .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
                 .join(category).on(categoryProduct.category.id.eq(category.id))
-                .join(productImage).on(product.id.eq(productImage.product.id))
-                .where(productImage.imageType.eq(ImageType.LIST))
+                .leftJoin(productImage)
+                    .on(product.id.eq(productImage.product.id))
+                    .on(productImage.imageType.eq(ImageType.LIST))
+               // .where(productImage.imageType.eq(ImageType.LIST))
                 .fetch();
     }
 }
