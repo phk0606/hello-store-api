@@ -12,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -40,7 +43,17 @@ public class ProductService {
         return productRepository.createProduct(product);
     }
 
-    public List<ProductCategoryImageDto> searchProducts() {
-        return productRepository.searchProducts();
+    public List<ProductCategoryImageDto> searchProducts() throws IOException {
+
+        List<ProductCategoryImageDto> productCategoryImageDtos = productRepository.searchProducts();
+
+        for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
+            productCategoryImageDto.setImage(
+                    Files.readAllBytes(
+                            Paths.get(productCategoryImageDto.getFilePath(),
+                                    productCategoryImageDto.getFileName())));
+        }
+
+        return productCategoryImageDtos;
     }
 }

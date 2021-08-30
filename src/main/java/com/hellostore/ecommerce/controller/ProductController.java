@@ -44,12 +44,9 @@ public class ProductController {
     }
 
     @GetMapping("/searchProducts")
-    public List<ProductCategoryImageDto> searchProducts() {
+    public List<ProductCategoryImageDto> searchProducts() throws IOException {
         return productService.searchProducts();
     }
 
-    @GetMapping("/getImage")
-    public byte[] getImage() throws IOException {
-        return Files.readAllBytes(Paths.get("d:","aaa.jpeg"));
-    }
+
 }

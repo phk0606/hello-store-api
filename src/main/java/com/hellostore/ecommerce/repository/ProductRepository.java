@@ -4,10 +4,7 @@ import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
-import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

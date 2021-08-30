@@ -1,20 +1,11 @@
 package com.hellostore.ecommerce.dto;
 
-import com.hellostore.ecommerce.entity.ProductOption;
-import com.hellostore.ecommerce.enumType.ImageType;
-import com.hellostore.ecommerce.enumType.PointType;
-import com.hellostore.ecommerce.enumType.ProductShowType;
-import com.hellostore.ecommerce.enumType.ShippingFeeType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -44,6 +35,8 @@ public class ProductCategoryImageDto {
 
     private String productShowType;
 
+    @Setter
+    private byte[] image;
     private Long imageId;
     private String originalFileName;
     private String fileName;
@@ -55,7 +48,7 @@ public class ProductCategoryImageDto {
     private Integer clickCount;
 
     @QueryProjection
-    public ProductCategoryImageDto(Long category1Id, Long category2Id, Long productId, String name, Integer salePrice, Integer regularPrice, Integer maxPurchaseQuantity, String pointType, Integer pointPerPrice, String shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, String detailInfo, String shippingInfo, String exchangeReturnInfo, String productShowType, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, String imageType, Integer clickCount) {
+    public ProductCategoryImageDto(Long category1Id, Long category2Id, Long productId, String name, Integer salePrice, Integer regularPrice, Integer maxPurchaseQuantity, String pointType, Integer pointPerPrice, String shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, String detailInfo, String shippingInfo, String exchangeReturnInfo, String productShowType, byte[] image, String originalFileName, String fileName, String filePath, long fileSize, String imageType, Integer clickCount) {
 //        this.category1Id = category1Id;
 //        this.category2Id = category2Id;
         this.productId = productId;
