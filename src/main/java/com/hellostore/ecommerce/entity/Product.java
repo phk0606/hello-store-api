@@ -43,6 +43,8 @@ public class Product extends BaseEntity {
     private Boolean discount;
 
     private String description;
+
+    @Column(columnDefinition = "integer default 0")
     private Integer clickCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
