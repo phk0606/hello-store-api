@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,14 @@ public class ProductRepository {
 
         queryFactory.delete(product)
                 .where(product.id.eq(productId))
+                .execute();
+    }
+
+    public void modifyProductShowType(List<Long> productIds, ProductShowType productShowType) {
+
+        queryFactory.update(product)
+                .set(product.productShowType, productShowType)
+                .where(product.id.in(productIds))
                 .execute();
     }
 

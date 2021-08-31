@@ -5,12 +5,12 @@ import com.hellostore.ecommerce.dto.ProductDto;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.CategoryProduct;
 import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.repository.CategoryProductRepository;
 import com.hellostore.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,6 +66,11 @@ public class ProductService {
             productImageService.removeProductImage(productId);
             productRepository.removeProduct(productId);
         }
+    }
+
+    @Transactional
+    public void modifyProductShowType(List<Long> productIds, ProductShowType productShowType) {
+        productRepository.modifyProductShowType(productIds, productShowType);
     }
 
     public Product getProductById(Long id) {

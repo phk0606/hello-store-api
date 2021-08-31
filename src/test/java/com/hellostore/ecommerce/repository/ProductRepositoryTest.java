@@ -1,12 +1,13 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
-import com.hellostore.ecommerce.entity.*;
-import com.hellostore.ecommerce.enumType.ImageType;
+import com.hellostore.ecommerce.entity.Category;
+import com.hellostore.ecommerce.entity.CategoryProduct;
+import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
-import com.querydsl.core.Tuple;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,7 @@ import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -73,6 +71,16 @@ class ProductRepositoryTest {
 
             createProduct();
         }
+    }
+
+    @Test
+    public void modifyProductShowType() {
+        List<Long> productIds = new ArrayList<>();
+        productIds.add(31l);
+        productIds.add(38l);
+        productIds.add(46l);
+        productIds.add(54l);
+        productRepository.modifyProductShowType(productIds, ProductShowType.HIDE);
     }
 
     @Test

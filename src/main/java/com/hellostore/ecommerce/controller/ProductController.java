@@ -2,25 +2,18 @@ package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
-import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.service.CategoryService;
-import com.hellostore.ecommerce.service.ProductImageService;
-import com.hellostore.ecommerce.service.ProductOptionService;
+import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,6 +38,16 @@ public class ProductController {
         List<Long> productIds = productDto.getProductIds();
         log.debug("removeProducts: {}", productIds);
         productService.removeProducts(productIds);
+    }
+
+    @PutMapping("/modifyProductShowType")
+    public void modifyProductShowType(@RequestBody ProductDto productDto) {
+
+        List<Long> productIds = productDto.getProductIds();
+        ProductShowType productShowType = productDto.getProductShowType();
+
+        log.debug("productIds: {}, productShowType: {}", productIds, productShowType);
+        productService.modifyProductShowType(productIds, productShowType);
     }
 
     @GetMapping("/getProducts")
