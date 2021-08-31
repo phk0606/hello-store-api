@@ -1,8 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
-import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
@@ -11,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,8 @@ import java.util.List;
 @Slf4j
 public class ProductDto {
 
+    private List<Long> productIds;
+    private Long productId;
     private Long categoryId;
     private String name;
     private Integer salePrice;

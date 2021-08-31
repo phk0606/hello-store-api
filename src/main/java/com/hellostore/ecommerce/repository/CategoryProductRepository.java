@@ -2,11 +2,14 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.CategoryProduct;
 import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.entity.QCategoryProduct;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+
+import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
 
 @Repository
 public class CategoryProductRepository {
@@ -22,5 +25,11 @@ public class CategoryProductRepository {
     public CategoryProduct createCategoryProduct(CategoryProduct categoryProduct) {
         em.persist(categoryProduct);
         return categoryProduct;
+    }
+
+    public void removeCategoryProduct(Long productId) {
+        queryFactory.delete(categoryProduct)
+                .where(categoryProduct.product.id.eq(productId))
+                .execute();
     }
 }

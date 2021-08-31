@@ -34,7 +34,14 @@ public class ProductRepository {
         return product;
     }
 
-    public Product findProductById(Long id) {
+    public void removeProduct(Long productId) {
+
+        queryFactory.delete(product)
+                .where(product.id.eq(productId))
+                .execute();
+    }
+
+    public Product getProductById(Long id) {
 
         return queryFactory.selectFrom(product)
                 .where(product.id.eq(id)).fetchOne();

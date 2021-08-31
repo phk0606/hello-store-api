@@ -76,8 +76,13 @@ class ProductRepositoryTest {
     }
 
     @Test
-    public void getProductWithCategory() {
-        Product productById = productRepository.findProductById(65l);
+    public void removeProducts() {
+
+    }
+
+    @Test
+    public void getProduct() {
+        Product productById = productRepository.getProductById(199l);
         log.debug("productById: {}", productById);
     }
 

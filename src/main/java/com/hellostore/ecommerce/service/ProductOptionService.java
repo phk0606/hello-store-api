@@ -30,4 +30,9 @@ public class ProductOptionService {
             productOptionRepository.createProductOption(secondOption);
         }
     }
+
+    @Transactional
+    public void removeProductOption(Long productId) {
+        productOptionRepository.removeProductOption(productId);
+    }
 }

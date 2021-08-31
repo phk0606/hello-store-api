@@ -56,6 +56,22 @@ public class ProductService {
         return product1;
     }
 
+    @Transactional
+    public void removeProducts(List<Long> productIds) {
+
+        for (Long productId : productIds) {
+
+            categoryProductRepository.removeCategoryProduct(productId);
+            productOptionService.removeProductOption(productId);
+            productImageService.removeProductImage(productId);
+            productRepository.removeProduct(productId);
+        }
+    }
+
+    public Product getProductById(Long id) {
+        return productRepository.getProductById(id);
+    }
+
     public List<ProductCategoryImageDto> getProducts() throws IOException {
 
         List<ProductCategoryImageDto> productCategoryImageDtos =

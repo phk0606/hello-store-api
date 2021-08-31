@@ -49,7 +49,7 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "integer default 0")
     private Integer clickCount;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOption> productOptions = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)

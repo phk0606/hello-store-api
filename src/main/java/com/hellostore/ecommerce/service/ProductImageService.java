@@ -31,6 +31,11 @@ public class ProductImageService {
     private String fileStorePath;
 
     @Transactional
+    public void removeProductImage(Long productId) {
+        productImageRepository.removeProductImage(productId);
+    }
+
+    @Transactional
     public void uploadProductImage(List<MultipartFile> productImages, Product product) {
 
 
