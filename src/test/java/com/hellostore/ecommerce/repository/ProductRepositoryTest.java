@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
+import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.CategoryProduct;
 import com.hellostore.ecommerce.entity.Product;
@@ -105,7 +106,10 @@ class ProductRepositoryTest {
     public void getProductListPage() {
 
         PageRequest pageRequest = PageRequest.of(1, 3);
-        Page<ProductCategoryImageDto> result = productRepository.getProductsPage(pageRequest);
+        ProductSearchCondition productSearchCondition = new ProductSearchCondition();
+        productSearchCondition.setProductName("티셔츠");
+        Page<ProductCategoryImageDto> result
+                = productRepository.getProductsPage(productSearchCondition, pageRequest);
 
         List<ProductCategoryImageDto> content = result.getContent();
         for (ProductCategoryImageDto productCategoryImageDto : content) {

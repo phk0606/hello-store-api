@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
+import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.service.ProductService;
@@ -56,9 +57,10 @@ public class ProductController {
     }
 
     @GetMapping("/getProductsPage")
-    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) throws IOException {
+    public Page<ProductCategoryImageDto> getProductsPage(
+            ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
-        return productService.getProductsPage(pageable);
+        return productService.getProductsPage(productSearchCondition, pageable);
     }
 
 }

@@ -1,16 +1,19 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
+import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,6 +22,7 @@ import static com.hellostore.ecommerce.entity.QCategory.*;
 import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
 import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductImage.*;
+import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class ProductRepository {
@@ -78,7 +82,8 @@ public class ProductRepository {
                 .fetch();
     }
 
-    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) {
+    public Page<ProductCategoryImageDto> getProductsPage(
+            ProductSearchCondition condition, Pageable pageable) {
 
         QueryResults<ProductCategoryImageDto> results = queryFactory
                 .select(new QProductCategoryImageDto(
@@ -97,6 +102,14 @@ public class ProductRepository {
                 .leftJoin(productImage)
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
+                .where(
+                        nameLike(condition.getProductName()),
+                        firstCategoryEq(condition.getFirstCategoryId()),
+                        secondCategoryEq(condition.getSecondCategoryId()),
+                        salePriceMin(condition.getSalePriceMin()),
+                        salePriceMax(condition.getSalePriceMax()),
+                        productShowTypeIn(condition.getProductShowTypes())
+                )
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -105,5 +118,31 @@ public class ProductRepository {
         List<ProductCategoryImageDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression nameLike(String productName) {
+        return hasText(productName) ? product.name.like(productName) : null;
+    }
+
+    private BooleanExpression firstCategoryEq(Long firstCategoryId) {
+        return !ObjectUtils.isEmpty(firstCategoryId)
+                ? category.parent.id.eq(firstCategoryId) : null;
+    }
+
+    private BooleanExpression secondCategoryEq(Long secondCategoryId) {
+        return !ObjectUtils.isEmpty(secondCategoryId)
+                ? categoryProduct.category.id.eq(secondCategoryId) : null;
+    }
+
+    private BooleanExpression salePriceMin(Integer salePriceMin) {
+        return !ObjectUtils.isEmpty(salePriceMin) ? product.salePrice.goe(salePriceMin) : null;
+    }
+
+    private BooleanExpression salePriceMax(Integer salePriceMax) {
+        return !ObjectUtils.isEmpty(salePriceMax) ? product.salePrice.loe(salePriceMax) : null;
+    }
+
+    private BooleanExpression productShowTypeIn(List<ProductShowType> productShowTypes) {
+        return productShowTypes.size() > 0 ? product.productShowType.in(productShowTypes) : null;
     }
 }

@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
+import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.CategoryProduct;
 import com.hellostore.ecommerce.entity.Product;
@@ -94,10 +95,11 @@ public class ProductService {
         return productCategoryImageDtos;
     }
 
-    public Page<ProductCategoryImageDto> getProductsPage(Pageable pageable) throws IOException {
+    public Page<ProductCategoryImageDto> getProductsPage(
+            ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
         Page<ProductCategoryImageDto> result =
-                productRepository.getProductsPage(pageable);
+                productRepository.getProductsPage(productSearchCondition, pageable);
 
         for (ProductCategoryImageDto productCategoryImageDto : result.getContent()) {
             if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
