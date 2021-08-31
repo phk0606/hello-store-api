@@ -27,8 +27,7 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductOptionService productOptionService;
-    private final ProductImageService productImageService;
+
 
     @PostMapping("/createProduct")
     public void createProduct(@RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) {
@@ -36,14 +35,7 @@ public class ProductController {
         log.debug("productDto: {}", productDto);
 
         // 상품 저장
-        Product product = productService.createProduct(productDto);
-
-        // 상품 옵션 저장
-        productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product);
-
-        // 상품 이미지 저장
-        productImageService.uploadProductImage(productImages, product);
-
+        Product product = productService.createProduct(productDto, productImages);
     }
 
     @GetMapping("/getProducts")

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -30,9 +31,11 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryProductRepository categoryProductRepository;
     private final CategoryService categoryService;
+    private final ProductOptionService productOptionService;
+    private final ProductImageService productImageService;
 
     @Transactional
-    public Product createProduct(ProductDto productDto) {
+    public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) {
 
         // 카테고리 조회
         Category category = categoryService.getCategoryOne(productDto.getCategoryId());
@@ -44,7 +47,13 @@ public class ProductService {
                         .product(product)
                         .category(category).build());
 
-        return productRepository.createProduct(product);
+        Product product1 = productRepository.createProduct(product);
+        // 상품 옵션 저장
+        productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product1);
+
+        // 상품 이미지 저장
+        productImageService.uploadProductImage(productImages, product1);
+        return product1;
     }
 
     public List<ProductCategoryImageDto> getProducts() throws IOException {
