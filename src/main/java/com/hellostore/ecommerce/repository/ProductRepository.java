@@ -3,7 +3,7 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
-import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.QueryResults;
@@ -13,15 +13,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.ObjectUtils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QCategory.*;
-import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
-import static com.hellostore.ecommerce.entity.QProduct.*;
-import static com.hellostore.ecommerce.entity.QProductImage.*;
+import static com.hellostore.ecommerce.entity.QCategory.category;
+import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
+import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
@@ -125,21 +125,21 @@ public class ProductRepository {
     }
 
     private BooleanExpression firstCategoryEq(Long firstCategoryId) {
-        return !ObjectUtils.isEmpty(firstCategoryId)
+        return !isEmpty(firstCategoryId)
                 ? category.parent.id.eq(firstCategoryId) : null;
     }
 
     private BooleanExpression secondCategoryEq(Long secondCategoryId) {
-        return !ObjectUtils.isEmpty(secondCategoryId)
+        return !isEmpty(secondCategoryId)
                 ? categoryProduct.category.id.eq(secondCategoryId) : null;
     }
 
     private BooleanExpression salePriceMin(Integer salePriceMin) {
-        return !ObjectUtils.isEmpty(salePriceMin) ? product.salePrice.goe(salePriceMin) : null;
+        return !isEmpty(salePriceMin) ? product.salePrice.goe(salePriceMin) : null;
     }
 
     private BooleanExpression salePriceMax(Integer salePriceMax) {
-        return !ObjectUtils.isEmpty(salePriceMax) ? product.salePrice.loe(salePriceMax) : null;
+        return !isEmpty(salePriceMax) ? product.salePrice.loe(salePriceMax) : null;
     }
 
     private BooleanExpression productShowTypeIn(List<ProductShowType> productShowTypes) {
