@@ -20,4 +20,6 @@ public class ProductSearchCondition {
     private Integer salePriceMin;
     private Integer salePriceMax;
     private List<ProductShowType> productShowTypes;
+    private String productRegistryDateA;
+    private String productRegistryDateB;
 }

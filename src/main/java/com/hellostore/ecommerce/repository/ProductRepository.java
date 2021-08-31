@@ -13,8 +13,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCategory.category;
@@ -108,7 +111,9 @@ public class ProductRepository {
                         secondCategoryEq(condition.getSecondCategoryId()),
                         salePriceMin(condition.getSalePriceMin()),
                         salePriceMax(condition.getSalePriceMax()),
-                        productShowTypeIn(condition.getProductShowTypes())
+                        productShowTypeIn(condition.getProductShowTypes()),
+                        productRegistryDateA(condition.getProductRegistryDateA()),
+                        productRegistryDateB(condition.getProductRegistryDateB())
                 )
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
@@ -121,7 +126,7 @@ public class ProductRepository {
     }
 
     private BooleanExpression nameLike(String productName) {
-        return hasText(productName) ? product.name.like(productName) : null;
+        return hasText(productName) ? product.name.contains(productName) : null;
     }
 
     private BooleanExpression firstCategoryEq(Long firstCategoryId) {
@@ -144,5 +149,17 @@ public class ProductRepository {
 
     private BooleanExpression productShowTypeIn(List<ProductShowType> productShowTypes) {
         return productShowTypes.size() > 0 ? product.productShowType.in(productShowTypes) : null;
+    }
+
+    private BooleanExpression productRegistryDateA(String productRegistryDateA) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(productRegistryDateA)
+                ? product.createdDate.goe(LocalDateTime.parse(productRegistryDateA + " 00:00:00", formatter)) : null;
+    }
+
+    private BooleanExpression productRegistryDateB(String productRegistryDateB) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(productRegistryDateB)
+                ? product.createdDate.loe(LocalDateTime.parse(productRegistryDateB + " 00:00:00", formatter)) : null;
     }
 }

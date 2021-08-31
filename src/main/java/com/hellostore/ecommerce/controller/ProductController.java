@@ -56,8 +56,8 @@ public class ProductController {
         return productService.getProducts();
     }
 
-    @GetMapping("/getProductsPage")
-    public Page<ProductCategoryImageDto> getProductsPage(
+    @GetMapping("/getProductsPageCondition")
+    public Page<ProductCategoryImageDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
         return productService.getProductsPage(productSearchCondition, pageable);
