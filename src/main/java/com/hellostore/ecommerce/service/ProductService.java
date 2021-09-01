@@ -1,13 +1,11 @@
 package com.hellostore.ecommerce.service;
 
-import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
-import com.hellostore.ecommerce.dto.ProductDto;
-import com.hellostore.ecommerce.dto.ProductSearchCondition;
-import com.hellostore.ecommerce.entity.Category;
-import com.hellostore.ecommerce.entity.CategoryProduct;
-import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.repository.CategoryProductRepository;
+import com.hellostore.ecommerce.repository.ProductImageRepository;
+import com.hellostore.ecommerce.repository.ProductOptionRepository;
 import com.hellostore.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -34,6 +33,8 @@ public class ProductService {
     private final CategoryService categoryService;
     private final ProductOptionService productOptionService;
     private final ProductImageService productImageService;
+    private final ProductOptionRepository productOptionRepository;
+    private final ProductImageRepository productImageRepository;
 
     @Transactional
     public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) {
@@ -74,34 +75,57 @@ public class ProductService {
         productRepository.modifyProductShowType(productIds, productShowType);
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.getProductById(id);
-    }
+    public ProductModifyDto getProductById(Long id) throws IOException {
+        ProductModifyDto productModifyDto = productRepository.getProductById(id);
+        List<ProductOption> productOptions = productOptionRepository.getProductOptions(id);
 
-    public List<ProductCategoryImageDto> getProducts() throws IOException {
-
-        List<ProductCategoryImageDto> productCategoryImageDtos =
-                productRepository.getProducts();
-
-        for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
-            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
-                productCategoryImageDto.setImage(
-                        Files.readAllBytes(
-                                Paths.get(productCategoryImageDto.getFilePath(),
-                                        productCategoryImageDto.getFileName())));
-            }
+        List<ProductOptionDto> productOptionDtos = new ArrayList<>();
+        for (ProductOption productOption : productOptions) {
+            productOptionDtos.add(new ProductOptionDto(productOption));
         }
+        productModifyDto.setProductOptionDtos(productOptionDtos);
 
-        return productCategoryImageDtos;
+        List<ProductImage> productImages = productImageRepository.getProductImages(id);
+
+        List<ProductImageDto> productImageDtos = new ArrayList<>();
+
+        for (ProductImage productImage : productImages) {
+            ProductImageDto productImageDto = new ProductImageDto(productImage);
+            productImageDto.setByteImage(
+                    Files.readAllBytes(
+                            Paths.get(productImage.getFilePath(), productImage.getFileName())));
+
+            productImageDtos.add(productImageDto);
+        }
+        productModifyDto.setProductImageDtos(productImageDtos);
+
+        return productModifyDto;
     }
 
-    public Page<ProductCategoryImageDto> getProductsPage(
+//    public List<ProductCategoryImageDto> getProducts() throws IOException {
+//
+//        List<ProductCategoryImageDto> productCategoryImageDtos =
+//                productRepository.getProducts();
+//
+//        for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
+//            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
+//                productCategoryImageDto.setImage(
+//                        Files.readAllBytes(
+//                                Paths.get(productCategoryImageDto.getFilePath(),
+//                                        productCategoryImageDto.getFileName())));
+//            }
+//        }
+//
+//        return productCategoryImageDtos;
+//    }
+
+    public Page<ProductListDto> getProductsPage(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
-        Page<ProductCategoryImageDto> result =
+        Page<ProductListDto> result =
                 productRepository.getProductsPage(productSearchCondition, pageable);
 
-        for (ProductCategoryImageDto productCategoryImageDto : result.getContent()) {
+        for (ProductListDto productCategoryImageDto : result.getContent()) {
             if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
                 productCategoryImageDto.setImage(
                         Files.readAllBytes(

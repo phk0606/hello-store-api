@@ -10,36 +10,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
 @ToString
-@Slf4j
-public class ProductCategoryImageDto {
+public class ProductListDto {
 
     private Long categoryId;
     private String categoryName;
     private Long productId;
     private String name;
     private Integer salePrice;
-    private Integer regularPrice;
-    private Integer maxPurchaseQuantity;
-    private PointType pointType;
-    private Integer pointPerPrice;
-    private ShippingFeeType shippingFeeType;
-    private Integer eachShippingFee;
-    private Boolean newArrival;
-    private Boolean best;
-    private Boolean discount;
-    private String description;
-
-    private String detailInfo;
-    private String shippingInfo;
-    private String exchangeReturnInfo;
 
     private ProductShowType productShowType;
 
@@ -55,16 +38,14 @@ public class ProductCategoryImageDto {
     private String originalFileName;
     private String fileName;
     private String filePath;
-
     private long fileSize;
 
     private ImageType imageType;
     private Integer clickCount;
 
 
-
     @QueryProjection
-    public ProductCategoryImageDto(Long categoryId, String categoryName, Long productId, String name, Integer salePrice, ProductShowType productShowType, Integer clickCount, LocalDateTime createdDate, LocalDateTime lastModifiedDate, String createBy, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
+    public ProductListDto(Long categoryId, String categoryName, Long productId, String name, Integer salePrice, ProductShowType productShowType, Integer clickCount, LocalDateTime createdDate, LocalDateTime lastModifiedDate, String createBy, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.productId = productId;

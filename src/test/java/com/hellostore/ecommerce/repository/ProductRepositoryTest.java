@@ -1,11 +1,9 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
+import com.hellostore.ecommerce.dto.ProductListDto;
+import com.hellostore.ecommerce.dto.ProductModifyDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
-import com.hellostore.ecommerce.entity.Category;
-import com.hellostore.ecommerce.entity.CategoryProduct;
-import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.entity.ProductOption;
+import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
@@ -37,6 +35,8 @@ class ProductRepositoryTest {
     ProductOptionRepository productOptionRepository;
 
     @Autowired CategoryProductRepository categoryProductRepository;
+
+    @Autowired ProductImageRepository productImageRepository;
 
 
 //    @Test
@@ -85,22 +85,31 @@ class ProductRepositoryTest {
     }
 
     @Test
-    public void removeProducts() {
+    public void getProductById() {
 
+        ProductModifyDto product = productRepository.getProductById(31l);
+
+       // log.debug("product: {}", product);
+
+        List<ProductOption> productOptions = productOptionRepository.getProductOptions(product.getProductId());
+        //log.debug("productOptions: {}", productOptions);
+
+        List<ProductImage> productImages = productImageRepository.getProductImages(product.getProductId());
+        log.debug("productImages: {}", productImages);
     }
 
-    @Test
-    public void getProduct() {
-        Product productById = productRepository.getProductById(199l);
-        log.debug("productById: {}", productById);
-    }
-
-    @Test
-    public void getProductList() {
-        List<ProductCategoryImageDto> products = productRepository.getProducts();
-
-        log.debug("products: {}, count: {}", products, products.size());
-    }
+//    @Test
+//    public void getProduct() {
+//        Product productById = productRepository.getProductById(199l);
+//        log.debug("productById: {}", productById);
+//    }
+//
+//    @Test
+//    public void getProductList() {
+//        List<ProductCategoryImageDto> products = productRepository.getProducts();
+//
+//        log.debug("products: {}, count: {}", products, products.size());
+//    }
 
     @Test
     public void getProductListPage() {
@@ -108,11 +117,11 @@ class ProductRepositoryTest {
         PageRequest pageRequest = PageRequest.of(1, 3);
         ProductSearchCondition productSearchCondition = new ProductSearchCondition();
         productSearchCondition.setProductName("티셔츠");
-        Page<ProductCategoryImageDto> result
+        Page<ProductListDto> result
                 = productRepository.getProductsPage(productSearchCondition, pageRequest);
 
-        List<ProductCategoryImageDto> content = result.getContent();
-        for (ProductCategoryImageDto productCategoryImageDto : content) {
+        List<ProductListDto> content = result.getContent();
+        for (ProductListDto productCategoryImageDto : content) {
 
             log.debug("productId: {}", productCategoryImageDto.getProductId());
         }

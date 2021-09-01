@@ -1,9 +1,8 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
-import com.hellostore.ecommerce.dto.ProductSearchCondition;
-import com.hellostore.ecommerce.dto.QProductCategoryImageDto;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.QueryResults;
@@ -19,11 +18,13 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static com.hellostore.ecommerce.entity.QProductOption.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -57,39 +58,64 @@ public class ProductRepository {
                 .execute();
     }
 
-    public Product getProductById(Long id) {
-
-        return queryFactory.selectFrom(product)
-                .where(product.id.eq(id)).fetchOne();
-    }
-
-    public List<ProductCategoryImageDto> getProducts() {
+    public ProductModifyDto getProductById(Long productId) {
 
         return queryFactory
-                .select(new QProductCategoryImageDto(
-                        categoryProduct.category.id,
-                        category.name,
-                        product.id, product.name,
-                        product.salePrice, product.productShowType, product.clickCount,
-                        product.createdDate,
-                        product.lastModifiedDate, product.createdBy,
-                        productImage.id, productImage.originalFileName, productImage.fileName,
-                        productImage.filePath, productImage.fileSize,
-                        productImage.imageType))
+                .select(new QProductModifyDto(
+                        product.id.as("productId"),
+                        category.parent.id.as("firstCategoryId"),
+                        categoryProduct.category.id.as("secondCategoryId"),
+                        product.name.as("productName"),
+                        product.salePrice,
+                        product.regularPrice,
+                        product.maxPurchaseQuantity,
+                        product.pointType,
+                        product.pointPerPrice,
+                        product.shippingFeeType,
+                        product.eachShippingFee,
+                        product.newArrival,
+                        product.best,
+                        product.discount,
+                        product.description,
+                        product.detailInfo,
+                        product.shippingInfo,
+                        product.exchangeReturnInfo,
+                        product.productShowType
+                        ))
                 .from(product)
                 .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
                 .join(category).on(categoryProduct.category.id.eq(category.id))
-                .leftJoin(productImage)
-                    .on(product.id.eq(productImage.product.id))
-                    .on(productImage.imageType.eq(ImageType.LIST))
-                .fetch();
+                .where(product.id.eq(productId))
+                .fetchOne();
     }
 
-    public Page<ProductCategoryImageDto> getProductsPage(
+//    public List<ProductCategoryImageDto> getProducts() {
+//
+//        return queryFactory
+//                .select(new QProductCategoryImageDto(
+//                        categoryProduct.category.id,
+//                        category.name,
+//                        product.id, product.name,
+//                        product.salePrice, product.productShowType, product.clickCount,
+//                        product.createdDate,
+//                        product.lastModifiedDate, product.createdBy,
+//                        productImage.id, productImage.originalFileName, productImage.fileName,
+//                        productImage.filePath, productImage.fileSize,
+//                        productImage.imageType))
+//                .from(product)
+//                .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
+//                .join(category).on(categoryProduct.category.id.eq(category.id))
+//                .leftJoin(productImage)
+//                    .on(product.id.eq(productImage.product.id))
+//                    .on(productImage.imageType.eq(ImageType.LIST))
+//                .fetch();
+//    }
+
+    public Page<ProductListDto> getProductsPage(
             ProductSearchCondition condition, Pageable pageable) {
 
-        QueryResults<ProductCategoryImageDto> results = queryFactory
-                .select(new QProductCategoryImageDto(
+        QueryResults<ProductListDto> results = queryFactory
+                .select(new QProductListDto(
                         categoryProduct.category.id,
                         category.name,
                         product.id, product.name,
@@ -120,7 +146,7 @@ public class ProductRepository {
                 .limit(pageable.getPageSize())
                 .fetchResults();
 
-        List<ProductCategoryImageDto> content = results.getResults();
+        List<ProductListDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
     }

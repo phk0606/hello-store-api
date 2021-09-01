@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static com.hellostore.ecommerce.entity.QProductOption.*;
 
 @Repository
@@ -26,5 +28,11 @@ public class ProductOptionRepository {
         queryFactory.delete(productOption)
                 .where(productOption.product.id.eq(productId))
                 .execute();
+    }
+
+    public List<ProductOption> getProductOptions(Long productId) {
+        return queryFactory.selectFrom(productOption)
+                .where(productOption.product.id.eq(productId))
+                .fetch();
     }
 }

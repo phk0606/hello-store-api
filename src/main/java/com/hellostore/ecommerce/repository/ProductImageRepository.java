@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
+import java.util.List;
+
 import static com.hellostore.ecommerce.entity.QProductImage.*;
 
 @Repository
@@ -31,5 +33,12 @@ public class ProductImageRepository {
         queryFactory.delete(productImage)
                 .where(productImage.product.id.eq(productId))
                 .execute();
+    }
+
+    public List<ProductImage> getProductImages (Long productId) {
+
+        return queryFactory.selectFrom(productImage)
+                .where(productImage.product.id.eq(productId))
+                .fetch();
     }
 }

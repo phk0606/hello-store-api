@@ -1,7 +1,8 @@
 package com.hellostore.ecommerce.controller;
 
-import com.hellostore.ecommerce.dto.ProductCategoryImageDto;
 import com.hellostore.ecommerce.dto.ProductDto;
+import com.hellostore.ecommerce.dto.ProductListDto;
+import com.hellostore.ecommerce.dto.ProductModifyDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.enumType.ProductShowType;
@@ -51,13 +52,18 @@ public class ProductController {
         productService.modifyProductShowType(productIds, productShowType);
     }
 
-    @GetMapping("/getProducts")
-    public List<ProductCategoryImageDto> getProducts() throws IOException {
-        return productService.getProducts();
+//    @GetMapping("/getProducts")
+//    public List<ProductCategoryImageDto> getProducts() throws IOException {
+//        return productService.getProducts();
+//    }
+
+    @GetMapping("/getProductById")
+    public ProductModifyDto getProductById(@RequestParam Long productId) throws IOException {
+        return productService.getProductById(productId);
     }
 
     @GetMapping("/getProductsPageCondition")
-    public Page<ProductCategoryImageDto> getProductsPageCondition(
+    public Page<ProductListDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
         return productService.getProductsPage(productSearchCondition, pageable);
