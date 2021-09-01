@@ -21,6 +21,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -83,7 +85,14 @@ public class ProductService {
         for (ProductOption productOption : productOptions) {
             productOptionDtos.add(new ProductOptionDto(productOption));
         }
-        productModifyDto.setProductOptionDtos(productOptionDtos);
+
+        Map<String, List<ProductOptionDto>> collect = productOptionDtos.stream().collect(Collectors.groupingBy(ProductOptionDto::getOptionName));
+        List<List<ProductOptionDto>> collect1 = collect.values().stream().collect(Collectors.toList());
+        log.debug("collect1: {}", collect1.get(0));
+        log.debug("collect2: {}", collect1.get(1));
+
+        productModifyDto.setFirstOptions(collect1.get(0));
+        productModifyDto.setSecondOptions(collect1.get(1));
 
         List<ProductImage> productImages = productImageRepository.getProductImages(id);
 

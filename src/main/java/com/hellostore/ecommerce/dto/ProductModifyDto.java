@@ -40,7 +40,9 @@ public class ProductModifyDto {
     private ProductShowType productShowType;
 
     @Setter
-    private List<ProductOptionDto> productOptionDtos = new ArrayList<>();
+    private List<ProductOptionDto> firstOptions = new ArrayList<>();
+    @Setter
+    private List<ProductOptionDto> secondOptions = new ArrayList<>();
 
     @Setter
     private List<ProductImageDto> productImageDtos = new ArrayList<>();
