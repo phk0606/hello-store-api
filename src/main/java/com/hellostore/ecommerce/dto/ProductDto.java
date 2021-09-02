@@ -49,6 +49,7 @@ public class ProductDto {
     public Product toEntity(ProductDto productDto) {
 
         return Product.builder()
+                .id(productDto.getProductId())
                 .name(productDto.getName())
                 .salePrice(productDto.getSalePrice())
                 .regularPrice(productDto.getRegularPrice())
@@ -64,6 +65,7 @@ public class ProductDto {
                 .detailInfo(productDto.getDetailInfo())
                 .shippingInfo(productDto.getShippingInfo())
                 .exchangeReturnInfo(productDto.getExchangeReturnInfo())
-                .productShowType(productDto.getProductShowType()).build();
+                .productShowType(productDto.getProductShowType())
+                .build();
     }
 }

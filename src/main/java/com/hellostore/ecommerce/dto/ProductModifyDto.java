@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
@@ -22,6 +23,8 @@ public class ProductModifyDto {
     private Long productId;
     private Long firstCategoryId;
     private Long secondCategoryId;
+
+    @Setter
     private String productName;
     private Integer salePrice;
     private Integer regularPrice;
@@ -68,5 +71,26 @@ public class ProductModifyDto {
         this.shippingInfo = shippingInfo;
         this.exchangeReturnInfo = exchangeReturnInfo;
         this.productShowType = productShowType;
+    }
+
+    public Product toEntity(ProductModifyDto productModifyDto) {
+        return Product.builder()
+                .id(productModifyDto.getProductId())
+                .name(productModifyDto.getProductName())
+                .salePrice(productModifyDto.getSalePrice())
+                .regularPrice(productModifyDto.getRegularPrice())
+                .maxPurchaseQuantity(productModifyDto.getMaxPurchaseQuantity())
+                .pointType(productModifyDto.getPointType())
+                .pointPerPrice(productModifyDto.getPointPerPrice())
+                .shippingFeeType(productModifyDto.getShippingFeeType())
+                .eachShippingFee(productModifyDto.getEachShippingFee())
+                .newArrival(productModifyDto.getNewArrival())
+                .best(productModifyDto.getBest())
+                .discount(productModifyDto.getDiscount())
+                .detailInfo(productModifyDto.getDetailInfo())
+                .shippingInfo(productModifyDto.getShippingInfo())
+                .exchangeReturnInfo(productModifyDto.getExchangeReturnInfo())
+                .productShowType(productModifyDto.getProductShowType())
+                .build();
     }
 }

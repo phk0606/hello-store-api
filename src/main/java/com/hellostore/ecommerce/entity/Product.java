@@ -69,9 +69,33 @@ public class Product extends BaseEntity {
     private ProductShowType productShowType;
 
 
-    @Builder
+    public Product(Long id) {
+        this.id = id;
+    }
+
     public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
 
+        this.name = name;
+        this.salePrice = salePrice;
+        this.regularPrice = regularPrice;
+        this.maxPurchaseQuantity = maxPurchaseQuantity;
+        this.pointType = pointType;
+        this.pointPerPrice = pointPerPrice;
+        this.shippingFeeType = shippingFeeType;
+        this.eachShippingFee = eachShippingFee;
+        this.newArrival = newArrival;
+        this.best = best;
+        this.discount = discount;
+        this.description = description;
+        this.detailInfo = detailInfo;
+        this.shippingInfo = shippingInfo;
+        this.exchangeReturnInfo = exchangeReturnInfo;
+        this.productShowType = productShowType;
+    }
+
+    @Builder
+    public Product(Long id, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+        this.id = id;
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;

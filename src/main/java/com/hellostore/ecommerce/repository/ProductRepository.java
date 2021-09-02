@@ -58,6 +58,38 @@ public class ProductRepository {
                 .execute();
     }
 
+    public Product modifyProduct(Product productEntity) {
+
+        queryFactory.update(product)
+                .set(product.name, productEntity.getName())
+                .set(product.salePrice, productEntity.getSalePrice())
+                .set(product.regularPrice, productEntity.getRegularPrice())
+                .set(product.maxPurchaseQuantity, productEntity.getMaxPurchaseQuantity())
+                .set(product.pointType, productEntity.getPointType())
+                .set(product.pointPerPrice, productEntity.getPointPerPrice())
+                .set(product.shippingFeeType, productEntity.getShippingFeeType())
+                .set(product.eachShippingFee, productEntity.getEachShippingFee())
+                .set(product.newArrival, productEntity.getNewArrival())
+                .set(product.best, productEntity.getBest())
+                .set(product.discount, productEntity.getDiscount())
+                .set(product.description, productEntity.getDescription())
+                .set(product.detailInfo, productEntity.getDetailInfo())
+                .set(product.shippingInfo, productEntity.getShippingInfo())
+                .set(product.exchangeReturnInfo, productEntity.getExchangeReturnInfo())
+                .set(product.productShowType, productEntity.getProductShowType())
+                .where(product.id.eq(productEntity.getId()))
+                .execute();
+
+        return productEntity;
+    }
+
+    public Product getProduct(Long productId) {
+
+        return queryFactory.selectFrom(product)
+                .where(product.id.eq(productId))
+                .fetchOne();
+    }
+
     public ProductModifyDto getProductById(Long productId) {
 
         return queryFactory
@@ -88,28 +120,6 @@ public class ProductRepository {
                 .where(product.id.eq(productId))
                 .fetchOne();
     }
-
-//    public List<ProductCategoryImageDto> getProducts() {
-//
-//        return queryFactory
-//                .select(new QProductCategoryImageDto(
-//                        categoryProduct.category.id,
-//                        category.name,
-//                        product.id, product.name,
-//                        product.salePrice, product.productShowType, product.clickCount,
-//                        product.createdDate,
-//                        product.lastModifiedDate, product.createdBy,
-//                        productImage.id, productImage.originalFileName, productImage.fileName,
-//                        productImage.filePath, productImage.fileSize,
-//                        productImage.imageType))
-//                .from(product)
-//                .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
-//                .join(category).on(categoryProduct.category.id.eq(category.id))
-//                .leftJoin(productImage)
-//                    .on(product.id.eq(productImage.product.id))
-//                    .on(productImage.imageType.eq(ImageType.LIST))
-//                .fetch();
-//    }
 
     public Page<ProductListDto> getProductsPage(
             ProductSearchCondition condition, Pageable pageable) {

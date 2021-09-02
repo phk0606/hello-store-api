@@ -63,7 +63,19 @@ class ProductRepositoryTest {
         productOptionRepository.createProductOption(productOption4);
         productOptionRepository.createProductOption(productOption5);
         productOptionRepository.createProductOption(productOption6);
+    }
 
+    @Test
+    public void modifyProduct() {
+
+//        Product product = Product.builder().name("노란티셔츠").build();
+//        product.setId(31l);
+
+        ProductModifyDto productModifyDto = productRepository.getProductById(38l);
+        productModifyDto.setProductName("빨간 티셔츠");
+        Product product = productModifyDto.toEntity(productModifyDto);
+
+        productRepository.modifyProduct(product);
     }
 
     @Test
@@ -89,27 +101,15 @@ class ProductRepositoryTest {
 
         ProductModifyDto product = productRepository.getProductById(31l);
 
-       // log.debug("product: {}", product);
+        log.debug("product: {}", product);
 
-        List<ProductOption> productOptions = productOptionRepository.getProductOptions(product.getProductId());
-        //log.debug("productOptions: {}", productOptions);
+        List<ProductOption> productOptions
+                = productOptionRepository.getProductOptions(product.getProductId(), 1);
+        log.debug("productOptions: {}", productOptions);
 
         List<ProductImage> productImages = productImageRepository.getProductImages(product.getProductId());
         log.debug("productImages: {}", productImages);
     }
-
-//    @Test
-//    public void getProduct() {
-//        Product productById = productRepository.getProductById(199l);
-//        log.debug("productById: {}", productById);
-//    }
-//
-//    @Test
-//    public void getProductList() {
-//        List<ProductCategoryImageDto> products = productRepository.getProducts();
-//
-//        log.debug("products: {}, count: {}", products, products.size());
-//    }
 
     @Test
     public void getProductListPage() {

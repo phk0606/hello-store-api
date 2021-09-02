@@ -10,13 +10,15 @@ import lombok.ToString;
 @ToString
 public class ProductOptionDto {
 
-    private Integer id;
+    private Long id;
 
+    private Integer optionGroupNumber;
     private String optionName;
     private String optionValue;
 
     public ProductOptionDto(ProductOption productOption) {
         this.id = productOption.getId();
+        this.optionGroupNumber = productOption.getOptionGroupNumber();
         this.optionName = productOption.getOptionName();
         this.optionValue = productOption.getOptionValue();
     }

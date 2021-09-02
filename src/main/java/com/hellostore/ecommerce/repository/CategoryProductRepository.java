@@ -32,4 +32,11 @@ public class CategoryProductRepository {
                 .where(categoryProduct.product.id.eq(productId))
                 .execute();
     }
+
+    public void modifyCategoryProduct(Long productId, Long categoryId) {
+        queryFactory.update(categoryProduct)
+                .set(categoryProduct.category.id, categoryId)
+                .where(categoryProduct.product.id.eq(productId))
+                .execute();
+    }
 }

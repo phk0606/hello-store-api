@@ -10,18 +10,18 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"optionName", "optionValue", "useYn"})
+@ToString(of = {"optionGroupNumber", "optionName", "optionValue"})
 public class ProductOption {
 
     @Id
     @GeneratedValue
     @Column(name = "productoption_id")
-    private Integer id;
+    private Long id;
 
+    private Integer optionGroupNumber;
     private String optionName;
     private String optionValue;
 
-//    private String useYn;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_id")
@@ -32,11 +32,18 @@ public class ProductOption {
         product.getProductOptions().add(this);
     }
 
-    @Builder
+
     public ProductOption(Product product, String optionName, String optionValue) {
         this.product = product;
         this.optionName = optionName;
         this.optionValue = optionValue;
-//        this.useYn = useYn;
+    }
+
+    @Builder
+    public ProductOption(Integer optionGroupNumber, Product product, String optionName, String optionValue) {
+        this.optionGroupNumber = optionGroupNumber;
+        this.product = product;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
     }
 }

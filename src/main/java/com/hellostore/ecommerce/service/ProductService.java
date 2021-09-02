@@ -56,7 +56,9 @@ public class ProductService {
         productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product1);
 
         // 상품 이미지 저장
-        productImageService.uploadProductImage(productImages, product1);
+        if(productImages != null) {
+            productImageService.uploadProductImage(productImages, product1);
+        }
         return product1;
     }
 
@@ -73,26 +75,51 @@ public class ProductService {
     }
 
     @Transactional
+    public void modifyProduct(ProductDto productDto, List<MultipartFile> productImages) {
+
+        // 카테고리 수정
+        categoryProductRepository.modifyCategoryProduct(productDto.getProductId(), productDto.getCategoryId());
+
+        // 상품 수정
+        Product product = productDto.toEntity(productDto);
+        Product product1 = productRepository.modifyProduct(product);
+
+        // 이미지 수정 (기존 것 삭제 후 신규 등록)
+        if(productImages != null) {
+            productImageRepository.removeProductImage(productDto.getProductId());
+            productImageService.uploadProductImage(productImages, product1);
+        }
+
+        // 옵션 수정 (기존 것 삭제 후 신규 등록)
+        productOptionRepository.removeProductOption(productDto.getProductId());
+        productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product1);
+
+    }
+
+    @Transactional
     public void modifyProductShowType(List<Long> productIds, ProductShowType productShowType) {
         productRepository.modifyProductShowType(productIds, productShowType);
     }
 
     public ProductModifyDto getProductById(Long id) throws IOException {
         ProductModifyDto productModifyDto = productRepository.getProductById(id);
-        List<ProductOption> productOptions = productOptionRepository.getProductOptions(id);
+        List<ProductOption> productOptions1 = productOptionRepository.getProductOptions(id, 1);
 
-        List<ProductOptionDto> productOptionDtos = new ArrayList<>();
-        for (ProductOption productOption : productOptions) {
-            productOptionDtos.add(new ProductOptionDto(productOption));
+        List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
+        for (ProductOption productOption : productOptions1) {
+            productOptionDtos1.add(new ProductOptionDto(productOption));
         }
 
-        Map<String, List<ProductOptionDto>> collect = productOptionDtos.stream().collect(Collectors.groupingBy(ProductOptionDto::getOptionName));
-        List<List<ProductOptionDto>> collect1 = collect.values().stream().collect(Collectors.toList());
-        log.debug("collect1: {}", collect1.get(0));
-        log.debug("collect2: {}", collect1.get(1));
+        productModifyDto.setFirstOptions(productOptionDtos1);
 
-        productModifyDto.setFirstOptions(collect1.get(0));
-        productModifyDto.setSecondOptions(collect1.get(1));
+        List<ProductOption> productOptions2 = productOptionRepository.getProductOptions(id, 2);
+
+        List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
+        for (ProductOption productOption : productOptions2) {
+            productOptionDtos2.add(new ProductOptionDto(productOption));
+        }
+
+        productModifyDto.setSecondOptions(productOptionDtos2);
 
         List<ProductImage> productImages = productImageRepository.getProductImages(id);
 
@@ -110,23 +137,6 @@ public class ProductService {
 
         return productModifyDto;
     }
-
-//    public List<ProductCategoryImageDto> getProducts() throws IOException {
-//
-//        List<ProductCategoryImageDto> productCategoryImageDtos =
-//                productRepository.getProducts();
-//
-//        for (ProductCategoryImageDto productCategoryImageDto : productCategoryImageDtos) {
-//            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
-//                productCategoryImageDto.setImage(
-//                        Files.readAllBytes(
-//                                Paths.get(productCategoryImageDto.getFilePath(),
-//                                        productCategoryImageDto.getFileName())));
-//            }
-//        }
-//
-//        return productCategoryImageDtos;
-//    }
 
     public Page<ProductListDto> getProductsPage(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {

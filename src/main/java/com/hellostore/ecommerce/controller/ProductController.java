@@ -42,6 +42,12 @@ public class ProductController {
         productService.removeProducts(productIds);
     }
 
+    @PutMapping("/modifyProduct")
+    public void modifyProduct(@RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) {
+
+        productService.modifyProduct(productDto, productImages);
+    }
+
     @PutMapping("/modifyProductShowType")
     public void modifyProductShowType(@RequestBody ProductDto productDto) {
 
@@ -51,11 +57,6 @@ public class ProductController {
         log.debug("productIds: {}, productShowType: {}", productIds, productShowType);
         productService.modifyProductShowType(productIds, productShowType);
     }
-
-//    @GetMapping("/getProducts")
-//    public List<ProductCategoryImageDto> getProducts() throws IOException {
-//        return productService.getProducts();
-//    }
 
     @GetMapping("/getProductById")
     public ProductModifyDto getProductById(@RequestParam Long productId) throws IOException {
