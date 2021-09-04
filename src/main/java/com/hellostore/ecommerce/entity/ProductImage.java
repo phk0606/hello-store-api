@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 public class ProductImage extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
     private Long id;
 

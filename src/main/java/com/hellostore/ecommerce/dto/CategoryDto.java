@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 @Getter
 @NoArgsConstructor
 @ToString
-@Slf4j
 public class CategoryDto {
 
     private Long id;

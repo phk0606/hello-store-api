@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/product")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {
