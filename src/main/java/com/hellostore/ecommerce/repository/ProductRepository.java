@@ -2,7 +2,6 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.QueryResults;
@@ -18,13 +17,11 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
-import static com.hellostore.ecommerce.entity.QProductOption.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -38,6 +35,7 @@ public class ProductRepository {
         this.queryFactory = new JPAQueryFactory(em);
         this.em = em;
     }
+
     public Product createProduct(Product product) {
         em.persist(product);
         return product;

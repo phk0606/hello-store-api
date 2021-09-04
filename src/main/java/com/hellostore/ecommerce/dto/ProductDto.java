@@ -16,7 +16,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @ToString
-@Slf4j
 public class ProductDto {
 
     private List<Long> productIds;
