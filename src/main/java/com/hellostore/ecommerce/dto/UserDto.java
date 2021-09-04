@@ -36,6 +36,14 @@ public class UserDto {
     private String phoneNumber;
 
     @NotNull
+    @Size(max = 5)
+    private String zoneCode;
+
+    @NotNull
     @Size(min = 10, max = 200)
     private String address;
+
+    @NotNull
+    @Size(max = 100)
+    private String detailAddress;
 }

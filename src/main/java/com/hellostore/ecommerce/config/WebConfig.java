@@ -1,3 +1,4 @@
+/*
 package com.hellostore.ecommerce.config;
 
 import lombok.extern.slf4j.Slf4j;
@@ -20,3 +21,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(baseUrl);
     }
 }
+*/

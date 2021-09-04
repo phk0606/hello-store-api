@@ -38,6 +38,11 @@ public class UserService {
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
+                .name(userDto.getName())
+                .phoneNumber(userDto.getPhoneNumber())
+                .zoneCode(userDto.getZoneCode())
+                .address(userDto.getAddress())
+                .detailAddress(userDto.getDetailAddress())
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();

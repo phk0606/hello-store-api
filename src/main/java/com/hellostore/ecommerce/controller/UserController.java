@@ -18,7 +18,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<User> signup(@Valid @RequestBody UserDto userDto) throws DuplicateMemberException {
         return ResponseEntity.ok(userService.signup(userDto));
     }

@@ -39,8 +39,14 @@ public class User {
     @Column(length = 11)
     private String phoneNumber;
 
+    @Column(length = 5)
+    private String zoneCode;
+
     @Column(length = 200)
     private String address;
+
+    @Column(length = 100)
+    private String detailAddress;
 
     @ManyToMany
     @JoinColumn
