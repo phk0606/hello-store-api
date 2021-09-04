@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -25,4 +26,16 @@ public class UserDto {
     @NotNull
     @Size(min = 2, max = 50)
     private String email;
+
+    @NotNull
+    @Size(min = 2, max = 50)
+    private String name;
+
+    @NotNull
+    @Size(min = 10, max = 11)
+    private String phoneNumber;
+
+    @NotNull
+    @Size(min = 10, max = 200)
+    private String address;
 }
