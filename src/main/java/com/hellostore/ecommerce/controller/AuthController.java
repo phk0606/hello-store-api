@@ -2,15 +2,11 @@ package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.LoginDto;
 import com.hellostore.ecommerce.dto.TokenDto;
-import com.hellostore.ecommerce.jwt.JwtFilter;
-import com.hellostore.ecommerce.jwt.TokenProvider;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import com.hellostore.ecommerce.dto.UserDto;
+import com.hellostore.ecommerce.service.AuthService;
+import javassist.bytecode.DuplicateMemberException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,31 +15,24 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
-    private final TokenProvider tokenProvider;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthService authService;
 
-    public AuthController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
-        this.tokenProvider = tokenProvider;
-        this.authenticationManagerBuilder = authenticationManagerBuilder;
+    @PostMapping("/signup")
+    public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto) throws DuplicateMemberException {
+        return ResponseEntity.ok(authService.signup(userDto));
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto) {
+        return ResponseEntity.ok(authService.login(loginDto));
+    }
 
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.createToken(authentication);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-
-        return new ResponseEntity<>(new TokenDto(jwt, loginDto.getUsername()), httpHeaders, HttpStatus.OK);
+    @PostMapping("/refreshToken")
+    public ResponseEntity<TokenDto> refreshToken(@RequestBody TokenDto tokenDto) {
+        return ResponseEntity.ok(authService.refreshToken(tokenDto));
     }
 }

@@ -1,17 +1,17 @@
 package com.hellostore.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.hellostore.ecommerce.entity.User;
+import lombok.*;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
+@Builder
 public class UserDto {
 
     @NotNull
@@ -46,4 +46,12 @@ public class UserDto {
     @NotNull
     @Size(max = 100)
     private String detailAddress;
+
+    public UserDto(String username) {
+        this.username = username;
+    }
+
+    public static UserDto of(User user) {
+        return new UserDto(user.getUsername());
+    }
 }

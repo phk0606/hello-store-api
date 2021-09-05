@@ -44,7 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("h2-console/**", "/favicon.ico", "/error");
+                .antMatchers("h2-console/**", "/favicon.ico", "/error")
+                .antMatchers("/api/getCategories")
+                .antMatchers("/api/getCategory")
+        ;
     }
 
     @Override
@@ -64,10 +67,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/api/getCategories").permitAll()
-                .antMatchers("/api/getCategory").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+
                 .antMatchers("/api/getProductsPageCondition").permitAll()
                 .antMatchers("/api/getProductById").permitAll()
                 .anyRequest().authenticated()
