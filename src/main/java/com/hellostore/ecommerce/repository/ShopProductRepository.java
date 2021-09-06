@@ -1,6 +1,5 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.ProductListDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.QShopProductDto;
 import com.hellostore.ecommerce.dto.ShopProductDto;
@@ -13,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCategory.category;
@@ -40,6 +38,9 @@ public class ShopProductRepository {
                         categoryProduct.category.id,
                         category.name,
                         product.id, product.name,
+                        product.salePrice, product.regularPrice,
+                        product.description,
+                        product.newArrival, product.best, product.discount,
                         productImage.id, productImage.originalFileName, productImage.fileName,
                         productImage.filePath, productImage.fileSize,
                         productImage.imageType))
@@ -49,9 +50,9 @@ public class ShopProductRepository {
                 .leftJoin(productImage)
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
-                .where(
-
-                )
+//                .where(
+//
+//                )
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
