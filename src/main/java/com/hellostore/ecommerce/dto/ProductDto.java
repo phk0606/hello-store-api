@@ -22,13 +22,14 @@ public class ProductDto {
     private Long productId;
     private Long categoryId;
     private String name;
-    private Integer salePrice;
-    private Integer regularPrice;
-    private Integer maxPurchaseQuantity;
+    private int salePrice;
+    private int regularPrice;
+    private int maxPurchaseQuantity;
+    private int stockQuantity;
     private PointType pointType;
     private Integer pointPerPrice;
     private ShippingFeeType shippingFeeType;
-    private Integer eachShippingFee;
+    private int eachShippingFee;
     private Boolean newArrival;
     private Boolean best;
     private Boolean discount;
@@ -43,7 +44,7 @@ public class ProductDto {
 
     private ProductShowType productShowType;
 
-    private Integer clickCount;
+    private int clickCount;
 
     public Product toEntity(ProductDto productDto) {
 
@@ -52,6 +53,7 @@ public class ProductDto {
                 .name(productDto.getName())
                 .salePrice(productDto.getSalePrice())
                 .regularPrice(productDto.getRegularPrice())
+                .stockQuantity(productDto.getStockQuantity())
                 .maxPurchaseQuantity(productDto.getMaxPurchaseQuantity())
                 .pointType(productDto.getPointType())
                 .pointPerPrice(productDto.getPointPerPrice())

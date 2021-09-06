@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,14 +41,8 @@ public class User {
     @Column(length = 11)
     private String phoneNumber;
 
-    @Column(length = 5)
-    private String zoneCode;
-
-    @Column(length = 200)
-    private String address;
-
-    @Column(length = 100)
-    private String detailAddress;
+    @Embedded
+    private Address address;
 
     @ManyToMany
     @JoinColumn
@@ -56,4 +52,7 @@ public class User {
     inverseJoinColumns
             = {@JoinColumn(name = "authority_name", referencedColumnName = "authority_name")})
     private Set<Authority> authorities;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 }

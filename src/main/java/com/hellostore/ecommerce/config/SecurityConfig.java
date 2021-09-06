@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("h2-console/**", "/favicon.ico", "/error")
                 .antMatchers("/api/getCategories")
                 .antMatchers("/api/getCategory")
+                .antMatchers("/api/shop/getProductsPageCondition")
         ;
     }
 

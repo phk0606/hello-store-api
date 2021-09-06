@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.entity;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
+import com.hellostore.ecommerce.exception.NotEnoughStockException;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -26,19 +27,21 @@ public class Product extends BaseEntity {
 
     private String name;
 
-    private Integer salePrice;
-    private Integer regularPrice;
+    private int salePrice;
+    private int regularPrice;
 
-    private Integer maxPurchaseQuantity;
+    private int stockQuantity;
+
+    private int maxPurchaseQuantity;
 
     @Enumerated(EnumType.STRING)
     private PointType pointType;
-    private Integer pointPerPrice;
+    private int pointPerPrice;
 
     @Enumerated(EnumType.STRING)
     private ShippingFeeType shippingFeeType;
 
-    private Integer eachShippingFee;
+    private int eachShippingFee;
 
     private Boolean newArrival;
     private Boolean best;
@@ -47,7 +50,7 @@ public class Product extends BaseEntity {
     private String description;
 
     @Column(columnDefinition = "integer default 0")
-    private Integer clickCount;
+    private int clickCount;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOption> productOptions = new ArrayList<>();
@@ -68,16 +71,28 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductShowType productShowType;
 
+    public void addStock(int quantity) {
+        this.stockQuantity += quantity;
+    }
+
+    public void removeStock(int quantity) {
+        int restStock = this.stockQuantity - quantity;
+        if (restStock < 0) {
+            throw new NotEnoughStockException("need more stock");
+        }
+        this.stockQuantity = restStock;
+    }
 
     public Product(Long id) {
         this.id = id;
     }
 
-    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
 
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
+        this.stockQuantity = stockQuantity;
         this.maxPurchaseQuantity = maxPurchaseQuantity;
         this.pointType = pointType;
         this.pointPerPrice = pointPerPrice;
@@ -94,11 +109,12 @@ public class Product extends BaseEntity {
     }
 
     @Builder
-    public Product(Long id, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(Long id, String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
         this.id = id;
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
+        this.stockQuantity = stockQuantity;
         this.maxPurchaseQuantity = maxPurchaseQuantity;
         this.pointType = pointType;
         this.pointPerPrice = pointPerPrice;

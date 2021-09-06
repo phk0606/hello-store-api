@@ -26,13 +26,14 @@ public class ProductModifyDto {
 
     @Setter
     private String productName;
-    private Integer salePrice;
-    private Integer regularPrice;
-    private Integer maxPurchaseQuantity;
+    private int salePrice;
+    private int regularPrice;
+    private int stockQuantity;
+    private int maxPurchaseQuantity;
     private PointType pointType;
     private Integer pointPerPrice;
     private ShippingFeeType shippingFeeType;
-    private Integer eachShippingFee;
+    private int eachShippingFee;
     private Boolean newArrival;
     private Boolean best;
     private Boolean discount;
@@ -51,13 +52,14 @@ public class ProductModifyDto {
     private List<ProductImageDto> productImageDtos = new ArrayList<>();
 
     @QueryProjection
-    public ProductModifyDto(Long productId, Long firstCategoryId, Long secondCategoryId, String productName, Integer salePrice, Integer regularPrice, Integer maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public ProductModifyDto(Long productId, Long firstCategoryId, Long secondCategoryId, String productName, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description, String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
         this.productId = productId;
         this.firstCategoryId = firstCategoryId;
         this.secondCategoryId = secondCategoryId;
         this.productName = productName;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
+        this.stockQuantity = stockQuantity;
         this.maxPurchaseQuantity = maxPurchaseQuantity;
         this.pointType = pointType;
         this.pointPerPrice = pointPerPrice;
@@ -79,6 +81,7 @@ public class ProductModifyDto {
                 .name(productModifyDto.getProductName())
                 .salePrice(productModifyDto.getSalePrice())
                 .regularPrice(productModifyDto.getRegularPrice())
+                .stockQuantity(productModifyDto.getStockQuantity())
                 .maxPurchaseQuantity(productModifyDto.getMaxPurchaseQuantity())
                 .pointType(productModifyDto.getPointType())
                 .pointPerPrice(productModifyDto.getPointPerPrice())

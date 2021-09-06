@@ -42,7 +42,7 @@ class ProductRepositoryTest {
 //    @Test
     void createProduct() {
 
-        Product product = new Product("긴팔 티셔츠", 10000, 12000, 10, PointType.DEFAULT, null, ShippingFeeType.DEFAULT, null, true, false, true, "바디라인에 달라붙지 않아 시원하게 입기 좋은 데일리 반팔 티셔츠",  null, null, null, ProductShowType.SHOW);
+        Product product = new Product("긴팔 티셔츠", 10000, 12000, 100, 10, PointType.DEFAULT, 0, ShippingFeeType.DEFAULT, 0, true, false, true, "바디라인에 달라붙지 않아 시원하게 입기 좋은 데일리 반팔 티셔츠",  null, null, null, ProductShowType.SHOW);
         Product product1 = productRepository.createProduct(product);
 
         Category category1 = categoryDslRepository.getCategoryOne(11l);

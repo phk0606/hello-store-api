@@ -23,7 +23,7 @@ public class ShopProductController {
     private final ShopProductService shopProductService;
 
     @GetMapping("/getProductsPageCondition")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+//    @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 

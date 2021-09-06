@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.LoginDto;
 import com.hellostore.ecommerce.dto.TokenDto;
 import com.hellostore.ecommerce.dto.UserDto;
+import com.hellostore.ecommerce.entity.Address;
 import com.hellostore.ecommerce.entity.Authority;
 import com.hellostore.ecommerce.entity.RefreshToken;
 import com.hellostore.ecommerce.entity.User;
@@ -46,15 +47,14 @@ public class AuthService {
                 .authorityName("ROLE_USER")
                 .build();
 
+        Address address = new Address(userDto.getZoneCode(), userDto.getAddress(), userDto.getDetailAddress());
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
                 .name(userDto.getName())
                 .phoneNumber(userDto.getPhoneNumber())
-                .zoneCode(userDto.getZoneCode())
-                .address(userDto.getAddress())
-                .detailAddress(userDto.getDetailAddress())
+                .address(address)
                 .authorities(Collections.singleton(authority))
                 .activated(true)
                 .build();
