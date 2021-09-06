@@ -30,7 +30,7 @@ public class ShopProductRepository {
         this.em = em;
     }
 
-    public Page<ShopProductDto> getProductsPage(
+    public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition condition, Pageable pageable) {
 
         QueryResults<ShopProductDto> results = queryFactory

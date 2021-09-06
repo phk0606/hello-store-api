@@ -27,7 +27,7 @@ class ShopProductRepositoryTest {
         PageRequest pageRequest = PageRequest.of(0, 3);
         ProductSearchCondition productSearchCondition = new ProductSearchCondition();
 //        productSearchCondition.setProductName("티셔츠");
-        Page<ShopProductDto> productsPage = shopProductRepository.getProductsPage(productSearchCondition, pageRequest);
+        Page<ShopProductDto> productsPage = shopProductRepository.getProductsPageCondition(productSearchCondition, pageRequest);
 
         List<ShopProductDto> content = productsPage.getContent();
         for (ShopProductDto shopProductDto : content) {

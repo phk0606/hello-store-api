@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -21,6 +22,8 @@ public class ShopProductDto {
     private Boolean newArrival;
     private Boolean best;
     private Boolean discount;
+    @Setter
+    private byte[] image;
     private Long imageId;
     private String originalFileName;
     private String fileName;
