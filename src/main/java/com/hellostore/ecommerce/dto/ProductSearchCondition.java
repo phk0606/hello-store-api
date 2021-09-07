@@ -17,8 +17,8 @@ public class ProductSearchCondition {
     private String productName;
     private Long firstCategoryId;
     private Long secondCategoryId;
-    private int salePriceMin;
-    private int salePriceMax;
+    private Integer salePriceMin;
+    private Integer salePriceMax;
     private List<ProductShowType> productShowTypes;
     private String productRegistryDateA;
     private String productRegistryDateB;

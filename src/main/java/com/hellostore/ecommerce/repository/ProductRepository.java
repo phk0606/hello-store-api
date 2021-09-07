@@ -98,6 +98,7 @@ public class ProductRepository {
                         product.name.as("productName"),
                         product.salePrice,
                         product.regularPrice,
+                        product.stockQuantity,
                         product.maxPurchaseQuantity,
                         product.pointType,
                         product.pointPerPrice,
