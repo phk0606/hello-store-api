@@ -32,16 +32,16 @@ public class Product extends BaseEntity {
 
     private int stockQuantity;
 
-    private int maxPurchaseQuantity;
+    private Integer maxPurchaseQuantity;
 
     @Enumerated(EnumType.STRING)
     private PointType pointType;
-    private int pointPerPrice;
+    private Integer pointPerPrice;
 
     @Enumerated(EnumType.STRING)
     private ShippingFeeType shippingFeeType;
 
-    private int eachShippingFee;
+    private Integer eachShippingFee;
 
     private Boolean newArrival;
     private Boolean best;
@@ -87,7 +87,7 @@ public class Product extends BaseEntity {
         this.id = id;
     }
 
-    public Product(String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
 
         this.name = name;
         this.salePrice = salePrice;
@@ -109,7 +109,7 @@ public class Product extends BaseEntity {
     }
 
     @Builder
-    public Product(Long id, String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(Long id, String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
         this.id = id;
         this.name = name;
         this.salePrice = salePrice;

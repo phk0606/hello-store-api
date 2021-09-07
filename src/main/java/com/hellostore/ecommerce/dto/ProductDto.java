@@ -24,12 +24,12 @@ public class ProductDto {
     private String name;
     private int salePrice;
     private int regularPrice;
-    private int maxPurchaseQuantity;
+    private Integer maxPurchaseQuantity;
     private int stockQuantity;
     private PointType pointType;
     private Integer pointPerPrice;
     private ShippingFeeType shippingFeeType;
-    private int eachShippingFee;
+    private Integer eachShippingFee;
     private Boolean newArrival;
     private Boolean best;
     private Boolean discount;

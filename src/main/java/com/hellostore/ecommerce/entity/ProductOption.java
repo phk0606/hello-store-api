@@ -29,7 +29,7 @@ public class ProductOption {
 
     public void setProduct(Product product) {
         this.product = product;
-        product.getProductOptions().add(this);
+//        product.getProductOptions().add(this);
     }
 
 
