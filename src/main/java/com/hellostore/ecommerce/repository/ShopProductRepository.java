@@ -5,6 +5,7 @@ import com.hellostore.ecommerce.dto.QShopProductDto;
 import com.hellostore.ecommerce.dto.ShopProductDto;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,6 +19,7 @@ import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static org.springframework.util.StringUtils.hasText;
 
 @Repository
 public class ShopProductRepository {
@@ -50,9 +52,9 @@ public class ShopProductRepository {
                 .leftJoin(productImage)
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
-//                .where(
-//
-//                )
+                .where(
+                        productProperty(condition.getProductProperty())
+                )
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -61,5 +63,18 @@ public class ShopProductRepository {
         List<ShopProductDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression productProperty(String productProperty) {
+        if (hasText(productProperty)) {
+            if (productProperty.equals("newArrival")) {
+                return product.newArrival.eq(true);
+            } else if (productProperty.equals("best")) {
+                return product.best.eq(true);
+            } else if (productProperty.equals("discount")) {
+                return product.discount.eq(true);
+            }
+        }
+        return null;
     }
 }

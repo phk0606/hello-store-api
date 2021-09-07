@@ -22,4 +22,6 @@ public class ProductSearchCondition {
     private List<ProductShowType> productShowTypes;
     private String productRegistryDateA;
     private String productRegistryDateB;
+
+    private String productProperty;
 }
