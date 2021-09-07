@@ -30,8 +30,8 @@ public class ShopProductController {
         return shopProductService.getProductsPageCondition(productSearchCondition, pageable);
     }
 
-    @GetMapping("/getProductDetail")
-    public ShopProductDto getProductDetail(Long productId) throws IOException {
+    @GetMapping("/getProductById")
+    public ShopProductDto getProductById(Long productId) throws IOException {
 
         return shopProductService.getProductById(productId);
     }

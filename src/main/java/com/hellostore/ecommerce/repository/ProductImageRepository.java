@@ -41,4 +41,12 @@ public class ProductImageRepository {
                 .where(productImage.product.id.eq(productId))
                 .fetch();
     }
+
+    public List<ProductImage> getProductDetailImages (Long productId) {
+
+        return queryFactory.selectFrom(productImage)
+                .where(productImage.product.id.eq(productId),
+                        productImage.imageType.stringValue().contains("DETAIL"))
+                .fetch();
+    }
 }

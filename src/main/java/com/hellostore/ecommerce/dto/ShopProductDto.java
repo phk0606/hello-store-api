@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.dto;
 
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class ShopProductDto {
     private String detailInfo;
     private String shippingInfo;
     private String exchangeReturnInfo;
+    private ProductShowType productShowType;
 
     @Setter
     private byte[] image;
@@ -46,7 +48,7 @@ public class ShopProductDto {
     private List<byte[]> byteImages = new ArrayList<>();
 
     @QueryProjection
-    public ShopProductDto(Long categoryId, String categoryName, Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
+    public ShopProductDto(Long categoryId, String categoryName, Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, ProductShowType productShowType, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.productId = productId;
@@ -57,6 +59,7 @@ public class ShopProductDto {
         this.newArrival = newArrival;
         this.best = best;
         this.discount = discount;
+        this.productShowType = productShowType;
         this.imageId = imageId;
         this.originalFileName = originalFileName;
         this.fileName = fileName;
@@ -66,7 +69,7 @@ public class ShopProductDto {
     }
 
     @QueryProjection
-    public ShopProductDto(Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, String detailInfo, String shippingInfo, String exchangeReturnInfo) {
+    public ShopProductDto(Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, ProductShowType productShowType, String detailInfo, String shippingInfo, String exchangeReturnInfo) {
 
         this.productId = productId;
         this.productName = productName;
@@ -76,6 +79,7 @@ public class ShopProductDto {
         this.newArrival = newArrival;
         this.best = best;
         this.discount = discount;
+        this.productShowType = productShowType;
         this.detailInfo= detailInfo;
         this.shippingInfo = shippingInfo;
         this.exchangeReturnInfo = exchangeReturnInfo;

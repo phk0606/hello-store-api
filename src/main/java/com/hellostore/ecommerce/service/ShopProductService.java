@@ -49,7 +49,7 @@ public class ShopProductService {
     public ShopProductDto getProductById(Long productId) throws IOException {
         ShopProductDto product = shopProductRepository.getProductById(productId);
 
-        List<ProductImage> productImages = productImageRepository.getProductImages(productId);
+        List<ProductImage> productImages = productImageRepository.getProductDetailImages(productId);
 
         List<byte[]> byteImages = new ArrayList<>();
         for (ProductImage productImage : productImages) {

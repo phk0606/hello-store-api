@@ -42,6 +42,7 @@ public class ShopProductRepository {
                         product.salePrice, product.regularPrice,
                         product.description,
                         product.newArrival, product.best, product.discount,
+                        product.productShowType,
                         productImage.id, productImage.originalFileName, productImage.fileName,
                         productImage.filePath, productImage.fileSize,
                         productImage.imageType))
@@ -89,6 +90,7 @@ public class ShopProductRepository {
                         product.newArrival,
                         product.best,
                         product.discount,
+                        product.productShowType,
                         product.detailInfo,
                         product.shippingInfo,
                         product.exchangeReturnInfo
