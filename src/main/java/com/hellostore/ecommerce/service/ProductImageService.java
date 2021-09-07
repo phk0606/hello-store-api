@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.ProductImageDto;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.enumType.ImageType;
@@ -29,6 +30,16 @@ public class ProductImageService {
 
     @Value("${file.store.path}")
     private String fileStorePath;
+
+    public ProductImageDto getListImage(Long productId) throws IOException {
+        ProductImage listImage = productImageRepository.getListImage(productId);
+
+        ProductImageDto productImageDto = new ProductImageDto();
+        productImageDto.setByteImage(
+                Files.readAllBytes(
+                        Paths.get(listImage.getFilePath(), listImage.getFileName())));
+        return productImageDto;
+    }
 
     @Transactional
     public void removeProductImage(Long productId) {

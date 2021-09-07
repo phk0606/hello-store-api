@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ProductImageDto;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.entity.QProductImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -48,5 +49,13 @@ public class ProductImageRepository {
                 .where(productImage.product.id.eq(productId),
                         productImage.imageType.stringValue().contains("DETAIL"))
                 .fetch();
+    }
+
+    public ProductImage getListImage(Long productId) {
+
+        return queryFactory.selectFrom(productImage)
+                .where(productImage.product.id.eq(productId),
+                        productImage.imageType.stringValue().contains("LIST"))
+                .fetchOne();
     }
 }
