@@ -1,11 +1,15 @@
 package com.hellostore.ecommerce.dto;
 
+import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -22,6 +26,10 @@ public class ShopProductDto {
     private Boolean newArrival;
     private Boolean best;
     private Boolean discount;
+    private String detailInfo;
+    private String shippingInfo;
+    private String exchangeReturnInfo;
+
     @Setter
     private byte[] image;
     private Long imageId;
@@ -30,6 +38,12 @@ public class ShopProductDto {
     private String filePath;
     private long fileSize;
     private ImageType imageType;
+
+    private List<ProductOption> firstOptions = new ArrayList<>();
+    private List<ProductOption> secondOptions = new ArrayList<>();
+
+    @Setter
+    private List<byte[]> byteImages = new ArrayList<>();
 
     @QueryProjection
     public ShopProductDto(Long categoryId, String categoryName, Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
@@ -49,5 +63,21 @@ public class ShopProductDto {
         this.filePath = filePath;
         this.fileSize = fileSize;
         this.imageType = imageType;
+    }
+
+    @QueryProjection
+    public ShopProductDto(Long productId, String productName, int salePrice, int regularPrice, String description, Boolean newArrival, Boolean best, Boolean discount, String detailInfo, String shippingInfo, String exchangeReturnInfo) {
+
+        this.productId = productId;
+        this.productName = productName;
+        this.salePrice = salePrice;
+        this.regularPrice = regularPrice;
+        this.description = description;
+        this.newArrival = newArrival;
+        this.best = best;
+        this.discount = discount;
+        this.detailInfo= detailInfo;
+        this.shippingInfo = shippingInfo;
+        this.exchangeReturnInfo = exchangeReturnInfo;
     }
 }

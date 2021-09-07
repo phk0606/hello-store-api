@@ -1,8 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.ProductSearchCondition;
-import com.hellostore.ecommerce.dto.QShopProductDto;
-import com.hellostore.ecommerce.dto.ShopProductDto;
+import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -76,5 +75,26 @@ public class ShopProductRepository {
             }
         }
         return null;
+    }
+
+    public ShopProductDto getProductById(Long productId) {
+
+        return queryFactory
+                .select(new QShopProductDto(
+                        product.id.as("productId"),
+                        product.name.as("productName"),
+                        product.salePrice,
+                        product.regularPrice,
+                        product.description,
+                        product.newArrival,
+                        product.best,
+                        product.discount,
+                        product.detailInfo,
+                        product.shippingInfo,
+                        product.exchangeReturnInfo
+                ))
+                .from(product)
+                .where(product.id.eq(productId))
+                .fetchOne();
     }
 }
