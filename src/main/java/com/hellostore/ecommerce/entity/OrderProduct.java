@@ -29,6 +29,7 @@ public class OrderProduct {
     private int orderQuantity;
     private int point;
     private int orderShippingFee;
+    private int totalPrice;
 
     public static OrderProduct createOrderProduct(Product product, OrderProductDto orderProductDto) {
         OrderProduct orderProduct = new OrderProduct();
@@ -36,6 +37,8 @@ public class OrderProduct {
         orderProduct.setSalePrice(orderProductDto.getSalePrice());
         orderProduct.setOrderQuantity(orderProductDto.getOrderQuantity());
         orderProduct.setPoint(orderProductDto.getPoint());
+        orderProduct.setOrderShippingFee(orderProduct.getOrderShippingFee());
+        orderProduct.setTotalPrice(orderProductDto.getTotalPrice());
 
         product.removeStock(orderProductDto.getOrderQuantity());
         return orderProduct;
