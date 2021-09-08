@@ -47,11 +47,20 @@ public class UserDto {
     @Size(max = 100)
     private String detailAddress;
 
-    public UserDto(String username) {
+    public UserDto(String username, String name, String phoneNumber,
+                   String zoneCode, String address, String detailAddress) {
         this.username = username;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.zoneCode = zoneCode;
+        this.address = address;
+        this.detailAddress = detailAddress;
     }
 
     public static UserDto of(User user) {
-        return new UserDto(user.getUsername());
+        return new UserDto(user.getUsername(), user.getName(), user.getPhoneNumber(),
+                user.getAddress().getZoneCode(),
+                user.getAddress().getAddress(),
+                user.getAddress().getDetailAddress());
     }
 }

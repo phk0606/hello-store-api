@@ -62,6 +62,7 @@ public class ProductRepository {
                 .set(product.name, productEntity.getName())
                 .set(product.salePrice, productEntity.getSalePrice())
                 .set(product.regularPrice, productEntity.getRegularPrice())
+                .set(product.stockQuantity, productEntity.getStockQuantity())
                 .set(product.maxPurchaseQuantity, productEntity.getMaxPurchaseQuantity())
                 .set(product.pointType, productEntity.getPointType())
                 .set(product.pointPerPrice, productEntity.getPointPerPrice())
