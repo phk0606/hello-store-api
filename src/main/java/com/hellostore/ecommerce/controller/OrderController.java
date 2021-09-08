@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,9 +15,11 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/order")
-    public String order(@RequestBody OrderDto orderDto) {
-        orderService.order(orderDto);
-        return "redirect:/orders";
+    @PostMapping("/createOrder")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void order(@RequestBody OrderDto orderDto) {
+        log.debug("orderDto: {}", orderDto);
+
+//        orderService.order(orderDto);
     }
 }

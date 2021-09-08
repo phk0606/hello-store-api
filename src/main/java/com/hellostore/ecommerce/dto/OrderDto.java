@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
+import com.hellostore.ecommerce.entity.Delivery;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.Getter;
@@ -14,20 +15,14 @@ import java.util.List;
 @ToString
 public class OrderDto {
 
+    private Long productId;
     private Long userNo;
     private String username;
-    private Long productId;
-    private int orderQuantity;
-
-    private String zoneCode;
-    private String address;
-    private String detailAddress;
-
     private String phoneNumber;
-    private String requirement;
 
     private PaymentMethodType paymentMethodType;
     private PaymentStatus paymentStatus;
 
-    List<OrderProductDto> orderProductDtos = new ArrayList<>();
+    private List<OrderProductDto> orderProducts = new ArrayList<>();
+    private DeliveryDto delivery;
 }

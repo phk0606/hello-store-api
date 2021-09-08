@@ -36,10 +36,14 @@ public class OrderService {
         Product product = productRepository.getProduct(orderDto.getProductId());
 
         //배송 정보 생성
-        Address address = new Address(orderDto.getZoneCode(), orderDto.getAddress(), orderDto.getDetailAddress());
+        Address address1 = orderDto.getDelivery().getAddress();
+        Address address = new Address(
+                address1.getZoneCode(),
+                address1.getAddress(),
+                address1.getDetailAddress());
         Delivery delivery = Delivery.builder().address(address).status(DeliveryStatus.READY).build();
 
-        List<OrderProductDto> orderProductDtos = orderDto.getOrderProductDtos();
+        List<OrderProductDto> orderProductDtos = orderDto.getOrderProducts();
 
         List<OrderProduct> orderProducts = new ArrayList<>();
         for (OrderProductDto orderProductDto : orderProductDtos) {

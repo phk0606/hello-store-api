@@ -14,6 +14,8 @@ import javax.validation.constraints.Size;
 @Builder
 public class UserDto {
 
+    private Long userNo;
+
     @NotNull
     @Size(min = 3, max = 50)
     private String username;
@@ -47,10 +49,12 @@ public class UserDto {
     @Size(max = 100)
     private String detailAddress;
 
-    public UserDto(String username, String name, String phoneNumber,
+    public UserDto(Long userNo, String username, String name, String email, String phoneNumber,
                    String zoneCode, String address, String detailAddress) {
+        this.userNo = userNo;
         this.username = username;
         this.name = name;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.zoneCode = zoneCode;
         this.address = address;
@@ -58,7 +62,7 @@ public class UserDto {
     }
 
     public static UserDto of(User user) {
-        return new UserDto(user.getUsername(), user.getName(), user.getPhoneNumber(),
+        return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getPhoneNumber(),
                 user.getAddress().getZoneCode(),
                 user.getAddress().getAddress(),
                 user.getAddress().getDetailAddress());
