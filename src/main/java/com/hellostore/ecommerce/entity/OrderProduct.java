@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.dto.OrderProductDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,26 +25,28 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private Order order;
     
-    private int orderPrice;
-    private int count;
+    private int salePrice;
+    private int orderQuantity;
+    private int point;
+    private int orderShippingFee;
 
-    public static OrderProduct createOrderProduct(Product product, int orderPrice,
-                                                  int count) {
+    public static OrderProduct createOrderProduct(Product product, OrderProductDto orderProductDto) {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProduct(product);
-        orderProduct.setOrderPrice(orderPrice);
-        orderProduct.setCount(count);
+        orderProduct.setSalePrice(orderProductDto.getSalePrice());
+        orderProduct.setOrderQuantity(orderProductDto.getOrderQuantity());
+        orderProduct.setPoint(orderProductDto.getPoint());
 
-        product.removeStock(count);
+        product.removeStock(orderProductDto.getOrderQuantity());
         return orderProduct;
     }
     
     public void cancel() {
-        getProduct().addStock(count);
+        getProduct().addStock(orderQuantity);
     } 
     
     public int getTotalPrice() {
-        return getOrderPrice() * getCount();
+        return getSalePrice() * getOrderQuantity();
     }
 
 }

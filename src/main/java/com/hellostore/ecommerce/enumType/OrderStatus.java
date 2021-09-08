@@ -1,5 +1,5 @@
 package com.hellostore.ecommerce.enumType;
 
 public enum OrderStatus {
-    ORDER, CANCEL
+    BEFORE_CONFIRM, READY_SHIP, SHIPPING, COMPLETE_SHIP, ORDER_CANCEL
 }

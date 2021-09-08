@@ -2,12 +2,15 @@ package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderStatus;
+import com.hellostore.ecommerce.enumType.PaymentMethodType;
+import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -15,7 +18,7 @@ import java.util.List;
 @Table(name = "orders")
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +28,8 @@ public class Order {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_no")
     private User user;
+
+    private String phoneNumber;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderProduct> orderProducts = new ArrayList<>();
@@ -37,6 +42,13 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentMethodType paymentMethodType;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
 
     public void setUser(User user) {
         this.user = user;
@@ -53,15 +65,19 @@ public class Order {
         delivery.setOrder(this);
     }
 
-    public static Order createOrder(User user, Delivery delivery,
-                                    OrderProduct... orderProducts) {
+    public static Order createOrder(Optional<User> user, Delivery delivery,
+                                    List<OrderProduct> orderProducts,
+                                    PaymentMethodType paymentMethodType,
+                                    PaymentStatus paymentStatus) {
         Order order = new Order();
-        order.setUser(user);
+        order.setUser(user.get());
         order.setDelivery(delivery);
         for (OrderProduct orderProduct : orderProducts) {
             order.addOrderProduct(orderProduct);
         }
-        order.setStatus(OrderStatus.ORDER);
+        order.setStatus(OrderStatus.BEFORE_CONFIRM);
+        order.setPaymentStatus(paymentStatus);
+        order.setPaymentMethodType(paymentMethodType);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
@@ -71,7 +87,7 @@ public class Order {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
         }
 
-        this.setStatus(OrderStatus.CANCEL);
+        this.setStatus(OrderStatus.ORDER_CANCEL);
         for (OrderProduct orderProduct : orderProducts) {
             orderProduct.cancel();
         }
