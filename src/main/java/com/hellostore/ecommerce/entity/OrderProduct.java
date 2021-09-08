@@ -4,6 +4,8 @@ import com.hellostore.ecommerce.dto.OrderProductDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,7 +26,10 @@ public class OrderProduct {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
-    
+
+    @OneToMany(mappedBy = "orderProduct", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderProductOption> orderProductOptions = new ArrayList<>();
+
     private int salePrice;
     private int orderQuantity;
     private int point;
