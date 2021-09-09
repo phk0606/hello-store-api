@@ -67,6 +67,10 @@ public class OrderService {
         return order.getId();
     }
 
+    public OrderDto getOrder(Long orderId) {
+        return orderRepository.getOrder(orderId);
+    }
+
     @Transactional
     public void cancelOrder(Long orderId) {
 

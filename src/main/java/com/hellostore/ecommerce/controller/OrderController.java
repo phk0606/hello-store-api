@@ -17,9 +17,16 @@ public class OrderController {
 
     @PostMapping("/createOrder")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public void order(@RequestBody OrderDto orderDto) {
+    public Long order(@RequestBody OrderDto orderDto) {
         log.debug("orderDto: {}", orderDto);
 
-        orderService.order(orderDto);
+        return orderService.order(orderDto);
+    }
+
+    @GetMapping("/getOrder")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public OrderDto getOrder(@RequestParam Long orderId) {
+
+        return orderService.getOrder(orderId);
     }
 }
