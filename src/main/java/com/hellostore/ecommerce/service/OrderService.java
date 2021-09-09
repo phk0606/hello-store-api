@@ -2,13 +2,10 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.OrderProductDto;
+import com.hellostore.ecommerce.dto.OrderProductOptionDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
-import com.hellostore.ecommerce.enumType.PaymentMethodType;
-import com.hellostore.ecommerce.enumType.PaymentStatus;
-import com.hellostore.ecommerce.repository.OrderRepository;
-import com.hellostore.ecommerce.repository.ProductRepository;
-import com.hellostore.ecommerce.repository.UserRepository;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,8 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
+    private final OderProductOptionRepository oderProductOptionRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -68,7 +69,32 @@ public class OrderService {
     }
 
     public OrderDto getOrder(Long orderId) {
-        return orderRepository.getOrder(orderId);
+        // order 가져오기
+        OrderDto orderDto = orderRepository.getOrder(orderId);
+//        log.debug("orderDto: {}", orderDto);
+        // orderProducts 가져오기
+        List<OrderProductDto> orderProductDtos = orderProductRepository.getOrderProducts(orderId);
+        log.debug("orderProductDtos: {}", orderProductDtos);
+
+        // orderProductOptions 조회
+        Map<Long, List<OrderProductOptionDto>> orderProductOptionMap
+                = oderProductOptionRepository.getOrderProductOption(toOrderProductIds(orderProductDtos));
+
+        // orderProduct 루프 돌면서 orderProductOption 추가
+        orderProductDtos.forEach(o -> o.setOrderProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
+
+        orderDto.setOrderProducts(orderProductDtos);
+
+
+        // delivery 가져오기
+
+        return orderDto;
+    }
+
+    private List<Long> toOrderProductIds(List<OrderProductDto> result) {
+        return result.stream()
+                .map(o -> o.getOrderProductId())
+                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -1,6 +1,6 @@
-package com.hellostore.ecommerce.repository;
+package com.hellostore.ecommerce.service;
 
-import com.hellostore.ecommerce.entity.Order;
+import com.hellostore.ecommerce.dto.OrderDto;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +10,16 @@ import javax.transaction.Transactional;
 
 @SpringBootTest
 @Transactional
-//@Rollback(value = false)
 @Slf4j
-class OrderRepositoryTest {
+class OrderServiceTest {
 
     @Autowired
-    OrderRepository orderRepository;
+    OrderService orderService;
 
     @Test
     public void getOrder() {
-        Order order = orderRepository.findOne(5l);
+        OrderDto orderDto = orderService.getOrder(6l);
 
-        log.debug("order: {}", order);
+        log.debug("orderDto: {}", orderDto);
     }
 }
