@@ -20,6 +20,6 @@ public class OrderController {
     public void order(@RequestBody OrderDto orderDto) {
         log.debug("orderDto: {}", orderDto);
 
-//        orderService.order(orderDto);
+        orderService.order(orderDto);
     }
 }

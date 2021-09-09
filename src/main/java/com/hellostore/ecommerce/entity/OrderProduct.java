@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.dto.OrderProductDto;
+import com.hellostore.ecommerce.dto.OrderProductOptionDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,8 +33,8 @@ public class OrderProduct {
 
     private int salePrice;
     private int orderQuantity;
-    private int point;
-    private int orderShippingFee;
+    private Integer point;
+    private Integer orderShippingFee;
     private int totalPrice;
 
     public static OrderProduct createOrderProduct(Product product, OrderProductDto orderProductDto) {
@@ -42,8 +43,21 @@ public class OrderProduct {
         orderProduct.setSalePrice(orderProductDto.getSalePrice());
         orderProduct.setOrderQuantity(orderProductDto.getOrderQuantity());
         orderProduct.setPoint(orderProductDto.getPoint());
-        orderProduct.setOrderShippingFee(orderProduct.getOrderShippingFee());
+        orderProduct.setOrderShippingFee(orderProductDto.getOrderShippingFee());
         orderProduct.setTotalPrice(orderProductDto.getTotalPrice());
+
+        List<OrderProductOptionDto> orderProductOptionDtos = orderProductDto.getOrderProductOptions();
+        List<OrderProductOption> orderProductOptions = new ArrayList<>();
+        for (OrderProductOptionDto orderProductOption : orderProductOptionDtos) {
+            orderProductOptions.add(
+                    OrderProductOption.builder()
+                            .orderProduct(orderProduct)
+                            .optionGroupNumber(orderProductOption.getOptionGroupNumber())
+                            .optionName(orderProductOption.getOptionName())
+                            .optionValue(orderProductOption.getOptionValue())
+                            .build());
+        }
+        orderProduct.setOrderProductOptions(orderProductOptions);
 
         product.removeStock(orderProductDto.getOrderQuantity());
         return orderProduct;

@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
@@ -7,6 +8,7 @@ import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,9 @@ public class Order extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
+    private String depositAccount;
+    private String depositorName;
+    private LocalDate depositDueDate;
 
     public void setUser(User user) {
         this.user = user;
@@ -67,18 +72,28 @@ public class Order extends BaseEntity{
 
     public static Order createOrder(Optional<User> user, Delivery delivery,
                                     List<OrderProduct> orderProducts,
-                                    PaymentMethodType paymentMethodType,
-                                    PaymentStatus paymentStatus) {
+                                    OrderDto orderDto) {
         Order order = new Order();
         order.setUser(user.get());
         order.setDelivery(delivery);
+        order.setPhoneNumber(orderDto.getPhoneNumber());
         for (OrderProduct orderProduct : orderProducts) {
             order.addOrderProduct(orderProduct);
         }
+
         order.setStatus(OrderStatus.BEFORE_CONFIRM);
-        order.setPaymentStatus(paymentStatus);
-        order.setPaymentMethodType(paymentMethodType);
+        if (orderDto.getPaymentMethodType().equals(PaymentMethodType.WITHOUT_BANKBOOK)) {
+            order.setPaymentStatus(PaymentStatus.BEFORE);
+        } else {
+            order.setPaymentStatus(PaymentStatus.FINISHED);
+        }
+        order.setPaymentMethodType(orderDto.getPaymentMethodType());
         order.setOrderDate(LocalDateTime.now());
+        if(!orderDto.getDepositAccount().isEmpty()) {
+            order.setDepositAccount(orderDto.getDepositAccount());
+            order.setDepositorName(orderDto.getDepositorName());
+            order.setDepositDueDate(orderDto.getDepositDueDate());
+        }
         return order;
     }
 

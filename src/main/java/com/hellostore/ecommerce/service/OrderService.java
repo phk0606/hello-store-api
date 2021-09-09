@@ -54,9 +54,7 @@ public class OrderService {
 
         //주문 생성
         Order order
-                = Order.createOrder(user, delivery, orderProducts,
-                 orderDto.getPaymentMethodType(),
-                 orderDto.getPaymentStatus());
+                = Order.createOrder(user, delivery, orderProducts, orderDto);
 
         //주문 저장
         orderRepository.save(order);

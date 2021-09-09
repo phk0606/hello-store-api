@@ -15,8 +15,8 @@ public class OrderProductDto {
 
     private int salePrice;
     private int orderQuantity;
-    private int point;
-    private int orderShippingFee;
+    private Integer point;
+    private Integer orderShippingFee;
     private int totalPrice;
     private List<OrderProductOptionDto> orderProductOptions = new ArrayList<>();
 }

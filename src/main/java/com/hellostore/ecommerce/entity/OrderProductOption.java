@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -28,4 +25,12 @@ public class OrderProductOption {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_product_id")
     private OrderProduct orderProduct;
+
+    @Builder
+    public OrderProductOption(OrderProduct orderProduct, Integer optionGroupNumber, String optionName, String optionValue) {
+        this.orderProduct = orderProduct;
+        this.optionGroupNumber = optionGroupNumber;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
+    }
 }

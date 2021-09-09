@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class OrderDto {
 
     private PaymentMethodType paymentMethodType;
     private PaymentStatus paymentStatus;
+    private String depositAccount;
+    private String depositorName;
+    private LocalDate depositDueDate;
 
     private List<OrderProductDto> orderProducts = new ArrayList<>();
     private DeliveryDto delivery;
