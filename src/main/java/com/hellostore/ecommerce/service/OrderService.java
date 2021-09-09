@@ -41,7 +41,13 @@ public class OrderService {
                 address1.getZoneCode(),
                 address1.getAddress(),
                 address1.getDetailAddress());
-        Delivery delivery = Delivery.builder().address(address).status(DeliveryStatus.READY).build();
+        Delivery delivery = Delivery.builder()
+                .address(address)
+                .status(DeliveryStatus.READY)
+                .phoneNumber(orderDto.getDelivery().getPhoneNumber())
+                .recipientName(orderDto.getDelivery().getRecipientName())
+                .requirement(orderDto.getDelivery().getRequirement())
+                .build();
 
         List<OrderProductDto> orderProductDtos = orderDto.getOrderProducts();
 
