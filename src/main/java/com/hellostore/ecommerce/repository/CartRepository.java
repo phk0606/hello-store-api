@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.Cart;
+import com.hellostore.ecommerce.entity.QCart;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +18,16 @@ public class CartRepository {
         this.em = em;
     }
 
-    public void save(Cart cart) {
+    public Cart save(Cart cart) {
         em.persist(cart);
+        return cart;
+    }
+
+    public Cart getCart(Long userNo) {
+        QCart cart = QCart.cart;
+
+        return queryFactory.selectFrom(cart)
+                .where(cart.user.id.eq(userNo))
+                .fetchOne();
     }
 }

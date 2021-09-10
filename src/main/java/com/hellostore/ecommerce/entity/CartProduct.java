@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartProduct {
@@ -25,4 +24,11 @@ public class CartProduct {
     private Cart cart;
 
     private int quantity;
+
+    @Builder
+    public CartProduct(Product product, Cart cart, int quantity) {
+        this.product = product;
+        this.cart = cart;
+        this.quantity = quantity;
+    }
 }
