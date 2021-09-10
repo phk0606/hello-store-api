@@ -25,6 +25,4 @@ public class Cart extends BaseEntity {
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<CartProduct> cartProducts = new ArrayList<>();
-
-    private int quantity;
 }
