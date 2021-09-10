@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 
 @SpringBootTest
 @Transactional
@@ -17,7 +18,7 @@ class OrderServiceTest {
     OrderService orderService;
 
     @Test
-    public void getOrder() {
+    public void getOrder() throws IOException {
         OrderDto orderDto = orderService.getOrder(6l);
 
         log.debug("orderDto: {}", orderDto);

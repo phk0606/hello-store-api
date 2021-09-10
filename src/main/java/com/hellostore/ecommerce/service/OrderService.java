@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.OrderProductOptionDto;
+import com.hellostore.ecommerce.dto.ProductImageDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.repository.*;
@@ -11,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +72,18 @@ public class OrderService {
         return order.getId();
     }
 
-    public OrderDto getOrder(Long orderId) {
+    public OrderDto getOrder(Long orderId) throws IOException {
         // order 가져오기
         OrderDto orderDto = orderRepository.getOrder(orderId);
 //        log.debug("orderDto: {}", orderDto);
         // orderProducts 가져오기
         List<OrderProductDto> orderProductDtos = orderProductRepository.getOrderProducts(orderId);
+
+        // product image 가져오기
+        for (OrderProductDto orderProductDto : orderProductDtos) {
+            orderProductDto.setImage(Files.readAllBytes(
+                    Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
+        }
         log.debug("orderProductDtos: {}", orderProductDtos);
 
         // orderProductOptions 조회

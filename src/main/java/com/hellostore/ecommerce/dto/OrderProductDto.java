@@ -24,6 +24,11 @@ public class OrderProductDto {
     @Setter
     private List<OrderProductOptionDto> orderProductOptions = new ArrayList<>();
 
+    @Setter
+    private byte[] image;
+    private String fileName;
+    private String filePath;
+
     public OrderProductDto(OrderProduct orderProduct) {
         this.orderProductId = orderProduct.getId();
         this.salePrice = orderProduct.getSalePrice();
@@ -34,12 +39,14 @@ public class OrderProductDto {
     }
 
     @QueryProjection
-    public OrderProductDto(Long orderProductId, int salePrice, int orderQuantity, Integer point, Integer orderShippingFee, int totalPrice) {
+    public OrderProductDto(Long orderProductId, int salePrice, int orderQuantity, Integer point, Integer orderShippingFee, int totalPrice, String filePath, String fileName) {
         this.orderProductId = orderProductId;
         this.salePrice = salePrice;
         this.orderQuantity = orderQuantity;
         this.point = point;
         this.orderShippingFee = orderShippingFee;
         this.totalPrice = totalPrice;
+        this.filePath = filePath;
+        this.fileName = fileName;
     }
 }

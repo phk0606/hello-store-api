@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/order")
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class OrderController {
 
     @GetMapping("/getOrder")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public OrderDto getOrder(@RequestParam Long orderId) {
+    public OrderDto getOrder(@RequestParam Long orderId) throws IOException {
 
         return orderService.getOrder(orderId);
     }
