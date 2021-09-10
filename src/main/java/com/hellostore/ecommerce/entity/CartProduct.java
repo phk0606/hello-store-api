@@ -23,12 +23,22 @@ public class CartProduct {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    private String firstOptionName;
+    private String firstOptionValue;
+
+    private String secondOptionName;
+    private String secondOptionValue;
+
     private int quantity;
 
     @Builder
-    public CartProduct(Product product, Cart cart, int quantity) {
+    public CartProduct(Product product, Cart cart, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue) {
         this.product = product;
         this.cart = cart;
         this.quantity = quantity;
+        this.firstOptionName = firstOptionName;
+        this.firstOptionValue = firstOptionValue;
+        this.secondOptionName = secondOptionName;
+        this.secondOptionValue = secondOptionValue;
     }
 }

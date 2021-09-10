@@ -20,13 +20,15 @@ import org.springframework.util.ObjectUtils;
 @Slf4j
 public class CartService {
 
-    private CartRepository cartRepository;
-    private CartProductRepository cartProductRepository;
-    private UserService userService;
-    private ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final CartProductRepository cartProductRepository;
+    private final UserService userService;
+    private final ProductRepository productRepository;
 
+    @Transactional
     public void addCartProduct(CartProductDto cartProductDto) {
 
+        log.debug("cartProductDto: {}", cartProductDto);
         Long userNo = userService.getLoginUserInfo().getUserNo();
         Cart cart = cartRepository.getCart(userNo);
 
@@ -41,6 +43,10 @@ public class CartService {
                         .cart(cart)
                         .product(product)
                         .quantity(cartProductDto.getQuantity())
+                        .firstOptionName(cartProductDto.getFirstOptionName())
+                        .firstOptionValue(cartProductDto.getFirstOptionValue())
+                        .secondOptionName(cartProductDto.getSecondOptionName())
+                        .secondOptionValue(cartProductDto.getSecondOptionValue())
                         .build());
     }
 }

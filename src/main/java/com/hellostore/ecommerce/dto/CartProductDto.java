@@ -12,4 +12,10 @@ public class CartProductDto {
     private Long productId;
     private int quantity;
 
+    private String firstOptionName;
+    private String firstOptionValue;
+
+    private String secondOptionName;
+    private String secondOptionValue;
+
 }
