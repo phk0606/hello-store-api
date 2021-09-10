@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -48,5 +50,9 @@ public class CartService {
                         .secondOptionName(cartProductDto.getSecondOptionName())
                         .secondOptionValue(cartProductDto.getSecondOptionValue())
                         .build());
+    }
+
+    public List<CartProductDto> getCartProducts(String username) {
+        return cartProductRepository.getCartProducts(username);
     }
 }
