@@ -35,7 +35,7 @@ public class OrderRepository {
         return queryFactory.select(
                 new QOrderDto(
                         order.id, order.user.id, user.username, user.name,
-                        order.phoneNumber, order.paymentMethodType,
+                        order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.depositAccount, order.depositorName, order.depositDueDate,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                         delivery.address

@@ -25,6 +25,7 @@ public class OrderDto {
 
     private PaymentMethodType paymentMethodType;
     private PaymentStatus paymentStatus;
+    private Integer paymentPrice;
 
     private String depositAccount;
     private String depositorName;
@@ -54,7 +55,7 @@ public class OrderDto {
 
     @QueryProjection
     public OrderDto(Long orderId, Long userNo, String username, String name,
-                    String phoneNumber, PaymentMethodType paymentMethodType,
+                    String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address) {
@@ -64,6 +65,7 @@ public class OrderDto {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.paymentMethodType = paymentMethodType;
+        this.paymentPrice = paymentPrice;
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;

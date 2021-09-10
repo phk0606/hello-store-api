@@ -51,6 +51,8 @@ public class Order extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
+    private Integer paymentPrice;
+
     private String depositAccount;
     private String depositorName;
     private LocalDate depositDueDate;
@@ -88,6 +90,7 @@ public class Order extends BaseEntity{
             order.setPaymentStatus(PaymentStatus.FINISHED);
         }
         order.setPaymentMethodType(orderDto.getPaymentMethodType());
+        order.setPaymentPrice(orderDto.getPaymentPrice());
         order.setOrderDate(LocalDateTime.now());
         if(!orderDto.getDepositAccount().isEmpty()) {
             order.setDepositAccount(orderDto.getDepositAccount());
