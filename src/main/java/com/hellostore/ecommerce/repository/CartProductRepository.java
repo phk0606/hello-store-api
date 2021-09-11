@@ -37,7 +37,9 @@ public class CartProductRepository {
                         cartProduct.firstOptionName, cartProduct.firstOptionValue,
                         cartProduct.secondOptionName, cartProduct.secondOptionValue,
                         product.name, product.salePrice,
-                        productImage.filePath, productImage.fileName))
+                        product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
+                        productImage.filePath, productImage.fileName
+                        ))
                 .from(cartProduct)
                 .join(cart).on(cartProduct.cart.id.eq(cart.id))
                 .join(user).on(user.id.eq(cart.user.id))
