@@ -23,7 +23,6 @@ public class CartProductDto {
 
     private String productName;
     private int salePrice;
-    private int totalPrice;
 
     @Setter
     private byte[] image;
@@ -32,7 +31,7 @@ public class CartProductDto {
     private String fileName;
 
     @QueryProjection
-    public CartProductDto(Long cartProductId, Long productId, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue, String productName, int salePrice, int totalPrice, String filePath, String fileName) {
+    public CartProductDto(Long cartProductId, Long productId, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue, String productName, int salePrice, String filePath, String fileName) {
         this.cartProductId = cartProductId;
         this.productId = productId;
         this.quantity = quantity;
@@ -42,7 +41,6 @@ public class CartProductDto {
         this.secondOptionValue = secondOptionValue;
         this.productName = productName;
         this.salePrice = salePrice;
-        this.totalPrice = totalPrice;
         this.filePath = filePath;
         this.fileName = fileName;
     }
