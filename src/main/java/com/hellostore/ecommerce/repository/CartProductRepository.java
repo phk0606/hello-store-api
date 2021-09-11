@@ -4,7 +4,6 @@ import com.hellostore.ecommerce.dto.CartProductDto;
 import com.hellostore.ecommerce.dto.QCartProductDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
-import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -38,7 +37,6 @@ public class CartProductRepository {
                         cartProduct.firstOptionName, cartProduct.firstOptionValue,
                         cartProduct.secondOptionName, cartProduct.secondOptionValue,
                         product.name, product.salePrice,
-                        product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
                         productImage.filePath, productImage.fileName))
                 .from(cartProduct)
                 .join(cart).on(cartProduct.cart.id.eq(cart.id))
