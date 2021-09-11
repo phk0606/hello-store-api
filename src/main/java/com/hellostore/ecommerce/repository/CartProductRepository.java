@@ -2,10 +2,9 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.CartProductDto;
 import com.hellostore.ecommerce.dto.QCartProductDto;
-import com.hellostore.ecommerce.entity.CartProduct;
-import com.hellostore.ecommerce.entity.QCart;
-import com.hellostore.ecommerce.entity.QCartProduct;
-import com.hellostore.ecommerce.entity.QUser;
+import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.enumType.ImageType;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -31,14 +30,22 @@ public class CartProductRepository {
         QCartProduct cartProduct = QCartProduct.cartProduct;
         QCart cart = QCart.cart;
         QUser user = QUser.user;
+        QProduct product = QProduct.product;
+        QProductImage productImage = QProductImage.productImage;
 
         return queryFactory.select(
                 new QCartProductDto(cartProduct.id, cartProduct.product.id, cartProduct.quantity,
                         cartProduct.firstOptionName, cartProduct.firstOptionValue,
-                        cartProduct.secondOptionName, cartProduct.secondOptionValue))
+                        cartProduct.secondOptionName, cartProduct.secondOptionValue,
+                        product.name, product.salePrice,
+                        product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
+                        productImage.filePath, productImage.fileName))
                 .from(cartProduct)
                 .join(cart).on(cartProduct.cart.id.eq(cart.id))
                 .join(user).on(user.id.eq(cart.user.id))
+                .join(product).on(product.id.eq(cartProduct.product.id))
+                .leftJoin(productImage).on(productImage.product.id.eq(cartProduct.product.id))
+                .on(productImage.imageType.eq(ImageType.LIST))
                 .where(user.username.eq(username))
                 .fetch();
     }

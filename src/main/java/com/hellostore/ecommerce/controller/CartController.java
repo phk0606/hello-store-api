@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -26,7 +27,7 @@ public class CartController {
 
     @GetMapping("/getCartProducts")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<CartProductDto> getCartProducts(@RequestParam String username) {
+    public List<CartProductDto> getCartProducts(@RequestParam String username) throws IOException {
         return cartService.getCartProducts(username);
     }
 }

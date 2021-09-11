@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -52,7 +55,14 @@ public class CartService {
                         .build());
     }
 
-    public List<CartProductDto> getCartProducts(String username) {
-        return cartProductRepository.getCartProducts(username);
+    public List<CartProductDto> getCartProducts(String username) throws IOException {
+        List<CartProductDto> cartProducts = cartProductRepository.getCartProducts(username);
+
+        for (CartProductDto cartProduct : cartProducts) {
+            cartProduct.setImage(Files.readAllBytes(
+                    Paths.get(cartProduct.getFilePath(), cartProduct.getFileName())));
+        }
+
+        return cartProducts;
     }
 }
