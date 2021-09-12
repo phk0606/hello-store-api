@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.CartProductDto;
 import com.hellostore.ecommerce.dto.QCartProductDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +13,11 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCart.*;
 import static com.hellostore.ecommerce.entity.QCartProduct.*;
+import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductImage.*;
 import static com.hellostore.ecommerce.entity.QUser.*;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 public class CartProductRepository {
@@ -31,7 +34,7 @@ public class CartProductRepository {
         em.persist(cartProduct);
     }
 
-    public List<CartProductDto> getCartProducts(String username) {
+    public List<CartProductDto> getCartProducts(String username, List<Long> cartProductIds) {
 
         return queryFactory.select(
                 new QCartProductDto(cartProduct.cart.id, cartProduct.id, cartProduct.product.id, cartProduct.quantity,
@@ -39,6 +42,8 @@ public class CartProductRepository {
                         cartProduct.secondOptionName, cartProduct.secondOptionValue,
                         product.name, product.salePrice,
                         product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
+                        product.pointType, product.pointPerPrice,
+                        product.shippingFeeType, product.eachShippingFee,
                         productImage.filePath, productImage.fileName
                         ))
                 .from(cartProduct)
@@ -47,8 +52,21 @@ public class CartProductRepository {
                 .join(product).on(product.id.eq(cartProduct.product.id))
                 .leftJoin(productImage).on(productImage.product.id.eq(cartProduct.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
-                .where(user.username.eq(username))
+                .where(
+                        usernameEq(username),
+                        idIn(cartProductIds)
+                )
                 .fetch();
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return !isEmpty(username)
+                ? user.username.eq(username) : null;
+    }
+
+    private BooleanExpression idIn(List<Long> cartProductIds) {
+        return !isEmpty(cartProductIds)
+                ? cartProduct.id.in(cartProductIds) : null;
     }
 
     public void modifyQuantity(Long cartProductId, int quantity) {

@@ -27,8 +27,10 @@ public class CartController {
 
     @GetMapping("/getCartProducts")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<CartProductDto> getCartProducts(@RequestParam String username) throws IOException {
-        return cartService.getCartProducts(username);
+    public List<CartProductDto> getCartProducts(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) List<Long> cartProductIds) throws IOException {
+        return cartService.getCartProducts(username, cartProductIds);
     }
 
     @PutMapping("/modifyQuantity")

@@ -5,6 +5,8 @@ import com.hellostore.ecommerce.entity.Cart;
 import com.hellostore.ecommerce.entity.CartProduct;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.User;
+import com.hellostore.ecommerce.enumType.PointType;
+import com.hellostore.ecommerce.enumType.ShippingFeeType;
 import com.hellostore.ecommerce.repository.CartProductRepository;
 import com.hellostore.ecommerce.repository.CartRepository;
 import com.hellostore.ecommerce.repository.ProductRepository;
@@ -55,10 +57,24 @@ public class CartService {
                         .build());
     }
 
-    public List<CartProductDto> getCartProducts(String username) throws IOException {
-        List<CartProductDto> cartProducts = cartProductRepository.getCartProducts(username);
+    public List<CartProductDto> getCartProducts(String username, List<Long> cartProductIds) throws IOException {
+        List<CartProductDto> cartProducts = cartProductRepository.getCartProducts(username, cartProductIds);
 
         for (CartProductDto cartProduct : cartProducts) {
+
+            if (cartProduct.getPointType().equals(PointType.DEFAULT)) {
+                cartProduct.setPoint((cartProduct.getSalePrice() * 0.5) / 100);
+            } else if (cartProduct.getPointType().equals(PointType.EACH)) {
+                cartProduct.setPoint(cartProduct.getSalePrice() * cartProduct.getPointPerPrice());
+            }
+
+            if (cartProduct.getShippingFeeType().equals(ShippingFeeType.DEFAULT)) {
+                cartProduct.setShippingFee(2500);
+            } else if (cartProduct.getShippingFeeType().equals(ShippingFeeType.EACH)) {
+                cartProduct.setShippingFee(cartProduct.getEachShippingFee());
+            }
+            cartProduct.setTotalPrice((int) (cartProduct.getTotalPrice() + cartProduct.getShippingFee()));
+
             cartProduct.setImage(Files.readAllBytes(
                     Paths.get(cartProduct.getFilePath(), cartProduct.getFileName())));
         }
