@@ -10,6 +10,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCart.*;
+import static com.hellostore.ecommerce.entity.QCartProduct.*;
+import static com.hellostore.ecommerce.entity.QProduct.*;
+import static com.hellostore.ecommerce.entity.QProductImage.*;
+import static com.hellostore.ecommerce.entity.QUser.*;
+
 @Repository
 public class CartProductRepository {
 
@@ -26,14 +32,9 @@ public class CartProductRepository {
     }
 
     public List<CartProductDto> getCartProducts(String username) {
-        QCartProduct cartProduct = QCartProduct.cartProduct;
-        QCart cart = QCart.cart;
-        QUser user = QUser.user;
-        QProduct product = QProduct.product;
-        QProductImage productImage = QProductImage.productImage;
 
         return queryFactory.select(
-                new QCartProductDto(cartProduct.id, cartProduct.product.id, cartProduct.quantity,
+                new QCartProductDto(cartProduct.cart.id, cartProduct.id, cartProduct.product.id, cartProduct.quantity,
                         cartProduct.firstOptionName, cartProduct.firstOptionValue,
                         cartProduct.secondOptionName, cartProduct.secondOptionValue,
                         product.name, product.salePrice,
@@ -48,5 +49,26 @@ public class CartProductRepository {
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .where(user.username.eq(username))
                 .fetch();
+    }
+
+    public void modifyQuantity(Long cartProductId, int quantity) {
+        queryFactory.update(cartProduct)
+                .set(cartProduct.quantity, quantity)
+                .where(cartProduct.id.eq(cartProductId))
+                .execute();
+    }
+
+    public void removeCartProducts(List<Long> cartProductIds) {
+        queryFactory.delete(cartProduct)
+                .where(cartProduct.id.in(cartProductIds))
+                .execute();
+    }
+
+    public boolean existCartProducts(Long cartId) {
+        Integer fetchOne = queryFactory.selectOne()
+                .from(cartProduct)
+                .where(cartProduct.cart.id.eq(cartId))
+                .fetchFirst();
+        return fetchOne != null;
     }
 }

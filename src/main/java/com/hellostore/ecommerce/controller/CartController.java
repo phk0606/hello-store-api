@@ -30,4 +30,16 @@ public class CartController {
     public List<CartProductDto> getCartProducts(@RequestParam String username) throws IOException {
         return cartService.getCartProducts(username);
     }
+
+    @PutMapping("/modifyQuantity")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyQuantity(@RequestBody CartProductDto cartProductDto) {
+        cartService.modifyQuantity(cartProductDto.getCartProductId(), cartProductDto.getQuantity());
+    }
+
+    @DeleteMapping("/removeCartProducts")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeCartProducts(@RequestBody CartProductDto cartProductDto) {
+        cartService.removeCartProducts(cartProductDto.getCartProductIds(), cartProductDto.getCartId());
+    }
 }

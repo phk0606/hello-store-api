@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
+import static com.hellostore.ecommerce.entity.QCart.*;
+
 @Repository
 public class CartRepository {
 
@@ -24,10 +26,15 @@ public class CartRepository {
     }
 
     public Cart getCart(Long userNo) {
-        QCart cart = QCart.cart;
 
         return queryFactory.selectFrom(cart)
                 .where(cart.user.id.eq(userNo))
                 .fetchOne();
+    }
+
+    public void removeCart(Long cartId) {
+        queryFactory.delete(cart)
+                .where(cart.id.eq(cartId))
+                .execute();
     }
 }

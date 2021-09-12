@@ -65,4 +65,18 @@ public class CartService {
 
         return cartProducts;
     }
+
+    @Transactional
+    public void modifyQuantity(Long cartProductId, int quantity) {
+        cartProductRepository.modifyQuantity(cartProductId, quantity);
+    }
+
+    @Transactional
+    public void removeCartProducts(List<Long> cartProductIds, Long cartId) {
+        cartProductRepository.removeCartProducts(cartProductIds);
+        boolean existCartProducts = cartProductRepository.existCartProducts(cartId);
+        if (!existCartProducts) {
+            cartRepository.removeCart(cartId);
+        }
+    }
 }

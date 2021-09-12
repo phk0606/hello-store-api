@@ -6,12 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @ToString
 public class CartProductDto {
 
+    private Long cartId;
     private Long cartProductId;
+    private List<Long> cartProductIds;
     private Long productId;
     private int quantity;
 
@@ -32,7 +36,8 @@ public class CartProductDto {
     private String fileName;
 
     @QueryProjection
-    public CartProductDto(Long cartProductId, Long productId, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue, String productName, int salePrice, int totalPrice, String filePath, String fileName) {
+    public CartProductDto(Long cartId, Long cartProductId, Long productId, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue, String productName, int salePrice, int totalPrice, String filePath, String fileName) {
+        this.cartId = cartId;
         this.cartProductId = cartProductId;
         this.productId = productId;
         this.quantity = quantity;
