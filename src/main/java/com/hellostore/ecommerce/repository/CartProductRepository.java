@@ -38,8 +38,6 @@ public class CartProductRepository {
 
         return queryFactory.select(
                 new QCartProductDto(cartProduct.cart.id, cartProduct.id, cartProduct.product.id, cartProduct.quantity,
-                        cartProduct.firstOptionName, cartProduct.firstOptionValue,
-                        cartProduct.secondOptionName, cartProduct.secondOptionValue,
                         product.name, product.salePrice,
                         product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
                         product.pointType, product.pointPerPrice,

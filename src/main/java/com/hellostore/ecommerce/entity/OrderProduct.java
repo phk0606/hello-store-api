@@ -32,21 +32,21 @@ public class OrderProduct {
     private List<OrderProductOption> orderProductOptions = new ArrayList<>();
 
     private int salePrice;
-    private int orderQuantity;
+    private int quantity;
     private Integer point;
-    private Integer orderShippingFee;
+    private Integer shippingFee;
     private int totalPrice;
 
     public static OrderProduct createOrderProduct(Product product, OrderProductDto orderProductDto) {
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setProduct(product);
         orderProduct.setSalePrice(orderProductDto.getSalePrice());
-        orderProduct.setOrderQuantity(orderProductDto.getOrderQuantity());
+        orderProduct.setQuantity(orderProductDto.getQuantity());
         orderProduct.setPoint(orderProductDto.getPoint());
-        orderProduct.setOrderShippingFee(orderProductDto.getOrderShippingFee());
+        orderProduct.setShippingFee(orderProductDto.getShippingFee());
         orderProduct.setTotalPrice(orderProductDto.getTotalPrice());
 
-        List<OrderProductOptionDto> orderProductOptionDtos = orderProductDto.getOrderProductOptions();
+        List<OrderProductOptionDto> orderProductOptionDtos = orderProductDto.getProductOptions();
         List<OrderProductOption> orderProductOptions = new ArrayList<>();
         for (OrderProductOptionDto orderProductOption : orderProductOptionDtos) {
             orderProductOptions.add(
@@ -59,16 +59,16 @@ public class OrderProduct {
         }
         orderProduct.setOrderProductOptions(orderProductOptions);
 
-        product.removeStock(orderProductDto.getOrderQuantity());
+        product.removeStock(orderProductDto.getQuantity());
         return orderProduct;
     }
     
     public void cancel() {
-        getProduct().addStock(orderQuantity);
+        getProduct().addStock(quantity);
     } 
     
     public int getTotalPrice() {
-        return getSalePrice() * getOrderQuantity();
+        return getSalePrice() * getQuantity();
     }
 
 }

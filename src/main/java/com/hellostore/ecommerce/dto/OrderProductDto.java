@@ -16,13 +16,15 @@ import java.util.List;
 public class OrderProductDto {
 
     private Long orderProductId;
+    private Long productId;
+    private String productName;
     private int salePrice;
-    private int orderQuantity;
+    private int quantity;
     private Integer point;
-    private Integer orderShippingFee;
+    private Integer shippingFee;
     private int totalPrice;
     @Setter
-    private List<OrderProductOptionDto> orderProductOptions = new ArrayList<>();
+    private List<OrderProductOptionDto> productOptions = new ArrayList<>();
 
     @Setter
     private byte[] image;
@@ -32,19 +34,21 @@ public class OrderProductDto {
     public OrderProductDto(OrderProduct orderProduct) {
         this.orderProductId = orderProduct.getId();
         this.salePrice = orderProduct.getSalePrice();
-        this.orderQuantity = orderProduct.getOrderQuantity();
+        this.quantity = orderProduct.getQuantity();
         this.point = orderProduct.getPoint();
-        this.orderShippingFee = orderProduct.getOrderShippingFee();
+        this.shippingFee = orderProduct.getShippingFee();
         this.totalPrice = orderProduct.getTotalPrice();
     }
 
     @QueryProjection
-    public OrderProductDto(Long orderProductId, int salePrice, int orderQuantity, Integer point, Integer orderShippingFee, int totalPrice, String filePath, String fileName) {
+    public OrderProductDto(Long productId, String productName, Long orderProductId, int salePrice, int quantity, Integer point, Integer shippingFee, int totalPrice, String filePath, String fileName) {
+        this.productId = productId;
+        this.productName = productName;
         this.orderProductId = orderProductId;
         this.salePrice = salePrice;
-        this.orderQuantity = orderQuantity;
+        this.quantity = quantity;
         this.point = point;
-        this.orderShippingFee = orderShippingFee;
+        this.shippingFee = shippingFee;
         this.totalPrice = totalPrice;
         this.filePath = filePath;
         this.fileName = fileName;

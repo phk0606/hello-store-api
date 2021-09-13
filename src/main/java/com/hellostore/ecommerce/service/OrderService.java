@@ -38,7 +38,15 @@ public class OrderService {
 
         //엔티티 조회
         Optional<User> user = userRepository.findById(orderDto.getUserNo());
-        Product product = productRepository.getProduct(orderDto.getProductId());
+
+        List<OrderProductDto> orderProductDtos = orderDto.getOrderProducts();
+
+        List<OrderProduct> orderProducts = new ArrayList<>();
+        for (OrderProductDto orderProductDto : orderProductDtos) {
+            Product product = productRepository.getProduct(orderProductDto.getProductId());
+            //주문상품 생성
+            orderProducts.add(OrderProduct.createOrderProduct(product, orderProductDto));
+        }
 
         //배송 정보 생성
         Address address1 = orderDto.getDelivery().getAddress();
@@ -53,15 +61,6 @@ public class OrderService {
                 .recipientName(orderDto.getDelivery().getRecipientName())
                 .requirement(orderDto.getDelivery().getRequirement())
                 .build();
-
-        List<OrderProductDto> orderProductDtos = orderDto.getOrderProducts();
-
-        List<OrderProduct> orderProducts = new ArrayList<>();
-        for (OrderProductDto orderProductDto : orderProductDtos) {
-
-            //주문상품 생성
-            orderProducts.add(OrderProduct.createOrderProduct(product, orderProductDto));
-        }
 
         //주문 생성
         Order order
@@ -79,22 +78,22 @@ public class OrderService {
         // orderProducts 가져오기
         List<OrderProductDto> orderProductDtos = orderProductRepository.getOrderProducts(orderId);
 
+        log.debug("orderProductDtos: {}", orderProductDtos);
         // product image 가져오기
         for (OrderProductDto orderProductDto : orderProductDtos) {
             orderProductDto.setImage(Files.readAllBytes(
                     Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
         }
-        log.debug("orderProductDtos: {}", orderProductDtos);
 
         // orderProductOptions 조회
         Map<Long, List<OrderProductOptionDto>> orderProductOptionMap
                 = oderProductOptionRepository.getOrderProductOption(toOrderProductIds(orderProductDtos));
 
+        log.debug("orderProductOptionMap: {}", orderProductOptionMap);
         // orderProduct 루프 돌면서 orderProductOption 추가
-        orderProductDtos.forEach(o -> o.setOrderProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
+        orderProductDtos.forEach(o -> o.setProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
 
         orderDto.setOrderProducts(orderProductDtos);
-
 
         // delivery 가져오기
 

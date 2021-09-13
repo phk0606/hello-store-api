@@ -1,11 +1,16 @@
 package com.hellostore.ecommerce.entity;
 
+import com.hellostore.ecommerce.dto.CartProductDto;
+import com.hellostore.ecommerce.dto.CartProductOptionDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CartProduct {
@@ -23,22 +28,30 @@ public class CartProduct {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    private String firstOptionName;
-    private String firstOptionValue;
-
-    private String secondOptionName;
-    private String secondOptionValue;
+    @OneToMany(mappedBy = "cartProduct", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartProductOption> cartProductOptions = new ArrayList<>();
 
     private int quantity;
 
-    @Builder
-    public CartProduct(Product product, Cart cart, int quantity, String firstOptionName, String firstOptionValue, String secondOptionName, String secondOptionValue) {
-        this.product = product;
-        this.cart = cart;
-        this.quantity = quantity;
-        this.firstOptionName = firstOptionName;
-        this.firstOptionValue = firstOptionValue;
-        this.secondOptionName = secondOptionName;
-        this.secondOptionValue = secondOptionValue;
+    public static CartProduct createCartProduct(Cart cart, Product product, CartProductDto cartProductDto) {
+        CartProduct cartProduct = new CartProduct();
+        cartProduct.setCart(cart);
+        cartProduct.setProduct(product);
+        cartProduct.setQuantity(cartProductDto.getQuantity());
+
+        List<CartProductOptionDto> cartProductOptionDtos = cartProductDto.getProductOptions();
+        List<CartProductOption> cartProductOptions = new ArrayList<>();
+        for (CartProductOptionDto cartProductOption : cartProductOptionDtos) {
+            cartProductOptions.add(
+                    CartProductOption.builder()
+                            .cartProduct(cartProduct)
+                            .optionGroupNumber(cartProductOption.getOptionGroupNumber())
+                            .optionName(cartProductOption.getOptionName())
+                            .optionValue(cartProductOption.getOptionValue())
+                            .build());
+        }
+        cartProduct.setCartProductOptions(cartProductOptions);
+
+        return cartProduct;
     }
 }

@@ -3,7 +3,7 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.QOrderProductDto;
 import com.hellostore.ecommerce.entity.QOrderProduct;
-import com.hellostore.ecommerce.entity.QOrderProductOption;
+import com.hellostore.ecommerce.entity.QProduct;
 import com.hellostore.ecommerce.entity.QProductImage;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,18 +25,21 @@ public class OrderProductRepository {
 
     public List<OrderProductDto> getOrderProducts(Long orderId) {
         QOrderProduct orderProduct = QOrderProduct.orderProduct;
-        QOrderProductOption orderProductOption = QOrderProductOption.orderProductOption;
         QProductImage productImage = QProductImage.productImage;
+        QProduct product = QProduct.product;
 
         // orderProduct 조회
         return queryFactory.select(
                         new QOrderProductDto(
+                                orderProduct.product.id,
+                                product.name,
                                 orderProduct.id, orderProduct.salePrice,
-                                orderProduct.orderQuantity, orderProduct.point,
-                                orderProduct.orderShippingFee, orderProduct.totalPrice,
+                                orderProduct.quantity, orderProduct.point,
+                                orderProduct.shippingFee, orderProduct.totalPrice,
                                 productImage.filePath, productImage.fileName
                         ))
                 .from(orderProduct)
+                .join(product).on(product.id.eq(orderProduct.product.id))
                 .leftJoin(productImage).on(productImage.product.id.eq(orderProduct.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .where(orderProduct.order.id.eq(orderId))
