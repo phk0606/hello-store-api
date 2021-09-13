@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -30,5 +31,11 @@ public class OrderController {
     public OrderDto getOrder(@RequestParam Long orderId) throws IOException {
 
         return orderService.getOrder(orderId);
+    }
+
+    @GetMapping("/getOrdersByUsername")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public List<OrderDto> getOrdersByUsername(@RequestParam String username) {
+        return orderService.getOrdersByUsername(username);
     }
 }

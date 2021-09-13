@@ -114,6 +114,10 @@ public class OrderService {
         order.cancel();
     }
 
+    public List<OrderDto> getOrdersByUsername(String username) {
+        return orderRepository.getOrdersByUsername(username);
+    }
+
 //    public List<Order> findOrders(OrderSearch orderSearch) {
 //        return orderRepository.findAll(orderSearch);
 //    }

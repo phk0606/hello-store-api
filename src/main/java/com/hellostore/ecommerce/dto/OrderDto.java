@@ -8,6 +8,7 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long orderId;
+    private LocalDateTime createdDate;
     private Long userNo;
     private String username;
     private String name;
@@ -74,43 +76,26 @@ public class OrderDto {
         this.address = address;
     }
 
-    //    private Long orderProductId;
-//    private int orderQuantity;
-//    private Integer orderShippingFee;
-//    private Integer point;
-//    private int salePrice;
-//    private int totalPrice;
-//
-//    private Long deliveryId;
-//    private String zoneCode;
-//    private String address;
-//    private String detailAddress;
-//    private String recipientName;
-//    private String recipientPhoneNumber;
-//    private String requirement;
-//
-//    @QueryProjection
-//    public OrderDto(Long orderId, String username, String phoneNumber, PaymentMethodType paymentMethodType,
-//                    Long productId, int orderQuantity, Integer orderShippingFee, Integer point,
-//                    int salePrice, int totalPrice,
-//                    Long deliveryId, String zoneCode, String address, String detailAddress,
-//                    String recipientName, String recipientPhoneNumber, String requirement) {
-//        this.orderId = orderId;
-//        this.username = username;
-//        this.phoneNumber = phoneNumber;
-//        this.paymentMethodType = paymentMethodType;
-//        this.productId = productId;
-//        this.orderQuantity = orderQuantity;
-//        this.orderShippingFee = orderShippingFee;
-//        this.point = point;
-//        this.salePrice = salePrice;
-//        this.totalPrice = totalPrice;
-//        this.deliveryId = deliveryId;
-//        this.zoneCode = zoneCode;
-//        this.address = address;
-//        this.detailAddress = detailAddress;
-//        this.recipientName = recipientName;
-//        this.recipientPhoneNumber = recipientPhoneNumber;
-//        this.requirement = requirement;
-//    }
+    @QueryProjection
+    public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
+                    String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
+                    String depositAccount, String depositorName, LocalDate depositDueDate,
+                    String recipientName, String recipientPhoneNumber,
+                    String requirement, Address address) {
+        this.orderId = orderId;
+        this.createdDate = createdDate;
+        this.userNo = userNo;
+        this.username = username;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.paymentMethodType = paymentMethodType;
+        this.paymentPrice = paymentPrice;
+        this.depositAccount = depositAccount;
+        this.depositorName = depositorName;
+        this.depositDueDate = depositDueDate;
+        this.recipientName = recipientName;
+        this.recipientPhoneNumber = recipientPhoneNumber;
+        this.requirement = requirement;
+        this.address = address;
+    }
 }

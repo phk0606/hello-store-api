@@ -3,13 +3,15 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.QOrderDto;
 import com.hellostore.ecommerce.entity.Order;
-import com.hellostore.ecommerce.entity.QDelivery;
-import com.hellostore.ecommerce.entity.QOrder;
-import com.hellostore.ecommerce.entity.QUser;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
+
+import static com.hellostore.ecommerce.entity.QDelivery.delivery;
+import static com.hellostore.ecommerce.entity.QOrder.order;
+import static com.hellostore.ecommerce.entity.QUser.user;
 
 @Repository
 public class OrderRepository {
@@ -27,10 +29,6 @@ public class OrderRepository {
     }
 
     public OrderDto getOrder(Long orderId) {
-
-        QOrder order = QOrder.order;
-        QDelivery delivery = QDelivery.delivery;
-        QUser user = QUser.user;
 
         return queryFactory.select(
                 new QOrderDto(
@@ -51,30 +49,19 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-//    public OrderDto getOrder(Long orderId) {
-//        QOrder order = QOrder.order;
-//        QUser user = QUser.user;
-//        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-//        QDelivery delivery = QDelivery.delivery;
-//
-//        return queryFactory.select(
-//                new QOrderDto(
-//                        order.id,
-//                        user.username,
-//                        order.phoneNumber, order.paymentMethodType,
-//                        orderProduct.id, orderProduct.orderQuantity,
-//                        orderProduct.orderShippingFee, orderProduct.point,
-//                        orderProduct.salePrice, orderProduct.totalPrice,
-//                        delivery.id, delivery.address.zoneCode,
-//                        delivery.address.address, delivery.address.detailAddress,
-//                        delivery.recipientName, delivery.phoneNumber,
-//                        delivery.requirement)
-//                ).from(order)
-//                .join(user).on(order.user.id.eq(user.id))
-//                .join(orderProduct).on(orderProduct.order.id.eq(order.id))
-//                .join(delivery).on(order.delivery.id.eq(delivery.id))
-//                .where(order.id.eq(orderId))
-//                .fetchOne();
-//    }
+    public List<OrderDto> getOrdersByUsername(String username) {
+
+        return queryFactory.select(
+                new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
+                        order.phoneNumber, order.paymentMethodType, order.paymentPrice,
+                        order.depositAccount, order.depositorName, order.depositDueDate,
+                        delivery.recipientName, delivery.phoneNumber, delivery.requirement,
+                        delivery.address))
+                .from(order)
+                .join(user).on(order.user.id.eq(user.id))
+                .join(delivery).on(order.delivery.id.eq(delivery.id))
+                .where(user.username.eq(username))
+                .fetch();
+    }
 
 }
