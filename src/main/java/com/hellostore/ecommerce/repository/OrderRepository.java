@@ -99,6 +99,7 @@ public class OrderRepository {
                 .join(productImage).on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .where(orderProduct.order.id.in(orderIds))
+                .groupBy(orderProduct.order.id)
                 .fetch();
 
         return orderProductDtos;
