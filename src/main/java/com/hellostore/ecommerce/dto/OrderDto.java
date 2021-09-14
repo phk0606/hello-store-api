@@ -48,6 +48,8 @@ public class OrderDto {
     private String requirement;
     private Address address;
 
+    Long orderProductCount;
+
     @Builder
     public OrderDto(Order order) {
         this.orderId = order.getId();
@@ -90,7 +92,7 @@ public class OrderDto {
                     OrderStatus orderStatus,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
-                    DeliveryStatus deliveryStatus) {
+                    DeliveryStatus deliveryStatus, Long orderProductCount) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.userNo = userNo;
@@ -109,5 +111,6 @@ public class OrderDto {
         this.requirement = requirement;
         this.address = address;
         this.deliveryStatus = deliveryStatus;
+        this.orderProductCount = orderProductCount;
     }
 }

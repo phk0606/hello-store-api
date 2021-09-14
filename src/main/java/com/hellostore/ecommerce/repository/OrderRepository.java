@@ -54,17 +54,21 @@ public class OrderRepository {
 
     public List<OrderDto> getOrdersByUsername(String username) {
 
+        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+
         return queryFactory.select(
                 new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.depositAccount, order.depositorName, order.depositDueDate,
                         order.paymentStatus, order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address, delivery.status))
+                        delivery.address, delivery.status, orderProduct.id.count()))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
+                .join(orderProduct).on(orderProduct.order.id.eq(order.id))
                 .where(user.username.eq(username))
+                .groupBy(order.id)
                 .fetch();
     }
 

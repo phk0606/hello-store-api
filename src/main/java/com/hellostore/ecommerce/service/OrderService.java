@@ -127,6 +127,12 @@ public class OrderService {
                             Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
         }
 
+        // orderProductOptions 조회
+        Map<Long, List<OrderProductOptionDto>> orderProductOptionMap
+                = oderProductOptionRepository.getOrderProductOption(toOrderProductIds(orderProduct));
+
+        orderProduct.forEach(o -> o.setProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
+
         Map<Long, List<OrderProductDto>> collect = orderProduct.stream()
                 .collect(Collectors.groupingBy(OrderProductDto::getOrderId));
 
