@@ -1,16 +1,16 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.dto.OrderProductDto;
+import com.hellostore.ecommerce.dto.QOrderDto;
+import com.hellostore.ecommerce.dto.QOrderProductDto;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Tuple;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
@@ -82,23 +82,6 @@ public class OrderRepository {
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .fetchOne();
     }
-
-//    public List<com.querydsl.core.Tuple> getOrderProduct(List<Long> orderIds) {
-//
-//        QProductImage productImage = QProductImage.productImage;
-//        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-//        QProduct product = QProduct.product;
-//
-//        List<com.querydsl.core.Tuple> fetch =
-//                queryFactory.select(
-//                        orderProduct.order.id, orderProduct.id.min()
-//                )
-//                .from(orderProduct)
-//                .where(orderProduct.order.id.in(orderIds))
-//                .groupBy(orderProduct.order.id)
-//                .fetch();
-//        return fetch;
-//    }
 
     public List<OrderProductDto> getOrderProduct(List<Long> orderIds) {
         QProductImage productImage = QProductImage.productImage;
