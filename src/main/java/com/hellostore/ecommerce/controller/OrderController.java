@@ -35,7 +35,7 @@ public class OrderController {
 
     @GetMapping("/getOrdersByUsername")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<OrderDto> getOrdersByUsername(@RequestParam String username) {
+    public List<OrderDto> getOrdersByUsername(@RequestParam String username) throws IOException {
         return orderService.getOrdersByUsername(username);
     }
 }

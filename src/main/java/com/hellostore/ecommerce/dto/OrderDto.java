@@ -1,7 +1,10 @@
 package com.hellostore.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hellostore.ecommerce.entity.Address;
 import com.hellostore.ecommerce.entity.Order;
+import com.hellostore.ecommerce.enumType.DeliveryStatus;
+import com.hellostore.ecommerce.enumType.OrderStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.annotations.QueryProjection;
@@ -18,6 +21,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long orderId;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     private Long userNo;
     private String username;
@@ -31,16 +35,26 @@ public class OrderDto {
     private String depositAccount;
     private String depositorName;
     private LocalDate depositDueDate;
+    private OrderStatus orderStatus;
 
     @Setter
     private List<OrderProductDto> orderProducts = new ArrayList<>();
 
     private DeliveryDto delivery;
+    private DeliveryStatus deliveryStatus;
 
     private String recipientName;
     private String recipientPhoneNumber;
     private String requirement;
     private Address address;
+
+    private String filePath;
+    private String fileName;
+    @Setter
+    private byte[] image;
+
+    private Long orderProductCount;
+    String productName;
 
     @Builder
     public OrderDto(Order order) {
@@ -80,8 +94,13 @@ public class OrderDto {
     public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
+                    PaymentStatus paymentStatus,
+                    OrderStatus orderStatus,
                     String recipientName, String recipientPhoneNumber,
-                    String requirement, Address address) {
+                    String requirement, Address address,
+                    DeliveryStatus deliveryStatus,
+                    String filePath, String fileName,
+                    Long orderProductCount, String productName) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.userNo = userNo;
@@ -93,9 +112,16 @@ public class OrderDto {
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
+        this.paymentStatus = paymentStatus;
+        this.orderStatus = orderStatus;
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
+        this.deliveryStatus = deliveryStatus;
+        this.filePath = filePath;
+        this.fileName = fileName;
+        this.orderProductCount = orderProductCount;
+        this.productName = productName;
     }
 }

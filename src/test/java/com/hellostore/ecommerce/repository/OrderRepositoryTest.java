@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.Order;
+import com.hellostore.ecommerce.entity.ProductImage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,11 @@ class OrderRepositoryTest {
         Order order = orderRepository.findOne(5l);
 
         log.debug("order: {}", order);
+    }
+
+    @Test
+    public void getOrderProductImage() {
+        ProductImage orderProductListImage = orderRepository.getOrderProductListImage(14l);
+        log.debug("orderProductListImage: {}", orderProductListImage);
     }
 }

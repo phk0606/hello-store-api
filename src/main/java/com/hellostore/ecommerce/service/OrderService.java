@@ -114,8 +114,17 @@ public class OrderService {
         order.cancel();
     }
 
-    public List<OrderDto> getOrdersByUsername(String username) {
-        return orderRepository.getOrdersByUsername(username);
+    public List<OrderDto> getOrdersByUsername(String username) throws IOException {
+        List<OrderDto> orders = orderRepository.getOrdersByUsername(username);
+
+        log.debug("orders: {}", orders);
+
+        for (OrderDto order : orders) {
+            order.setImage(
+                    Files.readAllBytes(Paths.get(order.getFilePath(), order.getFileName()))
+            );
+        }
+        return orders;
     }
 
 //    public List<Order> findOrders(OrderSearch orderSearch) {
