@@ -16,6 +16,7 @@ import java.util.List;
 public class OrderProductDto {
 
     private Long orderProductId;
+    private Long orderId;
     private Long productId;
     private String productName;
     private int salePrice;
@@ -50,6 +51,15 @@ public class OrderProductDto {
         this.point = point;
         this.shippingFee = shippingFee;
         this.totalPrice = totalPrice;
+        this.filePath = filePath;
+        this.fileName = fileName;
+    }
+
+    @QueryProjection
+    public OrderProductDto(Long orderId, Long orderProductId, String productName, String filePath, String fileName) {
+        this.orderId = orderId;
+        this.orderProductId = orderProductId;
+        this.productName = productName;
         this.filePath = filePath;
         this.fileName = fileName;
     }

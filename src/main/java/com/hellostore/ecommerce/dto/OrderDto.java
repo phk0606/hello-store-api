@@ -48,14 +48,6 @@ public class OrderDto {
     private String requirement;
     private Address address;
 
-    private String filePath;
-    private String fileName;
-    @Setter
-    private byte[] image;
-
-    private Long orderProductCount;
-    String productName;
-
     @Builder
     public OrderDto(Order order) {
         this.orderId = order.getId();
@@ -98,9 +90,7 @@ public class OrderDto {
                     OrderStatus orderStatus,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
-                    DeliveryStatus deliveryStatus,
-                    String filePath, String fileName,
-                    Long orderProductCount, String productName) {
+                    DeliveryStatus deliveryStatus) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.userNo = userNo;
@@ -119,9 +109,5 @@ public class OrderDto {
         this.requirement = requirement;
         this.address = address;
         this.deliveryStatus = deliveryStatus;
-        this.filePath = filePath;
-        this.fileName = fileName;
-        this.orderProductCount = orderProductCount;
-        this.productName = productName;
     }
 }

@@ -115,16 +115,31 @@ public class OrderService {
     }
 
     public List<OrderDto> getOrdersByUsername(String username) throws IOException {
+        // orders 가져오기
         List<OrderDto> orders = orderRepository.getOrdersByUsername(username);
 
         log.debug("orders: {}", orders);
+        // orderProduct, product image 가져오기
+        List<OrderProductDto> orderProduct = orderRepository.getOrderProduct(toOrderIds(orders));
 
-        for (OrderDto order : orders) {
-            order.setImage(
-                    Files.readAllBytes(Paths.get(order.getFilePath(), order.getFileName()))
-            );
+        for (OrderProductDto orderProductDto : orderProduct) {
+            orderProductDto.setImage(
+                    Files.readAllBytes(
+                            Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
         }
+
+        Map<Long, List<OrderProductDto>> collect = orderProduct.stream()
+                .collect(Collectors.groupingBy(OrderProductDto::getOrderId));
+
+        orders.forEach(o -> o.setOrderProducts(collect.get(o.getOrderId())));
+
         return orders;
+    }
+
+    private List<Long> toOrderIds(List<OrderDto> result) {
+        return result.stream()
+                .map(o -> o.getOrderId())
+                .collect(Collectors.toList());
     }
 
 //    public List<Order> findOrders(OrderSearch orderSearch) {

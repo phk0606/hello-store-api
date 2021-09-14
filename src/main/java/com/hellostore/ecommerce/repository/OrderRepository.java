@@ -1,15 +1,16 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.OrderDto;
-import com.hellostore.ecommerce.dto.ProductImageDto;
-import com.hellostore.ecommerce.dto.QOrderDto;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Tuple;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
@@ -53,30 +54,16 @@ public class OrderRepository {
 
     public List<OrderDto> getOrdersByUsername(String username) {
 
-        QProductImage productImage = QProductImage.productImage;
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-        QProduct product = QProduct.product;
-
         return queryFactory.select(
                 new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.depositAccount, order.depositorName, order.depositDueDate,
                         order.paymentStatus, order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address, delivery.status,
-                        productImage.filePath, productImage.fileName,
-                        orderProduct.count(), product.name
-                ))
+                        delivery.address, delivery.status))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
-                .join(orderProduct)
-                .on(orderProduct.order.id.eq(order.id))
-                .orderBy(orderProduct.id.asc())
-                .limit(1)
-                .join(product).on(product.id.eq(orderProduct.product.id))
-                .join(productImage).on(productImage.product.id.eq(orderProduct.product.id))
-                .on(productImage.imageType.eq(ImageType.LIST))
                 .where(user.username.eq(username))
                 .fetch();
     }
@@ -94,5 +81,43 @@ public class OrderRepository {
                 .join(productImage).on(productImage.product.id.eq(orderProduct.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .fetchOne();
+    }
+
+//    public List<com.querydsl.core.Tuple> getOrderProduct(List<Long> orderIds) {
+//
+//        QProductImage productImage = QProductImage.productImage;
+//        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+//        QProduct product = QProduct.product;
+//
+//        List<com.querydsl.core.Tuple> fetch =
+//                queryFactory.select(
+//                        orderProduct.order.id, orderProduct.id.min()
+//                )
+//                .from(orderProduct)
+//                .where(orderProduct.order.id.in(orderIds))
+//                .groupBy(orderProduct.order.id)
+//                .fetch();
+//        return fetch;
+//    }
+
+    public List<OrderProductDto> getOrderProduct(List<Long> orderIds) {
+        QProductImage productImage = QProductImage.productImage;
+        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+        QProduct product = QProduct.product;
+
+        List<OrderProductDto> orderProductDtos = queryFactory.select(
+                        new QOrderProductDto(
+                                orderProduct.order.id,
+                                orderProduct.id, product.name,
+                                productImage.filePath, productImage.fileName
+                                ))
+                .from(orderProduct)
+                .join(product).on(orderProduct.product.id.eq(product.id))
+                .join(productImage).on(product.id.eq(productImage.product.id))
+                .on(productImage.imageType.eq(ImageType.LIST))
+                .where(orderProduct.order.id.in(orderIds))
+                .fetch();
+
+        return orderProductDtos;
     }
 }
