@@ -1,5 +1,5 @@
 package com.hellostore.ecommerce.enumType;
 
 public enum PaymentStatus {
-    FINISHED, BEFORE
+    BEFORE, FINISHED, CANCEL
 }
