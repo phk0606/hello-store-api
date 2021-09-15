@@ -101,7 +101,7 @@ public class Order extends BaseEntity{
     }
 
     public void cancel() {
-        if (delivery.getStatus() == DeliveryStatus.COMP) {
+        if (delivery.getStatus() == DeliveryStatus.COMPLETE_SHIP) {
             throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
         }
 

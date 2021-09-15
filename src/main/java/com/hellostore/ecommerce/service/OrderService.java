@@ -55,7 +55,7 @@ public class OrderService {
                 address1.getDetailAddress());
         Delivery delivery = Delivery.builder()
                 .address(address)
-                .status(DeliveryStatus.READY)
+                .status(DeliveryStatus.READY_SHIP)
                 .phoneNumber(orderDto.getDelivery().getPhoneNumber())
                 .recipientName(orderDto.getDelivery().getRecipientName())
                 .requirement(orderDto.getDelivery().getRequirement())
