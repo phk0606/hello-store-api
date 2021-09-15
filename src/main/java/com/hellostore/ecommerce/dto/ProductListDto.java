@@ -25,6 +25,7 @@ public class ProductListDto {
     private int salePrice;
 
     private ProductShowType productShowType;
+    private String productShowTypeValue;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
@@ -51,7 +52,7 @@ public class ProductListDto {
         this.productId = productId;
         this.name = name;
         this.salePrice = salePrice;
-        this.productShowType = productShowType;
+        this.productShowTypeValue = productShowType.getValue();
         this.clickCount = clickCount;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;

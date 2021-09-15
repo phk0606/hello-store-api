@@ -30,18 +30,21 @@ public class OrderDto {
 
     private PaymentMethodType paymentMethodType;
     private PaymentStatus paymentStatus;
+    private String paymentStatusValue;
     private Integer paymentPrice;
 
     private String depositAccount;
     private String depositorName;
     private LocalDate depositDueDate;
     private OrderStatus orderStatus;
+    private String orderStatusValue;
 
     @Setter
     private List<OrderProductDto> orderProducts = new ArrayList<>();
 
     private DeliveryDto delivery;
     private DeliveryStatus deliveryStatus;
+    private String deliveryStatusValue;
 
     private String recipientName;
     private String recipientPhoneNumber;
@@ -108,13 +111,13 @@ public class OrderDto {
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
-        this.paymentStatus = paymentStatus;
-        this.orderStatus = orderStatus;
+        this.paymentStatusValue = paymentStatus.getValue();
+        this.orderStatusValue = orderStatus.getValue();
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
-        this.deliveryStatus = deliveryStatus;
+        this.deliveryStatusValue = deliveryStatus.getValue();
         this.orderProductCount = orderProductCount;
     }
 }
