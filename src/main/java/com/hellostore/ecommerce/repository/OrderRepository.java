@@ -1,12 +1,13 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.OrderDto;
-import com.hellostore.ecommerce.dto.OrderProductDto;
-import com.hellostore.ecommerce.dto.QOrderDto;
-import com.hellostore.ecommerce.dto.QOrderProductDto;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
+import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QUser.user;
 
 @Repository
@@ -52,24 +54,31 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public List<OrderDto> getOrdersByUsername(String username) {
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, String username) {
 
         QOrderProduct orderProduct = QOrderProduct.orderProduct;
 
-        return queryFactory.select(
-                new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
-                        order.phoneNumber, order.paymentMethodType, order.paymentPrice,
-                        order.depositAccount, order.depositorName, order.depositDueDate,
-                        order.paymentStatus, order.status,
-                        delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address, delivery.status, orderProduct.id.count()))
+        QueryResults<OrderDto> results = queryFactory.select(
+                        new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
+                                order.phoneNumber, order.paymentMethodType, order.paymentPrice,
+                                order.depositAccount, order.depositorName, order.depositDueDate,
+                                order.paymentStatus, order.status,
+                                delivery.recipientName, delivery.phoneNumber, delivery.requirement,
+                                delivery.address, delivery.status, orderProduct.id.count()))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
                 .where(user.username.eq(username))
                 .groupBy(order.id)
-                .fetch();
+                .orderBy(order.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<OrderDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 
     public List<OrderProductDto> getOrderProduct(List<Long> orderIds) {

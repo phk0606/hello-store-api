@@ -4,6 +4,8 @@ import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +37,7 @@ public class OrderController {
 
     @GetMapping("/getOrdersByUsername")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public List<OrderDto> getOrdersByUsername(@RequestParam String username) throws IOException {
-        return orderService.getOrdersByUsername(username);
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, @RequestParam String username) throws IOException {
+        return orderService.getOrdersByUsername(pageable, username);
     }
 }

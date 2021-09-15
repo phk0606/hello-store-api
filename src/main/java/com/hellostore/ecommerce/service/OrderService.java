@@ -8,6 +8,8 @@ import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,7 +57,7 @@ public class OrderService {
                 address1.getDetailAddress());
         Delivery delivery = Delivery.builder()
                 .address(address)
-                .status(DeliveryStatus.READY_SHIP)
+//                .status(DeliveryStatus.READY_SHIP)
                 .phoneNumber(orderDto.getDelivery().getPhoneNumber())
                 .recipientName(orderDto.getDelivery().getRecipientName())
                 .requirement(orderDto.getDelivery().getRequirement())
@@ -113,13 +115,13 @@ public class OrderService {
         order.cancel();
     }
 
-    public List<OrderDto> getOrdersByUsername(String username) throws IOException {
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, String username) throws IOException {
         // orders 가져오기
-        List<OrderDto> orders = orderRepository.getOrdersByUsername(username);
+        Page<OrderDto> orders = orderRepository.getOrdersByUsername(pageable, username);
 
         log.debug("orders: {}", orders);
         // orderProduct, product image 가져오기
-        List<OrderProductDto> orderProduct = orderRepository.getOrderProduct(toOrderIds(orders));
+        List<OrderProductDto> orderProduct = orderRepository.getOrderProduct(toOrderIds(orders.getContent()));
 
         for (OrderProductDto orderProductDto : orderProduct) {
             orderProductDto.setImage(
