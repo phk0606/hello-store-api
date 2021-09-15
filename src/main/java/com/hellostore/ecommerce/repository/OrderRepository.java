@@ -37,11 +37,12 @@ public class OrderRepository {
 
         return queryFactory.select(
                 new QOrderDto(
-                        order.id, order.user.id, user.username, user.name,
+                        order.id, order.createdDate, order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.depositAccount, order.depositorName, order.depositDueDate,
+                        order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address
+                        delivery.address, delivery.status
                 ))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))

@@ -63,12 +63,14 @@ public class OrderDto {
     }
 
     @QueryProjection
-    public OrderDto(Long orderId, Long userNo, String username, String name,
+    public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
+                    OrderStatus orderStatus,
                     String recipientName, String recipientPhoneNumber,
-                    String requirement, Address address) {
+                    String requirement, Address address, DeliveryStatus deliveryStatus) {
         this.orderId = orderId;
+        this.createdDate = createdDate;
         this.userNo = userNo;
         this.username = username;
         this.name = name;
@@ -78,10 +80,12 @@ public class OrderDto {
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
+        this.orderStatus = orderStatus;
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
+        this.deliveryStatus = deliveryStatus;
     }
 
     @QueryProjection
