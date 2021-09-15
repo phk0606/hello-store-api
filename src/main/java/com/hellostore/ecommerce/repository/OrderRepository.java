@@ -103,4 +103,30 @@ public class OrderRepository {
 
         return orderProductDtos;
     }
+
+    public Page<OrderDto> getOrders(Pageable pageable) {
+
+        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+
+        QueryResults<OrderDto> results = queryFactory.select(
+                        new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
+                                order.phoneNumber, order.paymentMethodType, order.paymentPrice,
+                                order.depositAccount, order.depositorName, order.depositDueDate,
+                                order.paymentStatus, order.status,
+                                delivery.recipientName, delivery.phoneNumber, delivery.requirement,
+                                delivery.address, delivery.status, orderProduct.id.count()))
+                .from(order)
+                .join(user).on(order.user.id.eq(user.id))
+                .join(delivery).on(order.delivery.id.eq(delivery.id))
+                .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                .groupBy(order.id)
+                .orderBy(order.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<OrderDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
+    }
 }

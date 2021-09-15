@@ -149,6 +149,27 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public Page<OrderDto> getOrders(Pageable pageable) throws IOException {
+        // orders 가져오기
+        Page<OrderDto> orders = orderRepository.getOrders(pageable);
+
+        log.debug("orders: {}", orders);
+        // orderProduct, product image 가져오기
+        List<OrderProductDto> orderProduct = orderRepository.getOrderProduct(toOrderIds(orders.getContent()));
+
+        for (OrderProductDto orderProductDto : orderProduct) {
+            orderProductDto.setImage(
+                    Files.readAllBytes(
+                            Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
+        }
+
+        Map<Long, List<OrderProductDto>> collect = orderProduct.stream()
+                .collect(Collectors.groupingBy(OrderProductDto::getOrderId));
+
+        orders.forEach(o -> o.setOrderProducts(collect.get(o.getOrderId())));
+
+        return orders;
+    }
 //    public List<Order> findOrders(OrderSearch orderSearch) {
 //        return orderRepository.findAll(orderSearch);
 //    }

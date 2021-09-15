@@ -40,4 +40,10 @@ public class OrderController {
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, @RequestParam String username) throws IOException {
         return orderService.getOrdersByUsername(pageable, username);
     }
+
+    @GetMapping("/getOrders")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public Page<OrderDto> getOrders(Pageable pageable) throws IOException {
+        return orderService.getOrders(pageable);
+    }
 }
