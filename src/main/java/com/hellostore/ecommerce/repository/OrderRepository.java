@@ -42,7 +42,7 @@ public class OrderRepository {
                         order.depositAccount, order.depositorName, order.depositDueDate,
                         order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address, delivery.status
+                        delivery.address
                 ))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
@@ -65,7 +65,7 @@ public class OrderRepository {
                                 order.depositAccount, order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                                delivery.address, delivery.status, orderProduct.id.count()))
+                                delivery.address, orderProduct.id.count()))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
@@ -114,7 +114,7 @@ public class OrderRepository {
                                 order.depositAccount, order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                                delivery.address, delivery.status, orderProduct.id.count()))
+                                delivery.address, orderProduct.id.count()))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))

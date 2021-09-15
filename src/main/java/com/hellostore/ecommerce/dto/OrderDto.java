@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hellostore.ecommerce.entity.Address;
 import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
-import com.hellostore.ecommerce.enumType.OrderStatus;
+import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.annotations.QueryProjection;
@@ -36,8 +36,8 @@ public class OrderDto {
     private String depositAccount;
     private String depositorName;
     private LocalDate depositDueDate;
-    private OrderStatus orderStatus;
-    private String orderStatusValue;
+    private OrderDeliveryStatus orderDeliveryStatus;
+    private String orderDeliveryStatusValue;
 
     @Setter
     private List<OrderProductDto> orderProducts = new ArrayList<>();
@@ -69,9 +69,9 @@ public class OrderDto {
     public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
-                    OrderStatus orderStatus,
+                    OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
-                    String requirement, Address address, DeliveryStatus deliveryStatus) {
+                    String requirement, Address address) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.userNo = userNo;
@@ -83,12 +83,11 @@ public class OrderDto {
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
-        this.orderStatus = orderStatus;
+        this.orderDeliveryStatusValue = orderDeliveryStatus.getValue();
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
-        this.deliveryStatus = deliveryStatus;
     }
 
     @QueryProjection
@@ -96,10 +95,10 @@ public class OrderDto {
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
                     PaymentStatus paymentStatus,
-                    OrderStatus orderStatus,
+                    OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
-                    DeliveryStatus deliveryStatus, Long orderProductCount) {
+                    Long orderProductCount) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.userNo = userNo;
@@ -112,12 +111,11 @@ public class OrderDto {
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
         this.paymentStatusValue = paymentStatus.getValue();
-        this.orderStatusValue = orderStatus.getValue();
+        this.orderDeliveryStatusValue = orderDeliveryStatus.getValue();
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
-        this.deliveryStatusValue = deliveryStatus.getValue();
         this.orderProductCount = orderProductCount;
     }
 }

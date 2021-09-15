@@ -1,8 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.dto.OrderDto;
-import com.hellostore.ecommerce.enumType.DeliveryStatus;
-import com.hellostore.ecommerce.enumType.OrderStatus;
+import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.*;
@@ -43,7 +42,7 @@ public class Order extends BaseEntity{
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderDeliveryStatus status;
 
     @Enumerated(EnumType.STRING)
     private PaymentMethodType paymentMethodType;
@@ -83,7 +82,7 @@ public class Order extends BaseEntity{
             order.addOrderProduct(orderProduct);
         }
 
-        order.setStatus(OrderStatus.BEFORE_CONFIRM);
+        order.setStatus(OrderDeliveryStatus.BEFORE_CONFIRM);
         if (orderDto.getPaymentMethodType().equals(PaymentMethodType.WITHOUT_BANKBOOK)) {
             order.setPaymentStatus(PaymentStatus.BEFORE);
         } else {
@@ -100,16 +99,16 @@ public class Order extends BaseEntity{
         return order;
     }
 
-    public void cancel() {
-        if (delivery.getStatus() == DeliveryStatus.COMPLETE_SHIP) {
-            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
-        }
-
-        this.setStatus(OrderStatus.ORDER_CANCEL);
-        for (OrderProduct orderProduct : orderProducts) {
-            orderProduct.cancel();
-        }
-    }
+//    public void cancel() {
+//        if (delivery.getStatus() == DeliveryStatus.COMPLETE_SHIP) {
+//            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
+//        }
+//
+//        this.setStatus(OrderStatus.ORDER_CANCEL);
+//        for (OrderProduct orderProduct : orderProducts) {
+//            orderProduct.cancel();
+//        }
+//    }
 
     public int getTotalPrice() {
         int totalPrice = 0;

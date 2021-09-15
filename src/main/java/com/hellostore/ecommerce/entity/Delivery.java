@@ -29,13 +29,13 @@ public class Delivery {
     @Embedded
     private Address address;
 
-    @Enumerated(EnumType.STRING)
-    private DeliveryStatus status;
+//    @Enumerated(EnumType.STRING)
+//    private DeliveryStatus status;
 
     @Builder
     public Delivery(Address address, DeliveryStatus status, String recipientName, String phoneNumber, String requirement) {
         this.address = address;
-        this.status = status;
+//        this.status = status;
         this.recipientName = recipientName;
         this.phoneNumber = phoneNumber;
         this.requirement = requirement;
