@@ -30,16 +30,4 @@ class OrderRepositoryTest {
         log.debug("order: {}", order);
     }
 
-    @Test
-    public void getOrderProductImage() {
-        ProductImage orderProductListImage = orderRepository.getOrderProductListImage(14l);
-        log.debug("orderProductListImage: {}", orderProductListImage);
-    }
-
-//    @Test
-//    public void getOrderProduct() {
-//        List<Long> orderIds = Arrays.asList(14l, 15l);
-//        Map<Long, List<OrderProductDto>> orderProduct = orderRepository.getOrderProduct(orderIds);
-//        log.debug("orderProduct: {}",orderProduct);
-//    }
 }

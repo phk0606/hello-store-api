@@ -72,21 +72,6 @@ public class OrderRepository {
                 .fetch();
     }
 
-    public ProductImage getOrderProductListImage(Long orderId) {
-
-        QProductImage productImage = QProductImage.productImage;
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-
-        return queryFactory.select(productImage)
-                .from(orderProduct)
-                .where(orderProduct.order.id.eq(orderId))
-                .orderBy(orderProduct.id.asc())
-                .limit(1)
-                .join(productImage).on(productImage.product.id.eq(orderProduct.product.id))
-                .on(productImage.imageType.eq(ImageType.LIST))
-                .fetchOne();
-    }
-
     public List<OrderProductDto> getOrderProduct(List<Long> orderIds) {
         QProductImage productImage = QProductImage.productImage;
         QOrderProduct orderProduct = QOrderProduct.orderProduct;
