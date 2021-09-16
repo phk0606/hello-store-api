@@ -62,7 +62,7 @@ public class CartService {
             if (cartProduct.getPointType().equals(PointType.DEFAULT)) {
                 cartProduct.setPoint((cartProduct.getSalePrice() * 0.5) / 100);
             } else if (cartProduct.getPointType().equals(PointType.EACH)) {
-                cartProduct.setPoint(cartProduct.getSalePrice() * cartProduct.getPointPerPrice());
+                cartProduct.setPoint((cartProduct.getSalePrice() * cartProduct.getPointPerPrice()) / 100);
             }
 
             if (cartProduct.getShippingFeeType().equals(ShippingFeeType.DEFAULT)) {
