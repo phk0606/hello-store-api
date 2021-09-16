@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.dto.OrderSearchCondition;
 import com.hellostore.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +37,8 @@ public class OrderController {
 
     @GetMapping("/getOrdersByUsername")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public Page<OrderDto> getOrdersByUsername(Pageable pageable, @RequestParam String username) throws IOException {
-        return orderService.getOrdersByUsername(pageable, username);
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
+        return orderService.getOrdersByUsername(pageable, orderSearchCondition);
     }
 
     @GetMapping("/getOrders")

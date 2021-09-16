@@ -196,6 +196,6 @@ public class ProductRepository {
     private BooleanExpression productRegistryDateB(String productRegistryDateB) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return StringUtils.hasText(productRegistryDateB)
-                ? product.createdDate.loe(LocalDateTime.parse(productRegistryDateB + " 00:00:00", formatter)) : null;
+                ? product.createdDate.loe(LocalDateTime.parse(productRegistryDateB + " 23:59:59", formatter)) : null;
     }
 }

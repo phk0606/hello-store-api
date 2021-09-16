@@ -4,18 +4,24 @@ import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
-import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QOrderProduct.*;
+import static com.hellostore.ecommerce.entity.QProduct.*;
+import static com.hellostore.ecommerce.entity.QProductImage.*;
 import static com.hellostore.ecommerce.entity.QUser.user;
 
 @Repository
@@ -43,7 +49,6 @@ public class OrderRepository {
 
     public void modifyDeliveryInfo(OrderDto orderDto) {
 
-        QDelivery delivery = QDelivery.delivery;
         queryFactory.update(delivery)
                 .set(delivery.address.zoneCode, orderDto.getAddress().getZoneCode())
                 .set(delivery.address.roadAddress, orderDto.getAddress().getRoadAddress())
@@ -77,9 +82,7 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
-    public Page<OrderDto> getOrdersByUsername(Pageable pageable, String username) {
-
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
                         new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
@@ -92,7 +95,11 @@ public class OrderRepository {
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
-                .where(user.username.eq(username))
+                .where(
+                        user.username.eq(orderSearchCondition.getUsername()),
+                        orderDateA(orderSearchCondition.getOrderDateA()),
+                        orderDateB(orderSearchCondition.getOrderDateB())
+                        )
                 .groupBy(order.id)
                 .orderBy(order.id.desc())
                 .offset(pageable.getOffset())
@@ -104,10 +111,19 @@ public class OrderRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
+    private BooleanExpression orderDateA(String orderDateA) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(orderDateA)
+                ? order.createdDate.goe(LocalDateTime.parse(orderDateA + " 00:00:00", formatter)) : null;
+    }
+
+    private BooleanExpression orderDateB(String orderDateB) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(orderDateB)
+                ? order.createdDate.loe(LocalDateTime.parse(orderDateB + " 23:59:59", formatter)) : null;
+    }
+
     public List<OrderProductDto> getOrderProduct(List<Long> orderIds) {
-        QProductImage productImage = QProductImage.productImage;
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-        QProduct product = QProduct.product;
 
         List<OrderProductDto> orderProductDtos = queryFactory.select(
                         new QOrderProductDto(
@@ -127,8 +143,6 @@ public class OrderRepository {
     }
 
     public Page<OrderDto> getOrders(Pageable pageable) {
-
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
 
         QueryResults<OrderDto> results = queryFactory.select(
                         new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,

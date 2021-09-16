@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.OrderProductOptionDto;
+import com.hellostore.ecommerce.dto.OrderSearchCondition;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -115,9 +116,9 @@ public class OrderService {
 //        order.cancel();
 //    }
 
-    public Page<OrderDto> getOrdersByUsername(Pageable pageable, String username) throws IOException {
+    public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
         // orders 가져오기
-        Page<OrderDto> orders = orderRepository.getOrdersByUsername(pageable, username);
+        Page<OrderDto> orders = orderRepository.getOrdersByUsername(pageable, orderSearchCondition);
 
         log.debug("orders: {}", orders);
         // orderProduct, product image 가져오기
