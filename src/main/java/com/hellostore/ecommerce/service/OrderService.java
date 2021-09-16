@@ -108,13 +108,13 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-//    @Transactional
-//    public void cancelOrder(Long orderId) {
-//
-//        Order order = orderRepository.findOne(orderId);
-//
-//        order.cancel();
-//    }
+    @Transactional
+    public void cancelOrder(Long orderId) {
+
+        Order order = orderRepository.findOne(orderId);
+
+        order.cancel();
+    }
 
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
         // orders 가져오기

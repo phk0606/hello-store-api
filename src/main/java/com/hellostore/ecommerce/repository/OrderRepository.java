@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ImageType;
+import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;

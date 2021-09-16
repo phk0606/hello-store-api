@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
@@ -99,22 +100,17 @@ public class Order extends BaseEntity{
         return order;
     }
 
-//    public void cancel() {
-//        if (delivery.getStatus() == DeliveryStatus.COMPLETE_SHIP) {
-//            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능 합니다.");
-//        }
-//
-//        this.setStatus(OrderStatus.ORDER_CANCEL);
-//        for (OrderProduct orderProduct : orderProducts) {
-//            orderProduct.cancel();
-//        }
-//    }
-
-    public int getTotalPrice() {
-        int totalPrice = 0;
-        for (OrderProduct orderProduct : orderProducts) {
-            totalPrice += orderProduct.getTotalPrice();
+    public void cancel() {
+        if (this.getStatus() == OrderDeliveryStatus.READY_SHIP
+        || this.getStatus() == OrderDeliveryStatus.SHIPPING
+        || this.getStatus() == OrderDeliveryStatus.COMPLETE_SHIP) {
+            throw new IllegalStateException("이미 배송 준비, 배송 중, 배송 완료인 상품은 취소가 불가능 합니다.");
         }
-        return totalPrice;
+
+        this.setStatus(OrderDeliveryStatus.ORDER_CANCEL);
+        for (OrderProduct orderProduct : orderProducts) {
+            orderProduct.cancel();
+        }
     }
+
 }

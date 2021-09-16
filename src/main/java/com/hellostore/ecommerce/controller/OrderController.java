@@ -60,4 +60,11 @@ public class OrderController {
         log.debug("orderDto: {}", orderDto);
         orderService.modifyDeliveryInfo(orderDto);
     }
+
+    @PutMapping("/orderCancel")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void orderCancel(@RequestBody OrderDto orderDto) {
+        log.debug("orderDto: {}", orderDto);
+        orderService.cancelOrder(orderDto.getOrderId());
+    }
 }
