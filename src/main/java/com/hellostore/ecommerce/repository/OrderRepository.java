@@ -45,7 +45,10 @@ public class OrderRepository {
 
         QDelivery delivery = QDelivery.delivery;
         queryFactory.update(delivery)
-                .set(delivery.address, orderDto.getAddress())
+                .set(delivery.address.zoneCode, orderDto.getAddress().getZoneCode())
+                .set(delivery.address.roadAddress, orderDto.getAddress().getRoadAddress())
+                .set(delivery.address.address, orderDto.getAddress().getAddress())
+                .set(delivery.address.detailAddress, orderDto.getAddress().getDetailAddress())
                 .set(delivery.recipientName, orderDto.getRecipientName())
                 .set(delivery.requirement, orderDto.getRequirement())
                 .set(delivery.phoneNumber, orderDto.getRecipientPhoneNumber())

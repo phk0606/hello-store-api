@@ -4,7 +4,6 @@ import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.OrderProductOptionDto;
 import com.hellostore.ecommerce.entity.*;
-import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -171,6 +170,17 @@ public class OrderService {
 
         return orders;
     }
+
+    @Transactional
+    public void modifyOrdererPhoneNumber(OrderDto orderDto) {
+        orderRepository.modifyOrdererPhoneNumber(orderDto);
+    }
+
+    @Transactional
+    public void modifyDeliveryInfo(OrderDto orderDto) {
+        orderRepository.modifyDeliveryInfo(orderDto);
+    }
+
 //    public List<Order> findOrders(OrderSearch orderSearch) {
 //        return orderRepository.findAll(orderSearch);
 //    }

@@ -49,6 +49,14 @@ public class OrderController {
     @PutMapping("/modifyOrdererPhoneNumber")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public void modifyOrdererPhoneNumber(@RequestBody OrderDto orderDto) {
+        log.debug("orderDto: {}", orderDto);
+        orderService.modifyOrdererPhoneNumber(orderDto);
+    }
 
+    @PutMapping("/modifyDeliveryInfo")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyDeliveryInfo(@RequestBody OrderDto orderDto) {
+        log.debug("orderDto: {}", orderDto);
+        orderService.modifyDeliveryInfo(orderDto);
     }
 }
