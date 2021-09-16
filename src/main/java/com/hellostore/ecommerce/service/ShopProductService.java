@@ -58,7 +58,7 @@ public class ShopProductService {
         if (product.getPointType().equals(PointType.DEFAULT)) {
             product.setPoint((product.getSalePrice() * 0.5) / 100);
         } else if (product.getPointType().equals(PointType.EACH)) {
-            product.setPoint(product.getSalePrice() * product.getPointPerPrice());
+            product.setPoint((product.getSalePrice() * product.getPointPerPrice()) / 100);
         }
 
         if (product.getShippingFeeType().equals(ShippingFeeType.DEFAULT)) {
