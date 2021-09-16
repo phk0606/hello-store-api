@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.dto;
 
 import com.hellostore.ecommerce.entity.OrderProduct;
+import com.hellostore.ecommerce.entity.ProductOption;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,11 @@ public class OrderProductDto {
     private int totalPrice;
     @Setter
     private List<OrderProductOptionDto> productOptions = new ArrayList<>();
+
+    @Setter
+    private List<ProductOptionDto> firstOptions = new ArrayList<>();
+    @Setter
+    private List<ProductOptionDto> secondOptions = new ArrayList<>();
 
     @Setter
     private byte[] image;

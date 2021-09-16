@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.service;
 
-import com.hellostore.ecommerce.dto.OrderDto;
-import com.hellostore.ecommerce.dto.OrderProductDto;
-import com.hellostore.ecommerce.dto.OrderProductOptionDto;
-import com.hellostore.ecommerce.dto.OrderSearchCondition;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +30,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductRepository orderProductRepository;
     private final OderProductOptionRepository oderProductOptionRepository;
+    private final ProductOptionRepository productOptionRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -85,6 +83,27 @@ public class OrderService {
         for (OrderProductDto orderProductDto : orderProductDtos) {
             orderProductDto.setImage(Files.readAllBytes(
                     Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
+
+
+            List<ProductOption> productOptions1 =
+                    productOptionRepository.getProductOptions(orderProductDto.getProductId(), 1);
+
+            List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
+            for (ProductOption productOption : productOptions1) {
+                productOptionDtos1.add(new ProductOptionDto(productOption));
+            }
+
+            orderProductDto.setFirstOptions(productOptionDtos1);
+
+            List<ProductOption> productOptions2 =
+                    productOptionRepository.getProductOptions(orderProductDto.getProductId(), 2);
+
+            List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
+            for (ProductOption productOption : productOptions2) {
+                productOptionDtos2.add(new ProductOptionDto(productOption));
+            }
+
+            orderProductDto.setSecondOptions(productOptionDtos2);
         }
 
         // orderProductOptions 조회
