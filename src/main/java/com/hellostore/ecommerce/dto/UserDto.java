@@ -43,6 +43,10 @@ public class UserDto {
 
     @NotNull
     @Size(min = 10, max = 200)
+    private String roadAddress;
+
+    @NotNull
+    @Size(min = 10, max = 200)
     private String address;
 
     @NotNull
@@ -50,13 +54,14 @@ public class UserDto {
     private String detailAddress;
 
     public UserDto(Long userNo, String username, String name, String email, String phoneNumber,
-                   String zoneCode, String address, String detailAddress) {
+                   String zoneCode, String roadAddress, String address, String detailAddress) {
         this.userNo = userNo;
         this.username = username;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.zoneCode = zoneCode;
+        this.roadAddress = roadAddress;
         this.address = address;
         this.detailAddress = detailAddress;
     }
@@ -64,6 +69,7 @@ public class UserDto {
     public static UserDto of(User user) {
         return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getPhoneNumber(),
                 user.getAddress().getZoneCode(),
+                user.getAddress().getRoadAddress(),
                 user.getAddress().getAddress(),
                 user.getAddress().getDetailAddress());
     }

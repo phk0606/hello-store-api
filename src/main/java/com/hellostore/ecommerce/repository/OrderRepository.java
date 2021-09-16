@@ -33,6 +33,25 @@ public class OrderRepository {
         em.persist(order);
     }
 
+    public void modifyOrdererPhoneNumber(OrderDto orderDto) {
+
+        queryFactory.update(order)
+                .set(order.phoneNumber, orderDto.getPhoneNumber())
+                .where(order.id.eq(orderDto.getOrderId()))
+                .execute();
+    }
+
+    public void modifyDeliveryInfo(OrderDto orderDto) {
+
+        QDelivery delivery = QDelivery.delivery;
+        queryFactory.update(delivery)
+                .set(delivery.address, orderDto.getAddress())
+                .set(delivery.recipientName, orderDto.getRecipientName())
+                .set(delivery.requirement, orderDto.getRequirement())
+                .set(delivery.phoneNumber, orderDto.getRecipientPhoneNumber())
+                .execute();
+    }
+
     public OrderDto getOrder(Long orderId) {
 
         return queryFactory.select(

@@ -45,4 +45,10 @@ public class OrderController {
     public Page<OrderDto> getOrders(Pageable pageable) throws IOException {
         return orderService.getOrders(pageable);
     }
+
+    @PutMapping("/modifyOrdererPhoneNumber")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyOrdererPhoneNumber(@RequestBody OrderDto orderDto) {
+
+    }
 }

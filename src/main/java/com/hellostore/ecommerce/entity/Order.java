@@ -39,7 +39,7 @@ public class Order extends BaseEntity{
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
-    private LocalDateTime orderDate;
+//    private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderDeliveryStatus status;
@@ -90,7 +90,7 @@ public class Order extends BaseEntity{
         }
         order.setPaymentMethodType(orderDto.getPaymentMethodType());
         order.setPaymentPrice(orderDto.getPaymentPrice());
-        order.setOrderDate(LocalDateTime.now());
+//        order.setOrderDate(LocalDateTime.now());
         if(!orderDto.getDepositAccount().isEmpty()) {
             order.setDepositAccount(orderDto.getDepositAccount());
             order.setDepositorName(orderDto.getDepositorName());

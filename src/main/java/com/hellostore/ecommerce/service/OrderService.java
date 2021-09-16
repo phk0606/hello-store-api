@@ -53,6 +53,7 @@ public class OrderService {
         Address address1 = orderDto.getDelivery().getAddress();
         Address address = new Address(
                 address1.getZoneCode(),
+                address1.getRoadAddress(),
                 address1.getAddress(),
                 address1.getDetailAddress());
         Delivery delivery = Delivery.builder()

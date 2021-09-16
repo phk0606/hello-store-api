@@ -47,7 +47,7 @@ public class AuthService {
                 .authorityName("ROLE_USER")
                 .build();
 
-        Address address = new Address(userDto.getZoneCode(), userDto.getAddress(), userDto.getDetailAddress());
+        Address address = new Address(userDto.getZoneCode(), userDto.getRoadAddress(), userDto.getAddress(), userDto.getDetailAddress());
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))

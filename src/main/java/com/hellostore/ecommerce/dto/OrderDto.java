@@ -83,6 +83,7 @@ public class OrderDto {
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
+        this.orderDeliveryStatus = orderDeliveryStatus;
         this.orderDeliveryStatusValue = orderDeliveryStatus.getValue();
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
@@ -111,6 +112,7 @@ public class OrderDto {
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;
         this.paymentStatusValue = paymentStatus.getValue();
+        this.orderDeliveryStatus = orderDeliveryStatus;
         this.orderDeliveryStatusValue = orderDeliveryStatus.getValue();
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;

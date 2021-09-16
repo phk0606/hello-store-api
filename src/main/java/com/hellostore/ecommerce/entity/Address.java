@@ -18,6 +18,9 @@ public class Address {
     @Column(length = 200)
     private String address;
 
+    @Column(length = 200)
+    private String roadAddress;
+
     @Column(length = 100)
     private String detailAddress;
 }
