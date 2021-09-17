@@ -18,12 +18,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
 import static com.hellostore.ecommerce.entity.QOrderProduct.*;
 import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductImage.*;
 import static com.hellostore.ecommerce.entity.QUser.user;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 public class OrderRepository {
@@ -144,7 +146,7 @@ public class OrderRepository {
         return orderProductDtos;
     }
 
-    public Page<OrderDto> getOrders(Pageable pageable) {
+    public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
                         new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
@@ -154,6 +156,7 @@ public class OrderRepository {
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                                 delivery.address, orderProduct.id.count()))
                 .from(order)
+                .where(orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus()))
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
@@ -166,5 +169,27 @@ public class OrderRepository {
         List<OrderDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression orderDeliveryStatusEq(OrderDeliveryStatus orderDeliveryStatus) {
+        return !isEmpty(orderDeliveryStatus)
+                ? order.status.eq(orderDeliveryStatus)
+                .and(order.status.ne(OrderDeliveryStatus.ORDER_CANCEL))
+                : order.status.eq(OrderDeliveryStatus.ORDER_CANCEL);
+    }
+
+    public void modifyOrder(OrderDto orderDto) {
+
+        queryFactory.update(order)
+                .set(order.paymentStatus, orderDto.getPaymentStatus())
+                .set(order.status, orderDto.getOrderDeliveryStatus())
+                .set(order.delivery.recipientName, orderDto.getRecipientName())
+                .set(order.delivery.address.zoneCode, orderDto.getAddress().getZoneCode())
+                .set(order.delivery.address.roadAddress, orderDto.getAddress().getRoadAddress())
+                .set(order.delivery.address.address, orderDto.getAddress().getAddress())
+                .set(order.delivery.address.detailAddress, orderDto.getAddress().getDetailAddress())
+                .set(order.delivery.phoneNumber, orderDto.getRecipientPhoneNumber())
+                .set(order.delivery.requirement, orderDto.getRequirement())
+                .execute();
     }
 }

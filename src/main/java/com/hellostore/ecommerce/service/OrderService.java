@@ -170,9 +170,9 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public Page<OrderDto> getOrders(Pageable pageable) throws IOException {
+    public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
         // orders 가져오기
-        Page<OrderDto> orders = orderRepository.getOrders(pageable);
+        Page<OrderDto> orders = orderRepository.getOrders(pageable, orderSearchCondition);
 
         log.debug("orders: {}", orders);
         // orderProduct, product image 가져오기

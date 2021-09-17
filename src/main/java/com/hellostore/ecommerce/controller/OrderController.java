@@ -43,8 +43,9 @@ public class OrderController {
 
     @GetMapping("/getOrders")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public Page<OrderDto> getOrders(Pageable pageable) throws IOException {
-        return orderService.getOrders(pageable);
+    public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
+        log.debug("orderSearchCondition: {}", orderSearchCondition);
+        return orderService.getOrders(pageable, orderSearchCondition);
     }
 
     @PutMapping("/modifyOrdererPhoneNumber")
