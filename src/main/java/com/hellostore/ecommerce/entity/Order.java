@@ -1,7 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.dto.OrderDto;
-import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
@@ -9,7 +8,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
