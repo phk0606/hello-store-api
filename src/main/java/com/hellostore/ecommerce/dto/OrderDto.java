@@ -21,6 +21,7 @@ import java.util.List;
 public class OrderDto {
 
     private Long orderId;
+    private List<Long> orderIds;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     private Long userNo;

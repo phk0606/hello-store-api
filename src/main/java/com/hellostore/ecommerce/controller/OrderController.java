@@ -68,4 +68,12 @@ public class OrderController {
         log.debug("orderDto: {}", orderDto);
         orderService.cancelOrder(orderDto.getOrderId());
     }
+
+    @PutMapping("/modifyOrderDeliveryStatus")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyOrderDeliveryStatus(@RequestBody OrderDto orderDto) {
+
+        orderService.modifyOrderDeliveryStatus(
+                orderDto.getOrderIds(), orderDto.getOrderDeliveryStatus());
+    }
 }

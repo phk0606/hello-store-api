@@ -1,7 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
-import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.querydsl.core.QueryResults;
@@ -18,12 +18,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
-import static com.hellostore.ecommerce.entity.QOrderProduct.*;
-import static com.hellostore.ecommerce.entity.QProduct.*;
-import static com.hellostore.ecommerce.entity.QProductImage.*;
+import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
+import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QProductImage.productImage;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -216,6 +215,13 @@ public class OrderRepository {
                 .set(order.delivery.address.detailAddress, orderDto.getAddress().getDetailAddress())
                 .set(order.delivery.phoneNumber, orderDto.getRecipientPhoneNumber())
                 .set(order.delivery.requirement, orderDto.getRequirement())
+                .execute();
+    }
+
+    public void modifyOrderDeliveryStatus(List<Long> orderIds, OrderDeliveryStatus orderDeliveryStatus) {
+        queryFactory.update(order)
+                .set(order.status, orderDeliveryStatus)
+                .where(order.id.in(orderIds))
                 .execute();
     }
 }

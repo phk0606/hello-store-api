@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -134,6 +135,11 @@ public class OrderService {
         Order order = orderRepository.findOne(orderId);
 
         order.cancel();
+    }
+
+    @Transactional
+    public void modifyOrderDeliveryStatus(List<Long> orderIds, OrderDeliveryStatus orderDeliveryStatus) {
+        orderRepository.modifyOrderDeliveryStatus(orderIds, orderDeliveryStatus);
     }
 
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
