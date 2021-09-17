@@ -29,6 +29,7 @@ public class OrderDto {
     private String phoneNumber;
 
     private PaymentMethodType paymentMethodType;
+    private String paymentMethodTypeValue;
     private PaymentStatus paymentStatus;
     private String paymentStatusValue;
     private Integer paymentPrice;
@@ -68,6 +69,7 @@ public class OrderDto {
     @QueryProjection
     public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
+                    PaymentStatus paymentStatus,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
                     OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
@@ -79,7 +81,10 @@ public class OrderDto {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.paymentMethodType = paymentMethodType;
+        this.paymentMethodTypeValue = paymentMethodType.getValue();
         this.paymentPrice = paymentPrice;
+        this.paymentStatus = paymentStatus;
+        this.paymentStatusValue = paymentStatus.getValue();
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
         this.depositDueDate = depositDueDate;

@@ -67,6 +67,7 @@ public class OrderRepository {
                 new QOrderDto(
                         order.id, order.createdDate, order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
+                        order.paymentStatus,
                         order.depositAccount, order.depositorName, order.depositDueDate,
                         order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
