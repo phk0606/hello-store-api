@@ -79,15 +79,16 @@ public class OrderService {
         List<OrderProductDto> orderProductDtos = orderProductRepository.getOrderProducts(orderId);
 
         log.debug("orderProductDtos: {}", orderProductDtos);
-        // product image 가져오기
+
         for (OrderProductDto orderProductDto : orderProductDtos) {
+            // product image 가져오기
             orderProductDto.setImage(Files.readAllBytes(
                     Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
-
 
             List<ProductOption> productOptions1 =
                     productOptionRepository.getProductOptions(orderProductDto.getProductId(), 1);
 
+            // product option 목록
             List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
             for (ProductOption productOption : productOptions1) {
                 productOptionDtos1.add(new ProductOptionDto(productOption));
