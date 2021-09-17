@@ -156,7 +156,13 @@ public class OrderRepository {
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                                 delivery.address, orderProduct.id.count()))
                 .from(order)
-                .where(orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus()))
+                .where(
+                        orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus()),
+                        orderIdEq(orderSearchCondition.getOrderId()),
+                        ordererIdEq(orderSearchCondition.getOrdererId()),
+                        ordererNameContains(orderSearchCondition.getOrdererName()),
+                        productNameContains(orderSearchCondition.getProductName())
+                )
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
@@ -176,6 +182,26 @@ public class OrderRepository {
                 ? order.status.eq(orderDeliveryStatus)
                 .and(order.status.ne(OrderDeliveryStatus.ORDER_CANCEL))
                 : order.status.eq(OrderDeliveryStatus.ORDER_CANCEL);
+    }
+
+    private BooleanExpression orderIdEq(Long orderId) {
+        return !isEmpty(orderId)
+                ? order.id.eq(orderId) : null;
+    }
+
+    private BooleanExpression ordererIdEq(String ordererId) {
+        return !isEmpty(ordererId)
+                ? order.user.username.eq(ordererId) : null;
+    }
+
+    private BooleanExpression ordererNameContains(String ordererName) {
+        return !isEmpty(ordererName)
+                ? order.user.name.contains(ordererName) : null;
+    }
+
+    private BooleanExpression productNameContains(String productName) {
+        return !isEmpty(productName)
+                ? orderProduct.product.name.contains(productName) : null;
     }
 
     public void modifyOrder(OrderDto orderDto) {
