@@ -1,11 +1,14 @@
 package com.hellostore.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hellostore.ecommerce.entity.User;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor
@@ -15,6 +18,9 @@ import javax.validation.constraints.Size;
 public class UserDto {
 
     private Long userNo;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDateTime createdDate;
 
     @NotNull
     @Size(min = 3, max = 50)
@@ -53,6 +59,9 @@ public class UserDto {
     @Size(max = 100)
     private String detailAddress;
 
+    private Integer purchasePrice;
+    private Integer point;
+
     public UserDto(Long userNo, String username, String name, String email, String phoneNumber,
                    String zoneCode, String roadAddress, String address, String detailAddress) {
         this.userNo = userNo;
@@ -72,5 +81,17 @@ public class UserDto {
                 user.getAddress().getRoadAddress(),
                 user.getAddress().getAddress(),
                 user.getAddress().getDetailAddress());
+    }
+
+    @QueryProjection
+    public UserDto(Long userNo, String username, String name,
+                   LocalDateTime createdDate, Integer purchasePrice, Integer point
+                   ) {
+        this.userNo = userNo;
+        this.username = username;
+        this.createdDate = createdDate;
+        this.name = name;
+        this.purchasePrice = purchasePrice;
+        this.point = point;
     }
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-public class User {
+public class User extends BaseTimeEntity {
 
     @JsonIgnore
     @Id
@@ -43,6 +43,8 @@ public class User {
 
     @Embedded
     private Address address;
+
+    private Integer point;
 
     @ManyToMany
     @JoinColumn

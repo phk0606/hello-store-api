@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -28,5 +29,11 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<UserDto> getUserInfo(@PathVariable String username) {
         return ResponseEntity.ok(userService.getUserInfo(username));
+    }
+
+    @GetMapping("/user/getUsers")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public List<UserDto> getUsers() {
+        return userService.getUsers();
     }
 }
