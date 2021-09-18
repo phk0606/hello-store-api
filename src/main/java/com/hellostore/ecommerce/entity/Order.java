@@ -8,6 +8,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class Order extends BaseEntity{
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
-//    private LocalDateTime orderDate;
+    private LocalDateTime orderCancelDate;
 
     @Enumerated(EnumType.STRING)
     private OrderDeliveryStatus status;
@@ -106,6 +107,7 @@ public class Order extends BaseEntity{
         }
 
         this.setStatus(OrderDeliveryStatus.ORDER_CANCEL);
+        this.setOrderCancelDate(LocalDateTime.now());
         for (OrderProduct orderProduct : orderProducts) {
             orderProduct.cancel();
         }

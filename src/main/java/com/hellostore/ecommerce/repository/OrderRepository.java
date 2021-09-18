@@ -66,7 +66,8 @@ public class OrderRepository {
 
         return queryFactory.select(
                 new QOrderDto(
-                        order.id, order.createdDate, order.user.id, user.username, user.name,
+                        order.id, order.createdDate, order.orderCancelDate,
+                        order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.paymentStatus,
                         order.depositAccount, order.depositorName, order.depositDueDate,
@@ -88,7 +89,8 @@ public class OrderRepository {
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
-                        new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
+                        new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
+                                order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                                 order.depositAccount, order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
@@ -148,7 +150,8 @@ public class OrderRepository {
     public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
-                        new QOrderDto(order.id, order.createdDate, order.user.id, user.username, user.name,
+                        new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
+                                order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                                 order.depositAccount, order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,

@@ -24,6 +24,8 @@ public class OrderDto {
     private List<Long> orderIds;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime orderCancelDate;
     private Long userNo;
     private String username;
     private String name;
@@ -68,7 +70,8 @@ public class OrderDto {
     }
 
     @QueryProjection
-    public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
+    public OrderDto(Long orderId, LocalDateTime createdDate, LocalDateTime orderCancelDate,
+                    Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     PaymentStatus paymentStatus,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
@@ -77,6 +80,7 @@ public class OrderDto {
                     String requirement, Address address) {
         this.orderId = orderId;
         this.createdDate = createdDate;
+        this.orderCancelDate = orderCancelDate;
         this.userNo = userNo;
         this.username = username;
         this.name = name;
@@ -98,7 +102,8 @@ public class OrderDto {
     }
 
     @QueryProjection
-    public OrderDto(Long orderId, LocalDateTime createdDate, Long userNo, String username, String name,
+    public OrderDto(Long orderId, LocalDateTime createdDate, LocalDateTime orderCancelDate,
+                    Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount, String depositorName, LocalDate depositDueDate,
                     PaymentStatus paymentStatus,
@@ -108,11 +113,13 @@ public class OrderDto {
                     Long orderProductCount) {
         this.orderId = orderId;
         this.createdDate = createdDate;
+        this.orderCancelDate = orderCancelDate;
         this.userNo = userNo;
         this.username = username;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.paymentMethodType = paymentMethodType;
+        this.paymentMethodTypeValue = paymentMethodType.getValue();
         this.paymentPrice = paymentPrice;
         this.depositAccount = depositAccount;
         this.depositorName = depositorName;
