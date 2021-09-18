@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
+import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -140,6 +141,11 @@ public class OrderService {
     @Transactional
     public void modifyOrderDeliveryStatus(List<Long> orderIds, OrderDeliveryStatus orderDeliveryStatus) {
         orderRepository.modifyOrderDeliveryStatus(orderIds, orderDeliveryStatus);
+    }
+
+    @Transactional
+    public void modifyPaymentStatus(List<Long> orderIds, PaymentStatus paymentStatus) {
+        orderRepository.modifyPaymentStatus(orderIds, paymentStatus);
     }
 
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {

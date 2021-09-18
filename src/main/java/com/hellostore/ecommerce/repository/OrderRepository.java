@@ -232,4 +232,11 @@ public class OrderRepository {
                 .where(order.id.in(orderIds))
                 .execute();
     }
+
+    public void modifyPaymentStatus(List<Long> orderIds, PaymentStatus paymentStatus) {
+        queryFactory.update(order)
+                .set(order.paymentStatus, paymentStatus)
+                .where(order.id.in(orderIds))
+                .execute();
+    }
 }

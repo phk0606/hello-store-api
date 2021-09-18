@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/order")
@@ -75,5 +76,12 @@ public class OrderController {
 
         orderService.modifyOrderDeliveryStatus(
                 orderDto.getOrderIds(), orderDto.getOrderDeliveryStatus());
+    }
+
+    @PutMapping("/modifyPaymentStatus")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyPaymentStatus(@RequestBody OrderDto orderDto) {
+
+        orderService.modifyPaymentStatus(orderDto.getOrderIds(), orderDto.getPaymentStatus());
     }
 }
