@@ -68,21 +68,21 @@ public class UserDslRepository {
     private BooleanExpression userJoinDateA(String userJoinDateA) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return StringUtils.hasText(userJoinDateA)
-                ? product.createdDate.goe(LocalDateTime.parse(userJoinDateA + " 00:00:00", formatter)) : null;
+                ? user.createdDate.goe(LocalDateTime.parse(userJoinDateA + " 00:00:00", formatter)) : null;
     }
 
     private BooleanExpression userJoinDateB(String userJoinDateB) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return StringUtils.hasText(userJoinDateB)
-                ? product.createdDate.loe(LocalDateTime.parse(userJoinDateB + " 23:59:59", formatter)) : null;
+                ? user.createdDate.loe(LocalDateTime.parse(userJoinDateB + " 23:59:59", formatter)) : null;
     }
 
     private BooleanExpression purchasePriceMin(Integer purchasePriceMin) {
-        return !isEmpty(purchasePriceMin) ? product.salePrice.goe(purchasePriceMin) : null;
+        return !isEmpty(purchasePriceMin) ? order.paymentPrice.sum().goe(purchasePriceMin) : null;
     }
 
     private BooleanExpression purchasePriceMax(Integer purchasePriceMax) {
-        return !isEmpty(purchasePriceMax) ? product.salePrice.loe(purchasePriceMax) : null;
+        return !isEmpty(purchasePriceMax) ? order.paymentPrice.sum().loe(purchasePriceMax) : null;
     }
 
     private BooleanExpression nameContains(String name) {

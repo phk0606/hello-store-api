@@ -6,6 +6,7 @@ import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.service.UserService;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -37,6 +39,7 @@ public class UserController {
     @GetMapping("/user/getUsers")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {
+        log.debug("userSearchCondition: {}, pageable: {}", userSearchCondition, pageable);
         return userService.getUsers(userSearchCondition, pageable);
     }
 }
