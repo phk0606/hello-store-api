@@ -1,10 +1,13 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.UserDto;
+import com.hellostore.ecommerce.dto.UserSearchCondition;
 import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.service.UserService;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +36,7 @@ public class UserController {
 
     @GetMapping("/user/getUsers")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<UserDto> getUsers() {
-        return userService.getUsers();
+    public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {
+        return userService.getUsers(userSearchCondition, pageable);
     }
 }
