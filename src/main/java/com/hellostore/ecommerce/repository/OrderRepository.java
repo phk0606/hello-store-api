@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
+import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -159,7 +160,8 @@ public class OrderRepository {
                                 delivery.address, orderProduct.id.count()))
                 .from(order)
                 .where(
-                        orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus()),
+                        orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus(),
+                                orderSearchCondition.getPaymentStatus()),
                         orderIdEq(orderSearchCondition.getOrderId()),
                         ordererIdEq(orderSearchCondition.getOrdererId()),
                         ordererNameContains(orderSearchCondition.getOrdererName()),
@@ -179,11 +181,14 @@ public class OrderRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression orderDeliveryStatusEq(OrderDeliveryStatus orderDeliveryStatus) {
+    private BooleanExpression orderDeliveryStatusEq(
+            OrderDeliveryStatus orderDeliveryStatus, PaymentStatus paymentStatus) {
+
         return !isEmpty(orderDeliveryStatus)
                 ? order.status.eq(orderDeliveryStatus)
                 .and(order.status.ne(OrderDeliveryStatus.ORDER_CANCEL))
-                : order.status.eq(OrderDeliveryStatus.ORDER_CANCEL);
+                : order.status.eq(OrderDeliveryStatus.ORDER_CANCEL)
+                .and(order.paymentStatus.eq(paymentStatus));
     }
 
     private BooleanExpression orderIdEq(Long orderId) {
