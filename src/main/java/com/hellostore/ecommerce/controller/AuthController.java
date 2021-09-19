@@ -6,6 +6,7 @@ import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.service.AuthService;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,12 +18,14 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
 
     private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signup(@Valid @RequestBody UserDto userDto) throws DuplicateMemberException {
+        log.debug("userDto: {}", userDto);
         return ResponseEntity.ok(authService.signup(userDto));
     }
 

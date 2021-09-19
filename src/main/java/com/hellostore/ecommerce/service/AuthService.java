@@ -36,7 +36,7 @@ public class AuthService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Transactional
-    public UserDto signup(@Valid @RequestBody UserDto userDto) throws DuplicateMemberException {
+    public UserDto signup(UserDto userDto) throws DuplicateMemberException {
         if (userRepository
                 .findByUsername(userDto.getUsername())
                 .orElse(null) != null) {
@@ -47,7 +47,7 @@ public class AuthService {
                 .authorityName("ROLE_USER")
                 .build();
 
-        Address address = new Address(userDto.getZoneCode(), userDto.getRoadAddress(), userDto.getAddress(), userDto.getDetailAddress());
+        Address address = new Address(userDto.getZoneCode(), userDto.getAddress(), userDto.getRoadAddress(), userDto.getDetailAddress());
         User user = User.builder()
                 .username(userDto.getUsername())
                 .password(passwordEncoder.encode(userDto.getPassword()))
@@ -63,7 +63,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenDto login(@Valid @RequestBody LoginDto loginDto) {
+    public TokenDto login(LoginDto loginDto) {
 
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken =

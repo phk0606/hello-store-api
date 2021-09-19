@@ -1,11 +1,8 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.QUserDto;
-import com.hellostore.ecommerce.dto.ShopProductDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
-import com.hellostore.ecommerce.entity.QOrder;
-import com.hellostore.ecommerce.entity.QUser;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,10 +16,10 @@ import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
-import static com.hellostore.ecommerce.entity.QOrder.*;
-import static com.hellostore.ecommerce.entity.QProduct.product;
-import static com.hellostore.ecommerce.entity.QUser.*;
+import static com.hellostore.ecommerce.entity.QOrder.order;
+import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
@@ -35,6 +32,21 @@ public class UserDslRepository {
     public UserDslRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
         this.em = em;
+    }
+
+    public Optional<UserDto> findByUsername(String username) {
+
+        return Optional.ofNullable(queryFactory.select(
+                        new QUserDto(user.id, user.username, user.name, user.createdDate,
+                                user.email, user.phoneNumber,
+                                user.address.zoneCode, user.address.roadAddress,
+                                user.address.address, user.address.detailAddress,
+                                order.paymentPrice.sum(), user.point))
+                .from(user)
+                .leftJoin(order).on(order.user.id.eq(user.id))
+                .where(user.username.eq(username))
+                .groupBy(user.id)
+                .fetchOne());
     }
 
     public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {

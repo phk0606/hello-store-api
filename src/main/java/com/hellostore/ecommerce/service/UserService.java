@@ -28,8 +28,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserDto getUserInfo(String username) {
-        return userRepository.findByUsername(username)
-                .map(UserDto::of)
+        return userDslRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
 

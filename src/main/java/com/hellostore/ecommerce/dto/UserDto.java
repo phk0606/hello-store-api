@@ -94,4 +94,25 @@ public class UserDto {
         this.purchasePrice = purchasePrice;
         this.point = point;
     }
+
+    @QueryProjection
+    public UserDto(Long userNo, String username, String name,
+                   LocalDateTime createdDate,
+                   String email, String phoneNumber,
+                   String zoneCode, String roadAddress, String address, String detailAddress,
+                   Integer purchasePrice, Integer point
+    ) {
+        this.userNo = userNo;
+        this.username = username;
+        this.createdDate = createdDate;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.zoneCode = zoneCode;
+        this.roadAddress = roadAddress;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.name = name;
+        this.purchasePrice = purchasePrice;
+        this.point = point;
+    }
 }
