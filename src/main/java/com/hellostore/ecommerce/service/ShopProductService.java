@@ -40,14 +40,14 @@ public class ShopProductService {
         Page<ShopProductDto> productsPage
                 = shopProductRepository.getProductsPageCondition(productSearchCondition, pageable);
 
-        for (ShopProductDto shopProductDto : productsPage.getContent()) {
-            if(!ObjectUtils.isEmpty(shopProductDto.getImageId())) {
-                shopProductDto.setImage(
-                        Files.readAllBytes(
-                                Paths.get(shopProductDto.getFilePath(),
-                                        shopProductDto.getFileName())));
-            }
-        }
+//        for (ShopProductDto shopProductDto : productsPage.getContent()) {
+//            if(!ObjectUtils.isEmpty(shopProductDto.getImageId())) {
+//                shopProductDto.setImage(
+//                        Files.readAllBytes(
+//                                Paths.get(shopProductDto.getFilePath(),
+//                                        shopProductDto.getFileName())));
+//            }
+//        }
 
         return productsPage;
     }

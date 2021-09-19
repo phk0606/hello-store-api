@@ -142,14 +142,14 @@ public class ProductService {
         Page<ProductListDto> result =
                 productRepository.getProductsPage(productSearchCondition, pageable);
 
-        for (ProductListDto productCategoryImageDto : result.getContent()) {
-            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
-                productCategoryImageDto.setImage(
-                        Files.readAllBytes(
-                                Paths.get(productCategoryImageDto.getFilePath(),
-                                        productCategoryImageDto.getFileName())));
-            }
-        }
+//        for (ProductListDto productCategoryImageDto : result.getContent()) {
+//            if(!ObjectUtils.isEmpty(productCategoryImageDto.getImageId())) {
+//                productCategoryImageDto.setImage(
+//                        Files.readAllBytes(
+//                                Paths.get(productCategoryImageDto.getFilePath(),
+//                                        productCategoryImageDto.getFileName())));
+//            }
+//        }
 
         return result;
     }
