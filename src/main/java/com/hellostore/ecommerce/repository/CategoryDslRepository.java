@@ -1,5 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.CategoryDto;
+import com.hellostore.ecommerce.dto.QCategoryDto;
 import com.hellostore.ecommerce.entity.Category;
 import com.hellostore.ecommerce.entity.QCategory;
 import com.querydsl.core.BooleanBuilder;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCategory.*;
+
 @Repository
 public class CategoryDslRepository {
 
@@ -19,6 +23,15 @@ public class CategoryDslRepository {
     public CategoryDslRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
         this.em = em;
+    }
+
+    public List<CategoryDto> getChildCategories() {
+
+        return queryFactory.select(new QCategoryDto(category.id, category.name))
+                .from(category)
+                .where(category.parent.isNotNull())
+                .orderBy(category.parent.id.asc(), category.sequence.asc())
+                .fetch();
     }
 
     public List<Category> getCategories() {
@@ -35,7 +48,6 @@ public class CategoryDslRepository {
     }
 
     public List<Category> getCategory(Long parentId) {
-        QCategory category = QCategory.category;
 
         BooleanBuilder builder = new BooleanBuilder();
 
@@ -53,7 +65,6 @@ public class CategoryDslRepository {
     }
 
     public Category getCategoryOne(Long id) {
-        QCategory category = QCategory.category;
 
         return queryFactory.selectFrom(category)
                 .where(category.id.eq(id))
@@ -61,13 +72,13 @@ public class CategoryDslRepository {
     }
 
     public Integer getCategoryMaxSequence(Long categoryId, Long parentId) {
-        QCategory productCategory = QCategory.category;
+        QCategory productCategory = category;
 
         Integer maxSequence = 0;
         if(parentId == null && categoryId == null) {
 
             maxSequence = queryFactory.select(productCategory.sequence.max())
-                    .from(productCategory)
+                    .from(category)
                     .where(productCategory.parent.isNull())
                     .fetchOne();
         } else if (parentId != null && categoryId == null) {

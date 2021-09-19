@@ -27,6 +27,10 @@ public class CategoryService {
         return categories.stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
+    public List<CategoryDto> getChildCategories() {
+        return repository.getChildCategories();
+    }
+
     public List<CategorySelectDto> getCategory(Long parentId) {
 
         List<Category> category = repository.getCategory(parentId);

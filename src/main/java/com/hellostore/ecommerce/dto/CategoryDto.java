@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.dto;
 
 import com.hellostore.ecommerce.entity.Category;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -57,5 +58,11 @@ public class CategoryDto {
                     .sequence(categoryDto.getSequence())
                     .build();
         }
+    }
+
+    @QueryProjection
+    public CategoryDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }

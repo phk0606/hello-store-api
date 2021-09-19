@@ -23,6 +23,11 @@ public class CategoryController {
         return categoryService.getCategories();
     }
 
+    @GetMapping("/getChildCategories")
+    public List<CategoryDto> getChildCategories() {
+        return categoryService.getChildCategories();
+    }
+
     @GetMapping("/getCategory")
     public List<CategorySelectDto> getCategory(@RequestParam(required = false) Long parentId) {
         return categoryService.getCategory(parentId);

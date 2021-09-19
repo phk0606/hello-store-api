@@ -1,6 +1,5 @@
 package com.hellostore.ecommerce.service;
 
-import com.hellostore.ecommerce.dto.ProductListDto;
 import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.ShopProductDto;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
