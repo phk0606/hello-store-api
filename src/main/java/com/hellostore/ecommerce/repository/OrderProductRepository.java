@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.QOrderProductDto;
 import com.hellostore.ecommerce.entity.QOrder;
+import com.hellostore.ecommerce.entity.QProductComment;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -49,13 +50,18 @@ public class OrderProductRepository {
 
     public List<OrderProductDto> getOrderProductsByUsername(String username) {
 
+        QProductComment productComment = QProductComment.productComment;
         return queryFactory.select(new QOrderProductDto(order.id, order.createdDate, product.id, product.name))
                 .from(order)
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
                 .join(product).on(product.id.eq(orderProduct.product.id))
+                .leftJoin(productComment)
+                .on(productComment.user.id.eq(order.user.id))
+                .on((productComment.product.id.eq(product.id)))
                 .where(
                         order.user.username.eq(username),
-                        order.createdDate.goe(LocalDateTime.now().minusMonths(1))
+                        order.createdDate.goe(LocalDateTime.now().minusMonths(1)),
+                        productComment.content.isNull()
                 )
                 .orderBy(order.createdDate.desc(), order.id.desc())
                 .fetch();
