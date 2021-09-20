@@ -73,6 +73,10 @@ public class OrderService {
         return order.getId();
     }
 
+    public List<OrderProductDto> getOrderProductsByUsername(String username) {
+        return orderProductRepository.getOrderProductsByUsername(username);
+    }
+
     public OrderDto getOrder(Long orderId) throws IOException {
         // order 가져오기
         OrderDto orderDto = orderRepository.getOrder(orderId);

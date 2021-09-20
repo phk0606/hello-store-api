@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.OrderSearchCondition;
 import com.hellostore.ecommerce.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,12 @@ public class OrderController {
     public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) throws IOException {
         log.debug("orderSearchCondition: {}", orderSearchCondition);
         return orderService.getOrders(pageable, orderSearchCondition);
+    }
+
+    @GetMapping("/getOrderProductsByUsername")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public List<OrderProductDto> getOrderProductsByUsername(String username) {
+        return orderService.getOrderProductsByUsername(username);
     }
 
     @PutMapping("/modifyOrdererPhoneNumber")

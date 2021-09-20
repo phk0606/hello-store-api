@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce;
 
+import com.hellostore.ecommerce.util.SecurityUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +20,7 @@ public class EcommerceApplication {
 
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.of("admin");
+        return () -> Optional.of(SecurityUtil.getCurrentUsername());
     }
 
     @Bean

@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.querydsl.core.annotations.QueryProjection;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,10 @@ public class OrderProductDto {
     private Integer point;
     private Integer shippingFee;
     private int totalPrice;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdDate;
+
     @Setter
     private List<OrderProductOptionDto> productOptions = new ArrayList<>();
 
@@ -68,5 +74,13 @@ public class OrderProductDto {
         this.productName = productName;
         this.filePath = filePath;
         this.fileName = fileName;
+    }
+
+    @QueryProjection
+    public OrderProductDto(Long orderId, LocalDateTime createdDate, Long productId, String productName) {
+        this.orderId = orderId;
+        this.createdDate = createdDate;
+        this.productId = productId;
+        this.productName = productName;
     }
 }
