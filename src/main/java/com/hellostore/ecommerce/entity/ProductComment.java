@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -31,10 +28,17 @@ public class ProductComment extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    private String title;
     private String content;
     private int grade;
 
     @OneToMany(mappedBy = "productComment", cascade = CascadeType.ALL)
     private List<ProductCommentReply> replies = new ArrayList<>();
+
+    @Builder
+    public ProductComment(User user, Product product, String content, int grade) {
+        this.user = user;
+        this.product = product;
+        this.content = content;
+        this.grade = grade;
+    }
 }

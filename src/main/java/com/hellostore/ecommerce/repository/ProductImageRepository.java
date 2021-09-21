@@ -1,17 +1,13 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.ProductImageDto;
 import com.hellostore.ecommerce.entity.ProductImage;
-import com.hellostore.ecommerce.entity.QProductImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QProductImage.*;
+import static com.hellostore.ecommerce.entity.QProductImage.productImage;
 
 @Repository
 public class ProductImageRepository {
