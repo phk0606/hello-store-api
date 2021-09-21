@@ -11,6 +11,8 @@ import com.hellostore.ecommerce.repository.ProductRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,8 +56,8 @@ public class ProductCommentService {
         }
     }
 
-    public List<ProductCommentDto> getProductComments(Long productId) {
+    public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
 
-        return productCommentRepository.getProductComments(productId);
+        return productCommentRepository.getProductComments(productId, pageable);
     }
 }

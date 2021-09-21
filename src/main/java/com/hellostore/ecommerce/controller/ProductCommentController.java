@@ -6,6 +6,8 @@ import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.service.ProductCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -33,7 +35,7 @@ public class ProductCommentController {
     }
 
     @GetMapping("/getProductComments")
-    public List<ProductCommentDto> getProductComments(@RequestParam Long productId) {
-        return productCommentService.getProductComments(productId);
+    public Page<ProductCommentDto> getProductComments(@RequestParam Long productId, Pageable pageable) {
+        return productCommentService.getProductComments(productId, pageable);
     }
 }

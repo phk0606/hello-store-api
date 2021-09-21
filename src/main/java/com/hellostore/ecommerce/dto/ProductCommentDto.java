@@ -25,15 +25,19 @@ public class ProductCommentDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
+    private Long replyCount;
+
     @QueryProjection
     public ProductCommentDto(Long productCommentId, String username,
                              String content, int grade, String fileName,
-                             LocalDateTime createdDate) {
+                             LocalDateTime createdDate,
+                             Long replyCount) {
         this.productCommentId = productCommentId;
         this.username = username;
         this.content = content;
         this.grade = grade;
         this.fileName = fileName;
         this.createdDate = createdDate;
+        this.replyCount = replyCount;
     }
 }

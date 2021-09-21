@@ -2,19 +2,24 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.QProductCommentDto;
-import com.hellostore.ecommerce.entity.ProductComment;
-import com.hellostore.ecommerce.entity.QProduct;
-import com.hellostore.ecommerce.entity.QProductComment;
-import com.hellostore.ecommerce.entity.QProductCommentImage;
+import com.hellostore.ecommerce.dto.ShopProductDto;
+import com.hellostore.ecommerce.entity.*;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QOrderProduct.*;
 import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductComment.*;
 import static com.hellostore.ecommerce.entity.QProductCommentImage.*;
+import static com.hellostore.ecommerce.entity.QProductCommentReply.*;
+import static com.hellostore.ecommerce.entity.QUser.*;
 
 @Repository
 public class ProductCommentRepository {
@@ -32,21 +37,33 @@ public class ProductCommentRepository {
         return productComment;
     }
 
-    public List<ProductCommentDto> getProductComments(Long productId) {
+    public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
 
-        return queryFactory.select(
-                    new QProductCommentDto(
-                        productComment.id, productComment.user.username,
-                         productComment.content, productComment.grade,
-                            productCommentImage.fileName, productComment.createdDate
-                    )
+        QueryResults<ProductCommentDto> results =
+                queryFactory.select(
+                        new QProductCommentDto(
+                                productComment.id, user.username,
+                                productComment.content, productComment.grade,
+                                productCommentImage.fileName, productComment.createdDate,
+                                productCommentReply.id.count()
+                        )
                 )
                 .from(productComment)
-                .join(product).on(product.id.eq(productComment.orderProduct.product.id))
+                .join(orderProduct).on(orderProduct.id.eq(productComment.orderProduct.id))
+                .join(user).on(user.id.eq(productComment.user.id))
+                .leftJoin(productCommentReply)
+                .on(productCommentReply.productComment.id.eq(productComment.id))
                 .leftJoin(productCommentImage)
                 .on(productCommentImage.productComment.id.eq(productComment.id))
-                .where(productComment.orderProduct.product.id.eq(productId))
+                .where(orderProduct.product.id.eq(productId))
                 .orderBy(productComment.id.desc())
-                .fetch();
+                .groupBy(productComment.id)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetchResults();
+
+        List<ProductCommentDto> content = results.getResults();
+        long total = results.getTotal();
+        return new PageImpl<>(content, pageable, total);
     }
 }
