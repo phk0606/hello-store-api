@@ -1,8 +1,8 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
-import com.hellostore.ecommerce.dto.ProductDto;
-import com.hellostore.ecommerce.entity.Product;
+import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
+import com.hellostore.ecommerce.service.ProductCommentReplyService;
 import com.hellostore.ecommerce.service.ProductCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import java.util.List;
 public class ProductCommentController {
 
     private final ProductCommentService productCommentService;
+    private final ProductCommentReplyService productCommentReplyService;
 
     @PostMapping("/createProductComment")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
@@ -37,5 +38,21 @@ public class ProductCommentController {
     @GetMapping("/getProductComments")
     public Page<ProductCommentDto> getProductComments(@RequestParam Long productId, Pageable pageable) {
         return productCommentService.getProductComments(productId, pageable);
+    }
+
+    @PostMapping("/createProductCommentReply")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void createProductCommentReply(
+            @RequestBody ProductCommentReplyDto productCommentReplyDto) {
+
+        log.debug("productCommentReplyDto: {}", productCommentReplyDto);
+
+        // 상품평 댓글 저장
+        productCommentReplyService.createProductCommentReply(productCommentReplyDto);
+    }
+
+    @GetMapping("/getProductCommentReplyList")
+    public List<ProductCommentReplyDto> getProductCommentReplyList(Long productCommentId) {
+        return productCommentReplyService.getProductCommentReplyList(productCommentId);
     }
 }

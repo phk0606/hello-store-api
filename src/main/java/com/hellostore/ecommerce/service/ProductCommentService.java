@@ -1,13 +1,13 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
+import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
 import com.hellostore.ecommerce.entity.OrderProduct;
-import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.repository.OrderProductRepository;
+import com.hellostore.ecommerce.repository.ProductCommentReplyRepository;
 import com.hellostore.ecommerce.repository.ProductCommentRepository;
-import com.hellostore.ecommerce.repository.ProductRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class ProductCommentService {
     private final UserRepository userRepository;
     private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
+    private final ProductCommentReplyRepository productCommentReplyRepository;
 
     @Transactional
     public void createProductComment(ProductCommentDto productCommentDto,
@@ -58,6 +61,22 @@ public class ProductCommentService {
 
     public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
 
-        return productCommentRepository.getProductComments(productId, pageable);
+        Page<ProductCommentDto> productComments
+                = productCommentRepository.getProductComments(productId, pageable);
+
+        Map<Long, List<ProductCommentReplyDto>> productCommentReplyMap
+                = productCommentReplyRepository
+                .getProductCommentReplies(toProductCommentIds(productComments.getContent()));
+
+        productComments.forEach(
+                o -> o.setProductCommentReplies(
+                        productCommentReplyMap.get(o.getProductCommentId())));
+        return productComments;
+    }
+
+    private List<Long> toProductCommentIds(List<ProductCommentDto> result) {
+        return result.stream()
+                .map(o -> o.getProductCommentId())
+                .collect(Collectors.toList());
     }
 }

@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -26,6 +29,8 @@ public class ProductCommentDto {
     private LocalDateTime createdDate;
 
     private Long replyCount;
+    @Setter
+    private List<ProductCommentReplyDto> productCommentReplies = new ArrayList<>();
 
     @QueryProjection
     public ProductCommentDto(Long productCommentId, String username,

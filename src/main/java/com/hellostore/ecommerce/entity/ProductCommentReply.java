@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.entity;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -29,4 +26,11 @@ public class ProductCommentReply extends BaseEntity {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_no")
     private User user;
+
+    @Builder
+    public ProductCommentReply(String content, ProductComment productComment, User user) {
+        this.content = content;
+        this.productComment = productComment;
+        this.user = user;
+    }
 }

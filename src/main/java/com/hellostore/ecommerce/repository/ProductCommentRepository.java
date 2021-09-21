@@ -2,8 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.QProductCommentDto;
-import com.hellostore.ecommerce.dto.ShopProductDto;
-import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.entity.ProductComment;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -14,12 +13,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QOrderProduct.*;
-import static com.hellostore.ecommerce.entity.QProduct.*;
-import static com.hellostore.ecommerce.entity.QProductComment.*;
-import static com.hellostore.ecommerce.entity.QProductCommentImage.*;
-import static com.hellostore.ecommerce.entity.QProductCommentReply.*;
-import static com.hellostore.ecommerce.entity.QUser.*;
+import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
+import static com.hellostore.ecommerce.entity.QProductComment.productComment;
+import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
+import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
+import static com.hellostore.ecommerce.entity.QUser.user;
 
 @Repository
 public class ProductCommentRepository {
@@ -35,6 +33,12 @@ public class ProductCommentRepository {
     public ProductComment save(ProductComment productComment) {
         em.persist(productComment);
         return productComment;
+    }
+
+    public ProductComment getProductCommentById(Long productCommentId) {
+        return queryFactory.selectFrom(productComment)
+                .where(productComment.id.eq(productCommentId))
+                .fetchOne();
     }
 
     public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
