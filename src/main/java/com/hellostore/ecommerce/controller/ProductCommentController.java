@@ -35,6 +35,18 @@ public class ProductCommentController {
         productCommentService.createProductComment(productCommentDto, productCommentImages);
     }
 
+    @PutMapping("/modifyProductComment")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyProductComment(@RequestBody ProductCommentDto productCommentDto) {
+        productCommentService.modifyProductComment(productCommentDto);
+    }
+
+    @DeleteMapping("/removeProductComment")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeProductComment(@RequestBody ProductCommentDto productCommentDto) {
+        productCommentService.removeProductComment(productCommentDto.getProductCommentId());
+    }
+
     @GetMapping("/getProductComments")
     public Page<ProductCommentDto> getProductComments(@RequestParam Long productId, Pageable pageable) {
         return productCommentService.getProductComments(productId, pageable);

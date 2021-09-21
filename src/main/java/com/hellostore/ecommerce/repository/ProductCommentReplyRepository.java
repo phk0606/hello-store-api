@@ -29,6 +29,12 @@ public class ProductCommentReplyRepository {
         return productCommentReply;
     }
 
+    public void removeProductCommentReplies(Long productCommentId) {
+        queryFactory.delete(productCommentReply)
+                .where(productCommentReply.productComment.id.eq(productCommentId))
+                .execute();
+    }
+
     public Map<Long, List<ProductCommentReplyDto>> getProductCommentReplies(List<Long> productCommentIds) {
 
         List<ProductCommentReplyDto> productCommentReplyDtos

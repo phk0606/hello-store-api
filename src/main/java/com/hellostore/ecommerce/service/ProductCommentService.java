@@ -5,10 +5,7 @@ import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
 import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.hellostore.ecommerce.entity.User;
-import com.hellostore.ecommerce.repository.OrderProductRepository;
-import com.hellostore.ecommerce.repository.ProductCommentReplyRepository;
-import com.hellostore.ecommerce.repository.ProductCommentRepository;
-import com.hellostore.ecommerce.repository.UserRepository;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,6 +30,7 @@ public class ProductCommentService {
     private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
     private final ProductCommentReplyRepository productCommentReplyRepository;
+    private final ProductCommentImageRepository productCommentImageRepository;
 
     @Transactional
     public void createProductComment(ProductCommentDto productCommentDto,
@@ -57,6 +55,19 @@ public class ProductCommentService {
         if(productCommentImages != null) {
             productCommentImageService.uploadProductCommentImage(productCommentImages, productComment1);
         }
+    }
+
+    @Transactional
+    public void modifyProductComment(ProductCommentDto productCommentDto) {
+        productCommentRepository.modifyProductComment(productCommentDto);
+    }
+
+    @Transactional
+    public void removeProductComment(Long productCommentId) {
+
+        productCommentReplyRepository.removeProductCommentReplies(productCommentId);
+        productCommentImageRepository.removeProductCommentImages(productCommentId);
+        productCommentRepository.removeProductComment(productCommentId);
     }
 
     public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {

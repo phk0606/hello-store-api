@@ -35,6 +35,19 @@ public class ProductCommentRepository {
         return productComment;
     }
 
+    public void modifyProductComment(ProductCommentDto productCommentDto) {
+        queryFactory.update(productComment)
+                .set(productComment.content, productCommentDto.getContent())
+                .where(productComment.id.eq(productCommentDto.getProductCommentId()))
+                .execute();
+    }
+
+    public void removeProductComment(Long productCommentId) {
+        queryFactory.delete(productComment)
+                .where(productComment.id.eq(productCommentId))
+                .execute();
+    }
+
     public ProductComment getProductCommentById(Long productCommentId) {
         return queryFactory.selectFrom(productComment)
                 .where(productComment.id.eq(productCommentId))
