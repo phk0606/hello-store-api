@@ -1,9 +1,11 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
+import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.hellostore.ecommerce.entity.User;
+import com.hellostore.ecommerce.repository.OrderProductRepository;
 import com.hellostore.ecommerce.repository.ProductCommentRepository;
 import com.hellostore.ecommerce.repository.ProductRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
@@ -24,7 +26,7 @@ public class ProductCommentService {
 
     private final ProductCommentRepository productCommentRepository;
     private final UserRepository userRepository;
-    private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
 
     @Transactional
@@ -33,11 +35,12 @@ public class ProductCommentService {
 
         // 사용자 조회
         Optional<User> user = userRepository.findByUsername(productCommentDto.getUsername());
-        // 상품 조회
-        Product product = productRepository.getProduct(productCommentDto.getProductId());
+        // 주문 상품 조회
+        OrderProduct orderProduct
+                = orderProductRepository.getOrderProductById(productCommentDto.getOrderProductId());
 
         ProductComment productComment = ProductComment.builder()
-                .product(product)
+                .orderProduct(orderProduct)
                 .user(user.get())
                 .content(productCommentDto.getContent())
                 .grade(productCommentDto.getGrade())
@@ -49,5 +52,10 @@ public class ProductCommentService {
         if(productCommentImages != null) {
             productCommentImageService.uploadProductCommentImage(productCommentImages, productComment1);
         }
+    }
+
+    public List<ProductCommentDto> getProductComments(Long productId) {
+
+        return productCommentRepository.getProductComments(productId);
     }
 }

@@ -31,4 +31,9 @@ public class ProductCommentController {
         // 상품평 저장
         productCommentService.createProductComment(productCommentDto, productCommentImages);
     }
+
+    @GetMapping("/getProductComments")
+    public List<ProductCommentDto> getProductComments(@RequestParam Long productId) {
+        return productCommentService.getProductComments(productId);
+    }
 }

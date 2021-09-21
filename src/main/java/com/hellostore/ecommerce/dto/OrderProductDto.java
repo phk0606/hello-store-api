@@ -77,10 +77,10 @@ public class OrderProductDto {
     }
 
     @QueryProjection
-    public OrderProductDto(Long orderId, LocalDateTime createdDate, Long productId, String productName) {
+    public OrderProductDto(Long orderId, LocalDateTime createdDate, Long orderProductId, String productName) {
         this.orderId = orderId;
         this.createdDate = createdDate;
-        this.productId = productId;
+        this.orderProductId = orderProductId;
         this.productName = productName;
     }
 }
