@@ -27,7 +27,7 @@ public class ProductComment extends BaseEntity {
     @OneToMany(mappedBy = "productComment", cascade = CascadeType.ALL)
     private List<ProductCommentImage> images = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
