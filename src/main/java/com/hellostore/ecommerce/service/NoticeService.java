@@ -18,6 +18,7 @@ public class NoticeService {
 
     private final NoticeRepository noticeRepository;
 
+    @Transactional
     public void createNotice(NoticeDto noticeDto) {
         Notice notice = Notice.builder()
                 .title(noticeDto.getTitle())

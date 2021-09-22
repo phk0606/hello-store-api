@@ -34,7 +34,9 @@ public class NoticeRepository {
         QNotice notice = QNotice.notice;
         QueryResults<NoticeDto> results
                 = queryFactory.select(
-                        new QNoticeDto(notice.id, notice.title, notice.content))
+                        new QNoticeDto(
+                                notice.id, notice.title,
+                                notice.content, notice.important, notice.createdDate))
                 .from(notice)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
