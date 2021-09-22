@@ -40,6 +40,7 @@ public class NoticeRepository {
                                 notice.id, notice.title,
                                 notice.content, notice.important, notice.createdDate))
                 .from(notice)
+                .orderBy(notice.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
