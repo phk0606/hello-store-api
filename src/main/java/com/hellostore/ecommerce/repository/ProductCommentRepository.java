@@ -67,7 +67,7 @@ public class ProductCommentRepository {
                 )
                 .from(productComment)
                 .join(orderProduct).on(orderProduct.id.eq(productComment.orderProduct.id))
-                .join(user).on(user.id.eq(productComment.user.id))
+                .join(user).on(user.username.eq(productComment.createdBy))
                 .leftJoin(productCommentReply)
                 .on(productCommentReply.productComment.id.eq(productComment.id))
                 .leftJoin(productCommentImage)

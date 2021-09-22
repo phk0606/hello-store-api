@@ -10,22 +10,22 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductCommentReply extends BaseEntity {
+public class ProductAnswer extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "reply_id")
+    @Column(name = "product_answer_id")
     private Long id;
 
     private String content;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "product_comment_id")
-    private ProductComment productComment;
+    @OneToOne
+    @JoinColumn(name = "product_question_id")
+    private ProductQuestion productQuestion;
 
     @Builder
-    public ProductCommentReply(String content, ProductComment productComment) {
+    public ProductAnswer(String content, ProductQuestion productQuestion) {
         this.content = content;
-        this.productComment = productComment;
+        this.productQuestion = productQuestion;
     }
 }

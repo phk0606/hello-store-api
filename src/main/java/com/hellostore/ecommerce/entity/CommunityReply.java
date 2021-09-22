@@ -10,7 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductCommentReply extends BaseEntity {
+public class CommunityReply extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,12 +20,17 @@ public class ProductCommentReply extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "product_comment_id")
-    private ProductComment productComment;
+    @JoinColumn(name = "community_id")
+    private Community community;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_no")
+    private User user;
 
     @Builder
-    public ProductCommentReply(String content, ProductComment productComment) {
+    public CommunityReply(String content, Community community, User user) {
         this.content = content;
-        this.productComment = productComment;
+        this.community = community;
+        this.user = user;
     }
 }

@@ -64,7 +64,7 @@ public class OrderProductRepository {
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
                 .join(product).on(product.id.eq(orderProduct.product.id))
                 .leftJoin(productComment)
-                .on(productComment.user.id.eq(order.user.id))
+                .on(productComment.createdBy.eq(order.user.username))
                 .on((productComment.orderProduct.id.eq(orderProduct.id)))
                 .where(
                         order.user.username.eq(username),

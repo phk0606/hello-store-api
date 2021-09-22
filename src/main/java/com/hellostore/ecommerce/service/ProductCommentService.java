@@ -36,15 +36,12 @@ public class ProductCommentService {
     public void createProductComment(ProductCommentDto productCommentDto,
                                      List<MultipartFile> productCommentImages) {
 
-        // 사용자 조회
-        Optional<User> user = userRepository.findByUsername(productCommentDto.getUsername());
         // 주문 상품 조회
         OrderProduct orderProduct
                 = orderProductRepository.getOrderProductById(productCommentDto.getOrderProductId());
 
         ProductComment productComment = ProductComment.builder()
                 .orderProduct(orderProduct)
-                .user(user.get())
                 .content(productCommentDto.getContent())
                 .grade(productCommentDto.getGrade())
                 .build();
