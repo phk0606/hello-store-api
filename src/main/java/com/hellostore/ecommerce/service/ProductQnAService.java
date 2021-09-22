@@ -54,19 +54,23 @@ public class ProductQnAService {
         productQnARepository.createProductAnswer(productAnswer);
     }
 
+    @Transactional
     public void removeQuestion(ProductQnADto productQnADto) {
         productQnARepository.removeQuestion(productQnADto);
     }
 
+    @Transactional
     public void removeAnswer(ProductQnADto productQnADto) {
         productQnARepository.removeAnswer(productQnADto);
     }
 
+    @Transactional
     public void modifyQuestion(ProductQnADto productQnADto) {
 
         productQnARepository.modifyQuestion(productQnADto);
     }
 
+    @Transactional
     public void modifyAnswer(ProductQnADto productQnADto) {
 
         productQnARepository.modifyAnswer(productQnADto);

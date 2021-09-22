@@ -51,7 +51,7 @@ public class ProductQnARepository {
         queryFactory.delete(productAnswer)
                 .where(
                         productAnswer.productQuestion.id.eq(
-                                productQnADto.getProductAnswerId()))
+                                productQnADto.getProductQuestionId()))
                 .execute();
     }
 
