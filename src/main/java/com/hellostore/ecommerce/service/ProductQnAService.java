@@ -15,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import static com.hellostore.ecommerce.entity.QProductAnswer.productAnswer;
+import static com.hellostore.ecommerce.entity.QProductQuestion.productQuestion;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -49,6 +52,24 @@ public class ProductQnAService {
                 .build();
 
         productQnARepository.createProductAnswer(productAnswer);
+    }
+
+    public void removeQuestion(ProductQnADto productQnADto) {
+        productQnARepository.removeQuestion(productQnADto);
+    }
+
+    public void removeAnswer(ProductQnADto productQnADto) {
+        productQnARepository.removeAnswer(productQnADto);
+    }
+
+    public void modifyQuestion(ProductQnADto productQnADto) {
+
+        productQnARepository.modifyQuestion(productQnADto);
+    }
+
+    public void modifyAnswer(ProductQnADto productQnADto) {
+
+        productQnARepository.modifyAnswer(productQnADto);
     }
 
     public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {

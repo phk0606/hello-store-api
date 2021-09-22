@@ -39,6 +39,40 @@ public class ProductQnARepository {
         return productQuestion;
     }
 
+    public void removeQuestion(ProductQnADto productQnADto) {
+        queryFactory.delete(productQuestion)
+                .where(
+                        productQuestion.id.eq(
+                                productQnADto.getProductQuestionId()))
+                .execute();
+    }
+
+    public void removeAnswer(ProductQnADto productQnADto) {
+        queryFactory.delete(productAnswer)
+                .where(
+                        productAnswer.productQuestion.id.eq(
+                                productQnADto.getProductAnswerId()))
+                .execute();
+    }
+
+    public void modifyQuestion(ProductQnADto productQnADto) {
+
+        queryFactory.update(productQuestion)
+                .set(productQuestion.content, productQnADto.getQuestionContent())
+                .where(productQuestion.id.eq(productQnADto.getProductQuestionId()))
+                .execute();
+    }
+
+    public void modifyAnswer(ProductQnADto productQnADto) {
+
+        queryFactory.update(productAnswer)
+                .set(productAnswer.content, productQnADto.getAnswerContent())
+                .where(
+                        productAnswer.productQuestion.id.eq(
+                                productQnADto.getProductQuestionId()))
+                .execute();
+    }
+
     public ProductQuestion getProductQuestion(Long productQuestionId) {
         return queryFactory.selectFrom(productQuestion)
                 .where(productQuestion.id.eq(productQuestionId))

@@ -37,6 +37,36 @@ public class ProductQnAController {
         productQnAService.createProductAnswer(productQnADto);
     }
 
+    @DeleteMapping("/removeQuestion")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeQuestion(@RequestBody ProductQnADto productQnADto) {
+
+        log.debug("productQnADto: {}", productQnADto);
+        productQnAService.removeQuestion(productQnADto);
+    }
+
+    @PutMapping("/modifyQuestion")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyQuestion(@RequestBody ProductQnADto productQnADto) {
+
+        productQnAService.modifyQuestion(productQnADto);
+    }
+
+    @DeleteMapping("/removeAnswer")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeAnswer(@RequestBody ProductQnADto productQnADto) {
+
+        log.debug("productQnADto: {}", productQnADto);
+        productQnAService.removeAnswer(productQnADto);
+    }
+
+    @PutMapping("/modifyAnswer")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyAnswer(@RequestBody ProductQnADto productQnADto) {
+
+        productQnAService.modifyAnswer(productQnADto);
+    }
+
     @GetMapping("/getProductQnA")
     public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {
         return productQnAService.getProductQnA(productId, pageable);
