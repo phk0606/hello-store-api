@@ -28,6 +28,16 @@ public class NoticeService {
         noticeRepository.save(notice);
     }
 
+    @Transactional
+    public void modifyNotice(NoticeDto noticeDto) {
+        noticeRepository.modifyNotice(noticeDto);
+    }
+
+    @Transactional
+    public void removeNotice(NoticeDto noticeDto) {
+        noticeRepository.removeNotice(noticeDto);
+    }
+
     public Page<NoticeDto> getNotices(Pageable pageable) {
         return noticeRepository.getNotices(pageable);
     }

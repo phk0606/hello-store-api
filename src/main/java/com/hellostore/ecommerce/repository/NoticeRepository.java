@@ -3,7 +3,6 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.NoticeDto;
 import com.hellostore.ecommerce.dto.QNoticeDto;
 import com.hellostore.ecommerce.entity.Notice;
-import com.hellostore.ecommerce.entity.QNotice;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QNotice.*;
+import static com.hellostore.ecommerce.entity.QNotice.notice;
 
 @Repository
 public class NoticeRepository {
@@ -30,6 +29,21 @@ public class NoticeRepository {
     public Notice save(Notice notice) {
         em.persist(notice);
         return notice;
+    }
+
+    public void modifyNotice(NoticeDto noticeDto) {
+        queryFactory.update(notice)
+                .set(notice.title, noticeDto.getTitle())
+                .set(notice.content, noticeDto.getContent())
+                .set(notice.important, noticeDto.isImportant())
+                .where(notice.id.eq(noticeDto.getNoticeId()))
+                .execute();
+    }
+
+    public void removeNotice(NoticeDto noticeDto) {
+        queryFactory.delete(notice)
+                .where(notice.id.eq(noticeDto.getNoticeId()))
+                .execute();
     }
 
     public Page<NoticeDto> getNotices(Pageable pageable) {

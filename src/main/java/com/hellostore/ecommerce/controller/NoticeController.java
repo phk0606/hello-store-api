@@ -1,7 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.NoticeDto;
-import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,18 @@ public class NoticeController {
     public void createNotice(@RequestBody NoticeDto noticeDto) {
         log.debug("noticeDto: {}", noticeDto);
         noticeService.createNotice(noticeDto);
+    }
+
+    @PutMapping("/modifyNotice")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyNotice(@RequestBody NoticeDto noticeDto) {
+        noticeService.modifyNotice(noticeDto);
+    }
+
+    @DeleteMapping("/removeNotice")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void removeNotice(@RequestBody NoticeDto noticeDto) {
+        noticeService.removeNotice(noticeDto);
     }
 
     @GetMapping("/getNotices")
