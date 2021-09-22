@@ -47,6 +47,20 @@ public class ProductCommentController {
         productCommentService.removeProductComment(productCommentDto.getProductCommentId());
     }
 
+    @PutMapping("/modifyProductCommentReply")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyProductCommentReply(
+            @RequestBody ProductCommentReplyDto productCommentReplyDto) {
+        productCommentReplyService.modifyProductCommentReply(productCommentReplyDto);
+    }
+
+    @DeleteMapping("/removeProductCommentReply")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeProductCommentReply(
+            @RequestBody ProductCommentReplyDto productCommentReplyDto) {
+        productCommentReplyService.removeProductCommentReply(productCommentReplyDto);
+    }
+
     @GetMapping("/getProductComments")
     public Page<ProductCommentDto> getProductComments(@RequestParam Long productId, Pageable pageable) {
         return productCommentService.getProductComments(productId, pageable);

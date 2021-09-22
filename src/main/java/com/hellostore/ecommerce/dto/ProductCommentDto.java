@@ -23,6 +23,7 @@ public class ProductCommentDto {
     private Long productId;
     private String content;
     private int grade;
+    private String productCommentReply;
 
     private String fileName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

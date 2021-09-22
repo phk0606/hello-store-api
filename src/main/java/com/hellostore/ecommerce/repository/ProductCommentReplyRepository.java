@@ -35,6 +35,19 @@ public class ProductCommentReplyRepository {
                 .execute();
     }
 
+    public void modifyProductCommentReply(ProductCommentReplyDto productCommentReplyDto) {
+        queryFactory.update(productCommentReply)
+                .set(productCommentReply.content, productCommentReplyDto.getContent())
+                .execute();
+    }
+
+    public void removeProductCommentReply(ProductCommentReplyDto productCommentReplyDto) {
+        queryFactory.delete(productCommentReply)
+                .where(productCommentReply.id.eq(
+                        productCommentReplyDto.getProductCommentReplyId()))
+                .execute();
+    }
+
     public Map<Long, List<ProductCommentReplyDto>> getProductCommentReplies(List<Long> productCommentIds) {
 
         List<ProductCommentReplyDto> productCommentReplyDtos

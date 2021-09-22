@@ -23,14 +23,9 @@ public class CommunityReply extends BaseEntity {
     @JoinColumn(name = "community_id")
     private Community community;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_no")
-    private User user;
-
     @Builder
-    public CommunityReply(String content, Community community, User user) {
+    public CommunityReply(String content, Community community) {
         this.content = content;
         this.community = community;
-        this.user = user;
     }
 }

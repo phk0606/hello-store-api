@@ -17,10 +17,6 @@ public class Community extends BaseEntity {
     @Column(name = "community_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_no")
-    private User user;
-
     private String title;
     @Lob
     private String content;
@@ -29,8 +25,8 @@ public class Community extends BaseEntity {
     private List<CommunityReply> replies = new ArrayList<>();
 
     @Builder
-    public Community(User user, String content) {
-        this.user = user;
+    public Community(String title, String content) {
+        this.title = title;
         this.content = content;
     }
 }
