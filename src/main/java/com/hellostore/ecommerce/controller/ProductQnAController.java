@@ -27,6 +27,16 @@ public class ProductQnAController {
         productQnAService.createProductQuestion(productQnADto);
     }
 
+    @PostMapping("/createProductAnswer")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void createProductAnswer(@RequestBody ProductQnADto productQnADto) {
+
+        log.debug("productQnADto: {}", productQnADto);
+
+        // 상품 답변 저장
+        productQnAService.createProductAnswer(productQnADto);
+    }
+
     @GetMapping("/getProductQnA")
     public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {
         return productQnAService.getProductQnA(productId, pageable);
