@@ -8,10 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/board")
+@RequestMapping("/api/styleShopNotice")
 @RequiredArgsConstructor
 @Slf4j
-public class BoardController {
+public class StyleShopNoticeController {
 
     private final StyleShopNoticeService styleShopNoticeService;
 

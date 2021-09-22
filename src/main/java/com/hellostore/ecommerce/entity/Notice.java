@@ -21,4 +21,10 @@ public class Notice extends BaseEntity {
 
     @Lob
     private String content;
+
+    @Builder
+    public Notice(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
