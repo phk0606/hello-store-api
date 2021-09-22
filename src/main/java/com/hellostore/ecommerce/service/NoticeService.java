@@ -22,11 +22,17 @@ public class NoticeService {
     public void createNotice(NoticeDto noticeDto) {
         Notice notice = Notice.builder()
                 .title(noticeDto.getTitle())
-                .content(noticeDto.getContent()).build();
+                .content(noticeDto.getContent())
+                .important(noticeDto.isImportant())
+                .build();
         noticeRepository.save(notice);
     }
 
     public Page<NoticeDto> getNotices(Pageable pageable) {
         return noticeRepository.getNotices(pageable);
+    }
+
+    public NoticeDto getNotice(Long noticeId) {
+        return noticeRepository.getNotice(noticeId);
     }
 }

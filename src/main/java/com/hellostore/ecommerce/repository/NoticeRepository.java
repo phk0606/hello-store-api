@@ -14,6 +14,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QNotice.*;
+
 @Repository
 public class NoticeRepository {
 
@@ -31,7 +33,7 @@ public class NoticeRepository {
     }
 
     public Page<NoticeDto> getNotices(Pageable pageable) {
-        QNotice notice = QNotice.notice;
+
         QueryResults<NoticeDto> results
                 = queryFactory.select(
                         new QNoticeDto(
@@ -45,5 +47,14 @@ public class NoticeRepository {
         List<NoticeDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    public NoticeDto getNotice(Long noticeId) {
+        return queryFactory.select(
+                new QNoticeDto(notice.id, notice.title,
+                        notice.content, notice.important, notice.createdDate))
+                .from(notice)
+                .where(notice.id.eq(noticeId))
+                .fetchOne();
     }
 }

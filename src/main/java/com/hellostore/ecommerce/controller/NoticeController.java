@@ -21,11 +21,17 @@ public class NoticeController {
     @PostMapping("/createNotice")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public void createNotice(@RequestBody NoticeDto noticeDto) {
+        log.debug("noticeDto: {}", noticeDto);
         noticeService.createNotice(noticeDto);
     }
 
     @GetMapping("/getNotices")
     public Page<NoticeDto> getNotices(Pageable pageable) {
         return noticeService.getNotices(pageable);
+    }
+
+    @GetMapping("/getNotice")
+    public NoticeDto getNotice(@RequestParam Long noticeId) {
+        return noticeService.getNotice(noticeId);
     }
 }

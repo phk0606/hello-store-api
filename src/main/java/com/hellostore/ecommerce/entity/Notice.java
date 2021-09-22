@@ -25,8 +25,9 @@ public class Notice extends BaseEntity {
     private boolean important;
 
     @Builder
-    public Notice(String title, String content) {
+    public Notice(String title, String content, boolean important) {
         this.title = title;
         this.content = content;
+        this.important = important;
     }
 }
