@@ -1,8 +1,10 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.CommunityDto;
+import com.hellostore.ecommerce.dto.CommunityReplyDto;
 import com.hellostore.ecommerce.dto.CommunitySearchCondition;
 import com.hellostore.ecommerce.entity.Community;
+import com.hellostore.ecommerce.repository.CommunityReplyRepository;
 import com.hellostore.ecommerce.repository.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
+    private final CommunityReplyRepository communityReplyRepository;
 
     @Transactional
     public void createCommunity(CommunityDto communityDto) {
@@ -35,7 +40,12 @@ public class CommunityService {
     }
 
     public CommunityDto getCommunity(Long communityId) {
-        return communityRepository.getCommunity(communityId);
+        CommunityDto community = communityRepository.getCommunity(communityId);
+        List<CommunityReplyDto> communityReplies
+                = communityReplyRepository.getCommunityReplies(communityId);
+        community.setReplies(communityReplies);
+
+        return community;
     }
 
     @Transactional

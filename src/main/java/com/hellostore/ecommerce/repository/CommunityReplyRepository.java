@@ -1,11 +1,14 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.CommunityReplyDto;
+import com.hellostore.ecommerce.dto.QCommunityReplyDto;
 import com.hellostore.ecommerce.entity.CommunityReply;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCommunityReply.communityReply;
 
@@ -23,6 +26,19 @@ public class CommunityReplyRepository {
     public CommunityReply save(CommunityReply communityReply) {
         em.persist(communityReply);
         return communityReply;
+    }
+
+    public List<CommunityReplyDto> getCommunityReplies(Long communityId) {
+
+        return queryFactory.select(
+                new QCommunityReplyDto(
+                        communityReply.community.id,
+                        communityReply.id,
+                        communityReply.content,
+                        communityReply.createdBy, communityReply.createdDate))
+                .from(communityReply)
+                .where(communityReply.community.id.eq(communityId))
+                .fetch();
     }
 
     public void modifyCommunityReply(CommunityReplyDto communityReplyDto) {

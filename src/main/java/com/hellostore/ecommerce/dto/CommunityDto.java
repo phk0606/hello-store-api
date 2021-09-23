@@ -1,7 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hellostore.ecommerce.entity.CommunityReply;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
@@ -21,8 +20,10 @@ public class CommunityDto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
 
+    private Long replyCount;
+
     @Setter
-    private List<CommunityReply> replies = new ArrayList<>();
+    private List<CommunityReplyDto> replies = new ArrayList<>();
 
     @Builder
     public CommunityDto(String title, String content) {
@@ -39,5 +40,18 @@ public class CommunityDto {
         this.content = content;
         this.createdBy = createdBy;
         this.createdDate = createdDate;
+    }
+
+    @QueryProjection
+    public CommunityDto(Long communityId, String title,
+                        String content,
+                        String createdBy, LocalDateTime createdDate,
+                        Long replyCount) {
+        this.communityId = communityId;
+        this.title = title;
+        this.content = content;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+        this.replyCount = replyCount;
     }
 }

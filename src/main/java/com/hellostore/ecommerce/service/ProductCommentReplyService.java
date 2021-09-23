@@ -12,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -41,10 +39,12 @@ public class ProductCommentReplyService {
         return productCommentReplyRepository.getProductCommentReplyList(productCommentId);
     }
 
+    @Transactional
     public void modifyProductCommentReply(ProductCommentReplyDto productCommentReplyDto) {
         productCommentReplyRepository.modifyProductCommentReply(productCommentReplyDto);
     }
 
+    @Transactional
     public void removeProductCommentReply(ProductCommentReplyDto productCommentReplyDto) {
         productCommentReplyRepository.removeProductCommentReply(productCommentReplyDto);
     }
