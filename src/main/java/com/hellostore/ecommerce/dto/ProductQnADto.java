@@ -29,8 +29,17 @@ public class ProductQnADto {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime answerCreatedDate;
 
+    private String productName;
+    private String categoryName;
+
     @QueryProjection
-    public ProductQnADto(Long productId, Long productQuestionId, String questionUsername, String questionContent, LocalDateTime questionCreatedDate, Long productAnswerId, String answerUsername, String answerContent, LocalDateTime answerCreatedDate) {
+    public ProductQnADto(Long productId, Long productQuestionId,
+                         String questionUsername, String questionContent,
+                         LocalDateTime questionCreatedDate, Long productAnswerId,
+                         String answerUsername, String answerContent,
+                         LocalDateTime answerCreatedDate,
+                         String productName,
+                         String categoryName) {
         this.productId = productId;
         this.productQuestionId = productQuestionId;
         this.questionUsername = questionUsername;
@@ -40,5 +49,7 @@ public class ProductQnADto {
         this.answerUsername = answerUsername;
         this.answerContent = answerContent;
         this.answerCreatedDate = answerCreatedDate;
+        this.productName = productName;
+        this.categoryName = categoryName;
     }
 }

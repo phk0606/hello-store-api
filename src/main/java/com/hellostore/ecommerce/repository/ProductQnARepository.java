@@ -2,10 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductQnADto;
 import com.hellostore.ecommerce.dto.QProductQnADto;
-import com.hellostore.ecommerce.entity.ProductAnswer;
-import com.hellostore.ecommerce.entity.ProductQuestion;
-import com.hellostore.ecommerce.entity.QProductAnswer;
-import com.hellostore.ecommerce.entity.QProductQuestion;
+import com.hellostore.ecommerce.entity.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -18,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCategory.*;
 import static com.hellostore.ecommerce.entity.QCategory.category;
+import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
+import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductAnswer.*;
 import static com.hellostore.ecommerce.entity.QProductQuestion.*;
 import static org.springframework.util.ObjectUtils.isEmpty;
@@ -91,10 +91,18 @@ public class ProductQnARepository {
                                 productQuestion.id, productQuestion.createdBy,
                                 productQuestion.content, productQuestion.createdDate,
                                 productAnswer.id, productAnswer.createdBy,
-                                productAnswer.content, productAnswer.createdDate))
+                                productAnswer.content, productAnswer.createdDate,
+                                product.name, category.name
+                                ))
                 .from(productQuestion)
                 .leftJoin(productAnswer)
                 .on(productQuestion.id.eq(productAnswer.productQuestion.id))
+                .join(product)
+                .on(product.id.eq(productQuestion.product.id))
+                .join(categoryProduct)
+                .on(categoryProduct.product.id.eq(productQuestion.product.id))
+                .join(category)
+                .on(category.id.eq(categoryProduct.category.id))
                 .where(
                         productIdEq(productId)
                 )
