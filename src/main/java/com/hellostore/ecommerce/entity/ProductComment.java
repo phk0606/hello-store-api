@@ -21,8 +21,8 @@ public class ProductComment extends BaseEntity {
     private List<ProductCommentImage> images = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_product_id")
-    private OrderProduct orderProduct;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private String content;
     private int grade;
@@ -31,8 +31,8 @@ public class ProductComment extends BaseEntity {
     private List<ProductCommentReply> replies = new ArrayList<>();
 
     @Builder
-    public ProductComment(OrderProduct orderProduct, String content, int grade) {
-        this.orderProduct = orderProduct;
+    public ProductComment(Product product, String content, int grade) {
+        this.product = product;
         this.content = content;
         this.grade = grade;
     }

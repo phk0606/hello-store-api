@@ -60,6 +60,10 @@ public class ProductService {
         return product1;
     }
 
+    public List<ProductSelectDto> getProductsByCategoryId(Long categoryId) {
+        return productRepository.getProductsByCategoryId(categoryId);
+    }
+
     @Transactional
     public void removeProducts(List<Long> productIds) {
 

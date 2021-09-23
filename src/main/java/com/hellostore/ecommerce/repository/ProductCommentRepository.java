@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.QProductCommentDto;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -13,11 +14,11 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
 import static com.hellostore.ecommerce.entity.QProductComment.productComment;
 import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
 import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
 import static com.hellostore.ecommerce.entity.QUser.user;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 public class ProductCommentRepository {
@@ -66,13 +67,12 @@ public class ProductCommentRepository {
                         )
                 )
                 .from(productComment)
-                .join(orderProduct).on(orderProduct.id.eq(productComment.orderProduct.id))
                 .join(user).on(user.username.eq(productComment.createdBy))
                 .leftJoin(productCommentReply)
                 .on(productCommentReply.productComment.id.eq(productComment.id))
                 .leftJoin(productCommentImage)
                 .on(productCommentImage.productComment.id.eq(productComment.id))
-                .where(orderProduct.product.id.eq(productId))
+                .where(productIdEq(productId))
                 .orderBy(productComment.id.desc())
                 .groupBy(productComment.id)
                 .offset(pageable.getOffset())
@@ -82,5 +82,10 @@ public class ProductCommentRepository {
         List<ProductCommentDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression productIdEq(Long productId) {
+        return !isEmpty(productId)
+                ? productComment.product.id.eq(productId) : null;
     }
 }

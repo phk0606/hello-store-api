@@ -65,7 +65,7 @@ public class OrderProductRepository {
                 .join(product).on(product.id.eq(orderProduct.product.id))
                 .leftJoin(productComment)
                 .on(productComment.createdBy.eq(order.user.username))
-                .on((productComment.orderProduct.id.eq(orderProduct.id)))
+                .on((productComment.product.id.eq(orderProduct.id)))
                 .where(
                         order.user.username.eq(username),
                         order.createdDate.goe(LocalDateTime.now().minusMonths(1)),

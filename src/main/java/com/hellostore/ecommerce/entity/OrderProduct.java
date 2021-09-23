@@ -31,9 +31,6 @@ public class OrderProduct {
     @OneToMany(mappedBy = "orderProduct", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderProductOption> orderProductOptions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "orderProduct", cascade = CascadeType.ALL)
-    private List<ProductComment> productComments = new ArrayList<>();
-
     private int salePrice;
     private int quantity;
     private Integer point;

@@ -2,12 +2,12 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
-import com.hellostore.ecommerce.entity.OrderProduct;
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductComment;
-import com.hellostore.ecommerce.repository.OrderProductRepository;
 import com.hellostore.ecommerce.repository.ProductCommentImageRepository;
 import com.hellostore.ecommerce.repository.ProductCommentReplyRepository;
 import com.hellostore.ecommerce.repository.ProductCommentRepository;
+import com.hellostore.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,21 +27,21 @@ import java.util.stream.Collectors;
 public class ProductCommentService {
 
     private final ProductCommentRepository productCommentRepository;
-    private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
     private final ProductCommentReplyRepository productCommentReplyRepository;
     private final ProductCommentImageRepository productCommentImageRepository;
+    private final ProductRepository productRepository;
 
     @Transactional
     public void createProductComment(ProductCommentDto productCommentDto,
                                      List<MultipartFile> productCommentImages) {
 
-        // 주문 상품 조회
-        OrderProduct orderProduct
-                = orderProductRepository.getOrderProductById(productCommentDto.getOrderProductId());
+        // 상품 조회
+
+        Product product = productRepository.getProduct(productCommentDto.getProductId());
 
         ProductComment productComment = ProductComment.builder()
-                .orderProduct(orderProduct)
+                .product(product)
                 .content(productCommentDto.getContent())
                 .grade(productCommentDto.getGrade())
                 .build();

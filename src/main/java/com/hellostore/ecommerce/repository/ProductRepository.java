@@ -41,6 +41,14 @@ public class ProductRepository {
         return product;
     }
 
+    public List<ProductSelectDto> getProductsByCategoryId(Long categoryId) {
+        return queryFactory.select(new QProductSelectDto(product.id, product.name))
+                .from(categoryProduct)
+                .join(product).on(product.id.eq(categoryProduct.product.id))
+                .where(categoryProduct.category.id.eq(categoryId))
+                .fetch();
+    }
+
     public void removeProduct(Long productId) {
 
         queryFactory.delete(product)

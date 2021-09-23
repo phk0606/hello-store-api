@@ -1,6 +1,5 @@
 package com.hellostore.ecommerce.dto;
 
-import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ProductShowType;

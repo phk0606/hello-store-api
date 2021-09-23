@@ -62,7 +62,7 @@ public class ProductCommentController {
     }
 
     @GetMapping("/getProductComments")
-    public Page<ProductCommentDto> getProductComments(@RequestParam Long productId, Pageable pageable) {
+    public Page<ProductCommentDto> getProductComments(@RequestParam(required = false) Long productId, Pageable pageable) {
         return productCommentService.getProductComments(productId, pageable);
     }
 

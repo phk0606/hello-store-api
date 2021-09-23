@@ -1,9 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
-import com.hellostore.ecommerce.dto.ProductDto;
-import com.hellostore.ecommerce.dto.ProductListDto;
-import com.hellostore.ecommerce.dto.ProductModifyDto;
-import com.hellostore.ecommerce.dto.ProductSearchCondition;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.enumType.ProductShowType;
 import com.hellostore.ecommerce.service.ProductService;
@@ -67,6 +64,13 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ProductModifyDto getProductById(@RequestParam Long productId) throws IOException {
         return productService.getProductById(productId);
+    }
+
+
+    @GetMapping("/getProductsByCategoryId")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public List<ProductSelectDto> getProductsByCategoryId(@RequestParam Long categoryId) throws IOException {
+        return productService.getProductsByCategoryId(categoryId);
     }
 
     @GetMapping("/getProductsPageCondition")
