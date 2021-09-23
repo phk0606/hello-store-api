@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductQnADto;
+import com.hellostore.ecommerce.dto.QnASearchCondition;
 import com.hellostore.ecommerce.service.ProductQnAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,8 @@ public class ProductQnAController {
     }
 
     @GetMapping("/getProductQnA")
-    public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {
-        return productQnAService.getProductQnA(productId, pageable);
+    public Page<ProductQnADto> getProductQnA(QnASearchCondition qnASearchCondition, Pageable pageable) {
+        log.debug("qnASearchCondition: {}",qnASearchCondition);
+        return productQnAService.getProductQnA(qnASearchCondition, pageable);
     }
 }

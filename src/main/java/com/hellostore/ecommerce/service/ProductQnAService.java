@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductQnADto;
+import com.hellostore.ecommerce.dto.QnASearchCondition;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductAnswer;
 import com.hellostore.ecommerce.entity.ProductQuestion;
@@ -76,7 +77,7 @@ public class ProductQnAService {
         productQnARepository.modifyAnswer(productQnADto);
     }
 
-    public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {
-        return productQnARepository.getProductQnA(productId, pageable);
+    public Page<ProductQnADto> getProductQnA(QnASearchCondition qnASearchCondition, Pageable pageable) {
+        return productQnARepository.getProductQnA(qnASearchCondition, pageable);
     }
 }

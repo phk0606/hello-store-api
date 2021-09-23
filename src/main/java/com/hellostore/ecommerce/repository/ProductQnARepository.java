@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductQnADto;
 import com.hellostore.ecommerce.dto.QProductQnADto;
+import com.hellostore.ecommerce.dto.QnASearchCondition;
 import com.hellostore.ecommerce.entity.*;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -84,7 +85,7 @@ public class ProductQnARepository {
         return productAnswer;
     }
 
-    public Page<ProductQnADto> getProductQnA(Long productId, Pageable pageable) {
+    public Page<ProductQnADto> getProductQnA(QnASearchCondition qnASearchCondition, Pageable pageable) {
 
         QueryResults<ProductQnADto> results = queryFactory.select(
                         new QProductQnADto(productQuestion.product.id,
@@ -104,7 +105,9 @@ public class ProductQnARepository {
                 .join(category)
                 .on(category.id.eq(categoryProduct.category.id))
                 .where(
-                        productIdEq(productId)
+                        productIdEq(qnASearchCondition.getProductId()),
+                        noAnswer(qnASearchCondition.getNoAnswer()),
+                        searchTextEq(qnASearchCondition.getSearchText())
                 )
                 .orderBy(productQuestion.id.desc())
                 .offset(pageable.getOffset())
@@ -119,5 +122,16 @@ public class ProductQnARepository {
     private BooleanExpression productIdEq(Long productId) {
         return !isEmpty(productId)
                 ? productQuestion.product.id.eq(productId) : null;
+    }
+
+    private BooleanExpression searchTextEq(String searchText) {
+        return !isEmpty(searchText)
+                ? productQuestion.content.contains(searchText)
+                .or(productAnswer.content.contains(searchText)) : null;
+    }
+
+    private BooleanExpression noAnswer(Boolean noAnswer) {
+        return !isEmpty(noAnswer) && noAnswer == true
+                ? productAnswer.productQuestion.id.isNull() : null;
     }
 }
