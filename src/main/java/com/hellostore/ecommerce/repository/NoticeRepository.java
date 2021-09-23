@@ -1,9 +1,11 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.NoticeDto;
+import com.hellostore.ecommerce.dto.NoticeSearchCondition;
 import com.hellostore.ecommerce.dto.QNoticeDto;
 import com.hellostore.ecommerce.entity.Notice;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +16,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QNotice.notice;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 public class NoticeRepository {
@@ -46,7 +49,8 @@ public class NoticeRepository {
                 .execute();
     }
 
-    public Page<NoticeDto> getNotices(Pageable pageable) {
+    public Page<NoticeDto> getNotices(NoticeSearchCondition noticeSearchCondition,
+                                      Pageable pageable) {
 
         QueryResults<NoticeDto> results
                 = queryFactory.select(
@@ -54,7 +58,11 @@ public class NoticeRepository {
                                 notice.id, notice.title,
                                 notice.content, notice.important, notice.createdDate))
                 .from(notice)
-                .orderBy(notice.id.desc())
+                .where(
+                        noticeTitleContains(noticeSearchCondition.getTitle()),
+                        noticeContentContains(noticeSearchCondition.getContent())
+                )
+                .orderBy(notice.important.desc(), notice.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -62,6 +70,16 @@ public class NoticeRepository {
         List<NoticeDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression noticeTitleContains(String title) {
+        return !isEmpty(title)
+                ? notice.title.contains(title) : null;
+    }
+
+    private BooleanExpression noticeContentContains(String content) {
+        return !isEmpty(content)
+                ? notice.content.contains(content) : null;
     }
 
     public NoticeDto getNotice(Long noticeId) {

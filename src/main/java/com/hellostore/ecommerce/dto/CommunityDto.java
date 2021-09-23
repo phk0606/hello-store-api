@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.dto;
 
 import com.hellostore.ecommerce.entity.CommunityReply;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -19,6 +20,13 @@ public class CommunityDto {
 
     @Builder
     public CommunityDto(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    @QueryProjection
+    public CommunityDto(Long communityId, String title, String content) {
+        this.communityId = communityId;
         this.title = title;
         this.content = content;
     }

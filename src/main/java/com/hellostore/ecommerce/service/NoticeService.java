@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.NoticeDto;
+import com.hellostore.ecommerce.dto.NoticeSearchCondition;
 import com.hellostore.ecommerce.entity.Notice;
 import com.hellostore.ecommerce.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class NoticeService {
         noticeRepository.removeNotice(noticeDto);
     }
 
-    public Page<NoticeDto> getNotices(Pageable pageable) {
-        return noticeRepository.getNotices(pageable);
+    public Page<NoticeDto> getNotices(NoticeSearchCondition noticeSearchCondition, Pageable pageable) {
+        return noticeRepository.getNotices(noticeSearchCondition, pageable);
     }
 
     public NoticeDto getNotice(Long noticeId) {

@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.NoticeDto;
+import com.hellostore.ecommerce.dto.NoticeSearchCondition;
 import com.hellostore.ecommerce.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,8 +38,10 @@ public class NoticeController {
     }
 
     @GetMapping("/getNotices")
-    public Page<NoticeDto> getNotices(Pageable pageable) {
-        return noticeService.getNotices(pageable);
+    public Page<NoticeDto> getNotices(NoticeSearchCondition noticeSearchCondition,
+                                      Pageable pageable) {
+        log.debug("noticeSearchCondition: {}", noticeSearchCondition);
+        return noticeService.getNotices(noticeSearchCondition, pageable);
     }
 
     @GetMapping("/getNotice")
