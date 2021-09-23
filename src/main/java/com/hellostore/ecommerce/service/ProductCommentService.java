@@ -4,10 +4,8 @@ import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductComment;
-import com.hellostore.ecommerce.repository.ProductCommentImageRepository;
-import com.hellostore.ecommerce.repository.ProductCommentReplyRepository;
-import com.hellostore.ecommerce.repository.ProductCommentRepository;
-import com.hellostore.ecommerce.repository.ProductRepository;
+import com.hellostore.ecommerce.entity.User;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -18,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,21 +26,26 @@ import java.util.stream.Collectors;
 public class ProductCommentService {
 
     private final ProductCommentRepository productCommentRepository;
+    private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
     private final ProductCommentReplyRepository productCommentReplyRepository;
     private final ProductCommentImageRepository productCommentImageRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void createProductComment(ProductCommentDto productCommentDto,
                                      List<MultipartFile> productCommentImages) {
 
         // 상품 조회
-
+//        OrderProduct orderProduct
+//                = orderProductRepository.getOrderProductById(productCommentDto.getOrderProductId());
         Product product = productRepository.getProduct(productCommentDto.getProductId());
+        Optional<User> user = userRepository.findByUsername(productCommentDto.getUsername());
 
         ProductComment productComment = ProductComment.builder()
                 .product(product)
+                .user(user.get())
                 .content(productCommentDto.getContent())
                 .grade(productCommentDto.getGrade())
                 .build();

@@ -3,21 +3,19 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.QOrderProductDto;
 import com.hellostore.ecommerce.entity.OrderProduct;
-import com.hellostore.ecommerce.entity.QOrder;
-import com.hellostore.ecommerce.entity.QProductComment;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QOrder.*;
+import static com.hellostore.ecommerce.entity.QOrder.order;
 import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
-import static com.hellostore.ecommerce.entity.QProductComment.*;
+import static com.hellostore.ecommerce.entity.QProductComment.productComment;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static com.hellostore.ecommerce.entity.QUser.user;
 
 @Repository
 public class OrderProductRepository {
@@ -59,19 +57,16 @@ public class OrderProductRepository {
     public List<OrderProductDto> getOrderProductsByUsername(String username) {
 
         return queryFactory.select(
-                new QOrderProductDto(order.id, order.createdDate, orderProduct.id, product.name))
-                .from(order)
-                .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                new QOrderProductDto(order.id, order.createdDate, orderProduct.product.id, product.name))
+                .from(orderProduct)
+                .join(order).on(order.id.eq(orderProduct.order.id))
                 .join(product).on(product.id.eq(orderProduct.product.id))
-                .leftJoin(productComment)
-                .on(productComment.createdBy.eq(order.user.username))
-                .on((productComment.product.id.eq(orderProduct.id)))
-                .where(
-                        order.user.username.eq(username),
-                        order.createdDate.goe(LocalDateTime.now().minusMonths(1)),
-                        productComment.content.isNull()
-                )
-                .orderBy(order.createdDate.desc(), order.id.desc())
+                .join(user).on(order.user.id.eq(user.id))
+                .leftJoin(productComment).on(productComment.product.id.eq(orderProduct.product.id))
+                .where(user.username.eq(username), productComment.product.id.isNull())
+                .orderBy(order.id.desc())
                 .fetch();
+
+
     }
 }

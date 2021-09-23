@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductComment.productComment;
 import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
 import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
@@ -67,6 +68,7 @@ public class ProductCommentRepository {
                         )
                 )
                 .from(productComment)
+                .join(product).on(product.id.eq(productComment.product.id))
                 .join(user).on(user.username.eq(productComment.createdBy))
                 .leftJoin(productCommentReply)
                 .on(productCommentReply.productComment.id.eq(productComment.id))
@@ -86,6 +88,6 @@ public class ProductCommentRepository {
 
     private BooleanExpression productIdEq(Long productId) {
         return !isEmpty(productId)
-                ? productComment.product.id.eq(productId) : null;
+                ? product.id.eq(productId) : null;
     }
 }
