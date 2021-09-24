@@ -14,10 +14,13 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QCategory.category;
+import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductComment.productComment;
 import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
 import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
+import static com.hellostore.ecommerce.entity.QProductQuestion.productQuestion;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -64,11 +67,16 @@ public class ProductCommentRepository {
                                 productComment.id, user.username,
                                 productComment.content, productComment.grade,
                                 productCommentImage.fileName, productComment.createdDate,
-                                productCommentReply.id.count()
+                                productCommentReply.id.count(),
+                                product.id, product.name, category.name
                         )
                 )
                 .from(productComment)
                 .join(product).on(product.id.eq(productComment.product.id))
+                        .join(categoryProduct)
+                        .on(categoryProduct.product.id.eq(productComment.product.id))
+                        .join(category)
+                        .on(category.id.eq(categoryProduct.category.id))
                 .join(user).on(user.username.eq(productComment.createdBy))
                 .leftJoin(productCommentReply)
                 .on(productCommentReply.productComment.id.eq(productComment.id))

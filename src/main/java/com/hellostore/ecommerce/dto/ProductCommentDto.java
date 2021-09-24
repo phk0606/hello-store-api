@@ -24,6 +24,8 @@ public class ProductCommentDto {
     private String content;
     private int grade;
     private String productCommentReply;
+    private String productName;
+    private String categoryName;
 
     private String fileName;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -37,7 +39,7 @@ public class ProductCommentDto {
     public ProductCommentDto(Long productCommentId, String username,
                              String content, int grade, String fileName,
                              LocalDateTime createdDate,
-                             Long replyCount) {
+                             Long replyCount, Long productId, String productName, String categoryName) {
         this.productCommentId = productCommentId;
         this.username = username;
         this.content = content;
@@ -45,5 +47,8 @@ public class ProductCommentDto {
         this.fileName = fileName;
         this.createdDate = createdDate;
         this.replyCount = replyCount;
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryName = categoryName;
     }
 }
