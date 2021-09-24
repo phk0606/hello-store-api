@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
+import com.hellostore.ecommerce.dto.ProductCommentSearchCondition;
 import com.hellostore.ecommerce.dto.QProductCommentDto;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.querydsl.core.QueryResults;
@@ -20,7 +21,6 @@ import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductComment.productComment;
 import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
 import static com.hellostore.ecommerce.entity.QProductCommentReply.productCommentReply;
-import static com.hellostore.ecommerce.entity.QProductQuestion.productQuestion;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -59,7 +59,8 @@ public class ProductCommentRepository {
                 .fetchOne();
     }
 
-    public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
+    public Page<ProductCommentDto> getProductComments(
+            ProductCommentSearchCondition productCommentSearchCondition, Pageable pageable) {
 
         QueryResults<ProductCommentDto> results =
                 queryFactory.select(
@@ -82,7 +83,11 @@ public class ProductCommentRepository {
                 .on(productCommentReply.productComment.id.eq(productComment.id))
                 .leftJoin(productCommentImage)
                 .on(productCommentImage.productComment.id.eq(productComment.id))
-                .where(productIdEq(productId))
+                .where(
+                        productIdEq(productCommentSearchCondition.getProductId()),
+                        usernameEq(productCommentSearchCondition.getUsername()),
+                        productNameContains(productCommentSearchCondition.getProductName())
+                )
                 .orderBy(productComment.id.desc())
                 .groupBy(productComment.id)
                 .offset(pageable.getOffset())
@@ -97,5 +102,15 @@ public class ProductCommentRepository {
     private BooleanExpression productIdEq(Long productId) {
         return !isEmpty(productId)
                 ? product.id.eq(productId) : null;
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return !isEmpty(username)
+                ? user.username.eq(username) : null;
+    }
+
+    private BooleanExpression productNameContains(String productName) {
+        return !isEmpty(productName)
+                ? product.name.contains(productName) : null;
     }
 }

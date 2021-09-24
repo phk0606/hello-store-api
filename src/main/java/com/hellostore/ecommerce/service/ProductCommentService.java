@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
+import com.hellostore.ecommerce.dto.ProductCommentSearchCondition;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductComment;
 import com.hellostore.ecommerce.entity.User;
@@ -71,10 +72,11 @@ public class ProductCommentService {
         productCommentRepository.removeProductComment(productCommentId);
     }
 
-    public Page<ProductCommentDto> getProductComments(Long productId, Pageable pageable) {
+    public Page<ProductCommentDto> getProductComments(
+            ProductCommentSearchCondition productCommentSearchCondition, Pageable pageable) {
 
         Page<ProductCommentDto> productComments
-                = productCommentRepository.getProductComments(productId, pageable);
+                = productCommentRepository.getProductComments(productCommentSearchCondition, pageable);
 
         Map<Long, List<ProductCommentReplyDto>> productCommentReplyMap
                 = productCommentReplyRepository

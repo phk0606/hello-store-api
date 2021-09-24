@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ProductCommentDto;
 import com.hellostore.ecommerce.dto.ProductCommentReplyDto;
+import com.hellostore.ecommerce.dto.ProductCommentSearchCondition;
 import com.hellostore.ecommerce.service.ProductCommentReplyService;
 import com.hellostore.ecommerce.service.ProductCommentService;
 import lombok.RequiredArgsConstructor;
@@ -62,8 +63,10 @@ public class ProductCommentController {
     }
 
     @GetMapping("/getProductComments")
-    public Page<ProductCommentDto> getProductComments(@RequestParam(required = false) Long productId, Pageable pageable) {
-        return productCommentService.getProductComments(productId, pageable);
+    public Page<ProductCommentDto> getProductComments(
+            ProductCommentSearchCondition productCommentSearchCondition, Pageable pageable) {
+        log.debug("productCommentDto: {}", productCommentSearchCondition);
+        return productCommentService.getProductComments(productCommentSearchCondition, pageable);
     }
 
     @PostMapping("/createProductCommentReply")

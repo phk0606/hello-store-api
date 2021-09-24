@@ -22,6 +22,7 @@ import static com.hellostore.ecommerce.entity.QCategoryProduct.*;
 import static com.hellostore.ecommerce.entity.QProduct.*;
 import static com.hellostore.ecommerce.entity.QProductAnswer.*;
 import static com.hellostore.ecommerce.entity.QProductQuestion.*;
+import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -107,7 +108,8 @@ public class ProductQnARepository {
                 .where(
                         productIdEq(qnASearchCondition.getProductId()),
                         noAnswer(qnASearchCondition.getNoAnswer()),
-                        searchTextEq(qnASearchCondition.getSearchText())
+                        searchTextEq(qnASearchCondition.getSearchText()),
+                        usernameEq(qnASearchCondition.getUsername())
                 )
                 .orderBy(productQuestion.id.desc())
                 .offset(pageable.getOffset())
@@ -117,6 +119,11 @@ public class ProductQnARepository {
         List<ProductQnADto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return !isEmpty(username)
+                ? productQuestion.createdBy.eq(username) : null;
     }
 
     private BooleanExpression productIdEq(Long productId) {
