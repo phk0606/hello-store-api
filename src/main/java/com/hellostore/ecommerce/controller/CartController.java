@@ -33,6 +33,12 @@ public class CartController {
         return cartService.getCartProducts(username, cartProductIds);
     }
 
+    @GetMapping("/getCartProductCount")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public Long getCartProductCount(@RequestParam String username) {
+        return cartService.getCartProductCount(username);
+    }
+
     @PutMapping("/modifyQuantity")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public void modifyQuantity(@RequestBody CartProductDto cartProductDto) {

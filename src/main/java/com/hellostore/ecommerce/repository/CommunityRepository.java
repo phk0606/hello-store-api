@@ -4,7 +4,6 @@ import com.hellostore.ecommerce.dto.CommunityDto;
 import com.hellostore.ecommerce.dto.CommunitySearchCondition;
 import com.hellostore.ecommerce.dto.QCommunityDto;
 import com.hellostore.ecommerce.entity.Community;
-import com.hellostore.ecommerce.entity.QCommunityReply;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -17,7 +16,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCommunity.community;
-import static com.hellostore.ecommerce.entity.QCommunityReply.*;
+import static com.hellostore.ecommerce.entity.QCommunityReply.communityReply;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository

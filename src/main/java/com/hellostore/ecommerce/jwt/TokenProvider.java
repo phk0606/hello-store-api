@@ -67,6 +67,7 @@ public class TokenProvider {
                 .accessToken(accessToken)
                 .accessTokenExpiresIn(accessTokenExpiresIn.getTime())
                 .refreshToken(refreshToken)
+                .authority(authorities)
                 .build();
     }
 

@@ -2,7 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.CartProductDto;
 import com.hellostore.ecommerce.dto.QCartProductDto;
-import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.entity.CartProduct;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -11,12 +11,12 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QCart.*;
-import static com.hellostore.ecommerce.entity.QCartProduct.*;
-import static com.hellostore.ecommerce.entity.QCategory.category;
-import static com.hellostore.ecommerce.entity.QProduct.*;
-import static com.hellostore.ecommerce.entity.QProductImage.*;
-import static com.hellostore.ecommerce.entity.QUser.*;
+import static com.hellostore.ecommerce.entity.QCart.cart;
+import static com.hellostore.ecommerce.entity.QCartProduct.cartProduct;
+import static com.hellostore.ecommerce.entity.QCartProductOption.cartProductOption;
+import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -32,6 +32,16 @@ public class CartProductRepository {
 
     public void save(CartProduct cartProduct) {
         em.persist(cartProduct);
+    }
+
+    public Long getCartProductCount(String username) {
+
+        return queryFactory.select(cartProduct.id.count())
+                .from(cartProduct)
+                .join(cart).on(cart.id.eq(cartProduct.cart.id))
+                .join(user).on(user.id.eq(cart.user.id))
+                .where(user.username.eq(username))
+                .fetchCount();
     }
 
     public List<CartProductDto> getCartProducts(String username, List<Long> cartProductIds) {
@@ -77,6 +87,12 @@ public class CartProductRepository {
     public void removeCartProducts(List<Long> cartProductIds) {
         queryFactory.delete(cartProduct)
                 .where(cartProduct.id.in(cartProductIds))
+                .execute();
+    }
+
+    public void removeCartProductOptions(List<Long> cartProductIds) {
+        queryFactory.delete(cartProductOption)
+                .where(cartProductOption.cartProduct.id.in(cartProductIds))
                 .execute();
     }
 

@@ -53,6 +53,10 @@ public class CartService {
         cartProductRepository.save(cartProduct);
     }
 
+    public Long getCartProductCount(String username) {
+        return cartProductRepository.getCartProductCount(username);
+    }
+
     public List<CartProductDto> getCartProducts(String username, List<Long> cartProductIds) throws IOException {
         List<CartProductDto> cartProducts = cartProductRepository.getCartProducts(username, cartProductIds);
 
@@ -92,6 +96,7 @@ public class CartService {
 
     @Transactional
     public void removeCartProducts(List<Long> cartProductIds, Long cartId) {
+        cartProductRepository.removeCartProductOptions(cartProductIds);
         cartProductRepository.removeCartProducts(cartProductIds);
         boolean existCartProducts = cartProductRepository.existCartProducts(cartId);
         if (!existCartProducts) {
