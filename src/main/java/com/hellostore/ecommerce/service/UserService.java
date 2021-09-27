@@ -43,4 +43,9 @@ public class UserService {
     public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {
         return userDslRepository.getUsers(userSearchCondition, pageable);
     }
+
+    @Transactional
+    public void modifyUser(UserDto userDto) {
+        userDslRepository.modifyUser(userDto);
+    }
 }

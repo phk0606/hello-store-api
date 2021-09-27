@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if (expired != null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, expired);
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "아이디 또는 비밀 번호가 틀립니다.");
         }
     }
 }

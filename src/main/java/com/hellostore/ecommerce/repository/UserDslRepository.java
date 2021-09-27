@@ -3,12 +3,16 @@ package com.hellostore.ecommerce.repository;
 import com.hellostore.ecommerce.dto.QUserDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
+import com.hellostore.ecommerce.entity.User;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -28,10 +32,27 @@ public class UserDslRepository {
 
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserDslRepository(EntityManager em) {
+    public UserDslRepository(EntityManager em, PasswordEncoder passwordEncoder) {
         this.queryFactory = new JPAQueryFactory(em);
         this.em = em;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void modifyUser(UserDto userDto) {
+        queryFactory.update(user)
+                .set(user.address.zoneCode, userDto.getZoneCode())
+                .set(user.address.roadAddress, userDto.getRoadAddress())
+                .set(user.address.address, userDto.getAddress())
+                .set(user.address.detailAddress, userDto.getDetailAddress())
+                .set(user.phoneNumber, userDto.getPhoneNumber())
+                .set(user.email, userDto.getEmail())
+                .set(user.point, userDto.getPoint())
+                .set(user.password, passwordEncoder.encode(userDto.getPassword()))
+                .set(user.lastModifiedDate, LocalDateTime.now())
+                .where(user.username.eq(userDto.getUsername()))
+                .execute();
     }
 
     public Optional<UserDto> findByUsername(String username) {
@@ -51,7 +72,7 @@ public class UserDslRepository {
 
     public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {
 
-        QueryResults<UserDto> results = queryFactory.select(
+        List<UserDto> content = queryFactory.select(
                         new QUserDto(
                                 user.id, user.username, user.name,
                                 user.createdDate, order.paymentPrice.sum(), user.point))
@@ -62,19 +83,36 @@ public class UserDslRepository {
                         usernameContains(userSearchCondition.getUsername()),
                         user.activated.eq(userSearchCondition.isActivated()),
                         userJoinDateA(userSearchCondition.getUserJoinDateA()),
-                        userJoinDateB(userSearchCondition.getUserJoinDateB()),
+                        userJoinDateB(userSearchCondition.getUserJoinDateB())
+                )
+                .groupBy(user.id)
+                .having(
                         purchasePriceMin(userSearchCondition.getPurchasePriceMin()),
                         purchasePriceMax(userSearchCondition.getPurchasePriceMax())
                 )
-                .groupBy(user.id)
                 .orderBy(user.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .fetchResults();
+                .fetch();
 
-        List<UserDto> content = results.getResults();
-        long total = results.getTotal();
-        return new PageImpl<>(content, pageable, total);
+        JPAQuery<User> countQuery = queryFactory
+                .select(user)
+                .from(user)
+                .leftJoin(order).on(order.user.id.eq(user.id))
+                .where(
+                        nameContains(userSearchCondition.getName()),
+                        usernameContains(userSearchCondition.getUsername()),
+                        user.activated.eq(userSearchCondition.isActivated()),
+                        userJoinDateA(userSearchCondition.getUserJoinDateA()),
+                        userJoinDateB(userSearchCondition.getUserJoinDateB())
+                )
+                .groupBy(user.id)
+                .having(
+                        purchasePriceMin(userSearchCondition.getPurchasePriceMin()),
+                        purchasePriceMax(userSearchCondition.getPurchasePriceMax())
+                );
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
     private BooleanExpression userJoinDateA(String userJoinDateA) {
@@ -102,6 +140,6 @@ public class UserDslRepository {
     }
 
     private BooleanExpression usernameContains(String username) {
-        return hasText(username) ? user.name.contains(username) : null;
+        return hasText(username) ? user.username.contains(username) : null;
     }
 }

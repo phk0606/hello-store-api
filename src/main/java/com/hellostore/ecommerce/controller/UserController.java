@@ -2,9 +2,7 @@ package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
-import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.service.UserService;
-import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,11 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.List;
-
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -41,5 +36,11 @@ public class UserController {
     public Page<UserDto> getUsers(UserSearchCondition userSearchCondition, Pageable pageable) {
         log.debug("userSearchCondition: {}, pageable: {}", userSearchCondition, pageable);
         return userService.getUsers(userSearchCondition, pageable);
+    }
+
+    @PutMapping("/user/modifyUser")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyUser(@RequestBody UserDto userDto) {
+        userService.modifyUser(userDto);
     }
 }
