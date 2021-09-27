@@ -49,4 +49,16 @@ public class UserController {
     public void modifyUser(@RequestBody UserDto userDto) {
         userService.modifyUser(userDto);
     }
+
+    @PutMapping("/user/modifyPerson")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyPerson(@RequestBody UserDto userDto) {
+        userService.modifyPerson(userDto);
+    }
+
+    @PutMapping("/user/modifyPassword")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyPassword(@RequestBody UserDto userDto) {
+        userService.modifyPassword(userDto);
+    }
 }

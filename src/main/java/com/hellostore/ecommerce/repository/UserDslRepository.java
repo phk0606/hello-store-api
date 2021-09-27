@@ -55,6 +55,20 @@ public class UserDslRepository {
                 .execute();
     }
 
+    public void modifyPerson(UserDto userDto) {
+        queryFactory.update(user)
+                .set(user.address.zoneCode, userDto.getZoneCode())
+                .set(user.address.roadAddress, userDto.getRoadAddress())
+                .set(user.address.address, userDto.getAddress())
+                .set(user.address.detailAddress, userDto.getDetailAddress())
+                .set(user.phoneNumber, userDto.getPhoneNumber())
+                .set(user.email, userDto.getEmail())
+                .set(user.point, userDto.getPoint())
+                .set(user.lastModifiedDate, LocalDateTime.now())
+                .where(user.username.eq(userDto.getUsername()))
+                .execute();
+    }
+
     public Optional<UserDto> findByUsername(String username) {
 
         return Optional.ofNullable(queryFactory.select(
@@ -148,5 +162,11 @@ public class UserDslRepository {
                 .from(user)
                 .where(user.name.eq(name).and(user.email.eq(email)))
                 .fetchOne();
+    }
+
+    public void modifyPassword(UserDto userDto) {
+        queryFactory.update(user)
+                .set(user.password, passwordEncoder.encode(userDto.getNewPassword()))
+                .execute();
     }
 }

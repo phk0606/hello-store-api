@@ -11,6 +11,7 @@ import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserDslRepository userDslRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     public UserDto getUserInfo(String username) {
@@ -51,5 +53,22 @@ public class UserService {
 
     public String getUsername(String name, String email) {
         return userDslRepository.getUsername(name, email);
+    }
+
+    @Transactional
+    public void modifyPerson(UserDto userDto) {
+        userDslRepository.modifyPerson(userDto);
+    }
+
+    @Transactional
+    public void modifyPassword(UserDto userDto) {
+        Optional<User> user = userRepository.findByUsername(userDto.getUsername());
+
+        boolean matches = passwordEncoder.matches(userDto.getPassword(), user.get().getPassword());
+        if (!matches) {
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+        }
+
+        userDslRepository.modifyPassword(userDto);
     }
 }
