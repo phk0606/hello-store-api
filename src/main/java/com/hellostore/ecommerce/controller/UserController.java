@@ -38,6 +38,12 @@ public class UserController {
         return userService.getUsers(userSearchCondition, pageable);
     }
 
+    @GetMapping("/user/getUsername")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<String> getUsername(@RequestParam String name, @RequestParam String email) {
+        return ResponseEntity.ok(userService.getUsername(name, email));
+    }
+
     @PutMapping("/user/modifyUser")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public void modifyUser(@RequestBody UserDto userDto) {

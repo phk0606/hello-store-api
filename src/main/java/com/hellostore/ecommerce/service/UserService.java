@@ -48,4 +48,8 @@ public class UserService {
     public void modifyUser(UserDto userDto) {
         userDslRepository.modifyUser(userDto);
     }
+
+    public String getUsername(String name, String email) {
+        return userDslRepository.getUsername(name, email);
+    }
 }

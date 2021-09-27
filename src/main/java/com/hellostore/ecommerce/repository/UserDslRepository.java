@@ -142,4 +142,11 @@ public class UserDslRepository {
     private BooleanExpression usernameContains(String username) {
         return hasText(username) ? user.username.contains(username) : null;
     }
+
+    public String getUsername(String name, String email) {
+        return queryFactory.select(user.username)
+                .from(user)
+                .where(user.name.eq(name).and(user.email.eq(email)))
+                .fetchOne();
+    }
 }
