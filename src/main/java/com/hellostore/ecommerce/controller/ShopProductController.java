@@ -30,6 +30,7 @@ public class ShopProductController {
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
+        log.debug("productSearchCondition: {}", productSearchCondition);
         return shopProductService.getProductsPageCondition(productSearchCondition, pageable);
     }
 

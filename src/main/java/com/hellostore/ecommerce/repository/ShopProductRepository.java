@@ -18,6 +18,7 @@ import static com.hellostore.ecommerce.entity.QCategory.category;
 import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
@@ -53,7 +54,9 @@ public class ShopProductRepository {
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .where(
-                        productProperty(condition.getProductProperty())
+                        productProperty(condition.getProductProperty()),
+                        firstCategoryEq(condition.getFirstCategoryId()),
+                        secondCategoryEq(condition.getSecondCategoryId())
                 )
                 .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
@@ -63,6 +66,16 @@ public class ShopProductRepository {
         List<ShopProductDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression firstCategoryEq(Long firstCategoryId) {
+        return !isEmpty(firstCategoryId)
+                ? category.parent.id.eq(firstCategoryId) : null;
+    }
+
+    private BooleanExpression secondCategoryEq(Long secondCategoryId) {
+        return !isEmpty(secondCategoryId)
+                ? categoryProduct.category.id.eq(secondCategoryId) : null;
     }
 
     private BooleanExpression productProperty(String productProperty) {
