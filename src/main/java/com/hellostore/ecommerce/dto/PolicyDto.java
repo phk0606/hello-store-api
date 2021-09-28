@@ -14,14 +14,16 @@ public class PolicyDto {
     private double defaultShippingFee;
     private double freeShippingMinPurchasePrice;
 
+    private int defaultPoint;
     private int signUpPoint;
     private double percentPerPurchasePrice;
 
     @QueryProjection
-    public PolicyDto(Long policyId, double defaultShippingFee, double freeShippingMinPurchasePrice, int signUpPoint, double percentPerPurchasePrice) {
+    public PolicyDto(Long policyId, double defaultShippingFee, double freeShippingMinPurchasePrice, int defaultPoint, int signUpPoint, double percentPerPurchasePrice) {
         this.policyId = policyId;
         this.defaultShippingFee = defaultShippingFee;
         this.freeShippingMinPurchasePrice = freeShippingMinPurchasePrice;
+        this.defaultPoint = defaultPoint;
         this.signUpPoint = signUpPoint;
         this.percentPerPurchasePrice = percentPerPurchasePrice;
     }

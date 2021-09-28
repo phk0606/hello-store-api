@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.LoginDto;
+import com.hellostore.ecommerce.dto.PolicyDto;
 import com.hellostore.ecommerce.dto.TokenDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.entity.Address;
@@ -8,6 +9,7 @@ import com.hellostore.ecommerce.entity.Authority;
 import com.hellostore.ecommerce.entity.RefreshToken;
 import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.jwt.TokenProvider;
+import com.hellostore.ecommerce.repository.PolicyRepository;
 import com.hellostore.ecommerce.repository.RefreshTokenRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
 import javassist.bytecode.DuplicateMemberException;
@@ -34,6 +36,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PolicyRepository policyRepository;
 
     @Transactional
     public UserDto signup(UserDto userDto) throws DuplicateMemberException {
@@ -47,6 +50,8 @@ public class AuthService {
                 .authorityName("ROLE_USER")
                 .build();
 
+        PolicyDto policy = policyRepository.getPolicy();
+
         Address address = new Address(userDto.getZoneCode(), userDto.getAddress(), userDto.getRoadAddress(), userDto.getDetailAddress());
         User user = User.builder()
                 .username(userDto.getUsername())
@@ -56,6 +61,7 @@ public class AuthService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .address(address)
                 .authorities(Collections.singleton(authority))
+                .point(policy.getSignUpPoint())
                 .activated(true)
                 .build();
 

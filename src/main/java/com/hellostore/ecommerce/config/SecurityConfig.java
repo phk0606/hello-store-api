@@ -51,6 +51,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/shop/getProductsPageCondition")
                 .antMatchers("/api/shop/getProductById")
                 .antMatchers("/api/shop/getListImage")
+                .antMatchers("/api/notice/getNotices")
+                .antMatchers("/api/notice/getNotice")
+                .antMatchers("/api/community/getCommunities")
+                .antMatchers("/api/community/getCommunity")
+                .antMatchers("/api/productComment/getProductComments")
                 .antMatchers("/images/products/**")
         ;
     }
@@ -76,7 +81,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/api/getProductsPageCondition").permitAll()
                 .antMatchers("/api/getProductById").permitAll()
-                .antMatchers("/api/productComment/getProductComments").permitAll()
                 .antMatchers("/api/productQnA/getProductQnA").permitAll()
                 .anyRequest().authenticated()
                 .and()

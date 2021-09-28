@@ -17,9 +17,9 @@ public class PolicyController {
 
     @GetMapping("/getPolicy")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public PolicyDto getPolicy(Long policyId) {
+    public PolicyDto getPolicy() {
 
-        return policyService.getPolicy(policyId);
+        return policyService.getPolicy();
     }
 
     @PostMapping("/mergePolicy")

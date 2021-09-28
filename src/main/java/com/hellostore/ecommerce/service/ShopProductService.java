@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.PolicyDto;
 import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.ShopProductDto;
@@ -7,6 +8,7 @@ import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
+import com.hellostore.ecommerce.repository.PolicyRepository;
 import com.hellostore.ecommerce.repository.ProductImageRepository;
 import com.hellostore.ecommerce.repository.ProductOptionRepository;
 import com.hellostore.ecommerce.repository.ShopProductRepository;
@@ -32,6 +34,7 @@ public class ShopProductService {
     private final ShopProductRepository shopProductRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final PolicyRepository policyRepository;
 
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
@@ -52,15 +55,16 @@ public class ShopProductService {
 
     public ShopProductDto getProductById(Long productId) throws IOException {
         ShopProductDto product = shopProductRepository.getProductById(productId);
+        PolicyDto policy = policyRepository.getPolicy();
 
         if (product.getPointType().equals(PointType.DEFAULT)) {
-            product.setPoint((product.getSalePrice() * 0.5) / 100);
+            product.setPoint(policy.getDefaultPoint());
         } else if (product.getPointType().equals(PointType.EACH)) {
             product.setPoint((product.getSalePrice() * product.getPointPerPrice()) / 100);
         }
 
         if (product.getShippingFeeType().equals(ShippingFeeType.DEFAULT)) {
-            product.setShippingFee(2500);
+            product.setShippingFee(policy.getDefaultShippingFee());
         } else if (product.getShippingFeeType().equals(ShippingFeeType.EACH)) {
             product.setShippingFee(product.getEachShippingFee());
         }

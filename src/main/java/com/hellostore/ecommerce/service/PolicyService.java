@@ -27,6 +27,7 @@ public class PolicyService {
             Policy policy = Policy.builder()
                     .defaultShippingFee(policyDto.getDefaultShippingFee())
                     .freeShippingMinPurchasePrice(policyDto.getFreeShippingMinPurchasePrice())
+                    .defaultPoint(policyDto.getDefaultPoint())
                     .signUpPoint(policyDto.getSignUpPoint())
                     .percentPerPurchasePrice(policyDto.getPercentPerPurchasePrice())
                     .build();
@@ -34,7 +35,7 @@ public class PolicyService {
         }
     }
 
-    public PolicyDto getPolicy(Long policyId) {
-        return policyRepository.getPolicy(policyId);
+    public PolicyDto getPolicy() {
+        return policyRepository.getPolicy();
     }
 }

@@ -28,15 +28,15 @@ public class PolicyRepository {
         return policy;
     }
 
-    public PolicyDto getPolicy(Long policyId) {
+    public PolicyDto getPolicy() {
         return queryFactory.select(
                 new QPolicyDto(policy.id,
                         policy.defaultShippingFee,
                         policy.freeShippingMinPurchasePrice,
+                        policy.defaultPoint,
                         policy.signUpPoint,
                         policy.percentPerPurchasePrice))
                 .from(policy)
-                .where(policyIdEq(policyId))
                 .fetchOne();
     }
 
@@ -49,6 +49,7 @@ public class PolicyRepository {
         queryFactory.update(policy)
                 .set(policy.defaultShippingFee, policyDto.getDefaultShippingFee())
                 .set(policy.freeShippingMinPurchasePrice, policyDto.getFreeShippingMinPurchasePrice())
+                .set(policy.defaultPoint, policyDto.getDefaultPoint())
                 .set(policy.signUpPoint, policyDto.getSignUpPoint())
                 .set(policy.percentPerPurchasePrice, policyDto.getPercentPerPurchasePrice())
                 .where(policy.id.eq(policyDto.getPolicyId()))
