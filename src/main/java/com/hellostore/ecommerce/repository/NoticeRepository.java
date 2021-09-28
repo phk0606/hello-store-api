@@ -56,7 +56,7 @@ public class NoticeRepository {
                 = queryFactory.select(
                         new QNoticeDto(
                                 notice.id, notice.title,
-                                notice.content, notice.important, notice.createdDate))
+                                notice.important, notice.createdDate))
                 .from(notice)
                 .where(
                         noticeTitleContains(noticeSearchCondition.getTitle()),

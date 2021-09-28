@@ -29,4 +29,12 @@ public class NoticeDto {
         this.important = important;
         this.createdDate = createdDate;
     }
+
+    @QueryProjection
+    public NoticeDto(Long noticeId, String title, boolean important, LocalDateTime createdDate) {
+        this.noticeId = noticeId;
+        this.title = title;
+        this.important = important;
+        this.createdDate = createdDate;
+    }
 }

@@ -44,6 +44,15 @@ public class CommunityDto {
 
     @QueryProjection
     public CommunityDto(Long communityId, String title,
+                        String createdBy, LocalDateTime createdDate) {
+        this.communityId = communityId;
+        this.title = title;
+        this.createdBy = createdBy;
+        this.createdDate = createdDate;
+    }
+
+    @QueryProjection
+    public CommunityDto(Long communityId, String title,
                         String content,
                         String createdBy, LocalDateTime createdDate,
                         Long replyCount) {

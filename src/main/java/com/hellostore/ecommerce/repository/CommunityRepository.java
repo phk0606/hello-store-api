@@ -58,7 +58,6 @@ public class CommunityRepository {
                         new QCommunityDto(
                                 community.id,
                                 community.title,
-                                community.content,
                                 community.createdBy,
                                 community.createdDate))
                 .from(community)
