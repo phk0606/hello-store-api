@@ -4,6 +4,8 @@ import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
+import com.hellostore.ecommerce.enumType.PointUseDetailType;
+import com.hellostore.ecommerce.enumType.PointUseType;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +35,7 @@ public class OrderService {
     private final OrderProductRepository orderProductRepository;
     private final OderProductOptionRepository oderProductOptionRepository;
     private final ProductOptionRepository productOptionRepository;
+    private final PointRepository pointRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -70,6 +73,17 @@ public class OrderService {
 
         //주문 저장
         orderRepository.save(order);
+
+        // 포인트 사용 저장
+        if (orderDto.getUsedPoint() > 0) {
+            PointHistory pointHistory = PointHistory.builder()
+                    .point(orderDto.getUsedPoint())
+                    .pointUseType(PointUseType.USE)
+                    .pointUseDetailType(PointUseDetailType.PURCHASE)
+                    .user(user.get()).build();
+            pointRepository.createPointHistory(pointHistory);
+        }
+
         return order.getId();
     }
 
