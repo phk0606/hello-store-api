@@ -36,6 +36,7 @@ public class OrderDto {
     private PaymentStatus paymentStatus;
     private String paymentStatusValue;
     private Integer paymentPrice;
+    private Integer point;
 
     private String depositAccount;
     private String depositorName;

@@ -44,7 +44,8 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Address address;
 
-    private Integer point;
+    @OneToMany(mappedBy = "user")
+    private List<PointHistory> pointHistories = new ArrayList<>();
 
     @ManyToMany
     @JoinColumn

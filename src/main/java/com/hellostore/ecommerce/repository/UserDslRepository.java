@@ -4,12 +4,10 @@ import com.hellostore.ecommerce.dto.QUserDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
 import com.hellostore.ecommerce.entity.User;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.hellostore.ecommerce.entity.QOrder.order;
+import static com.hellostore.ecommerce.entity.QPointHistory.pointHistory;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
@@ -48,7 +47,6 @@ public class UserDslRepository {
                 .set(user.address.detailAddress, userDto.getDetailAddress())
                 .set(user.phoneNumber, userDto.getPhoneNumber())
                 .set(user.email, userDto.getEmail())
-                .set(user.point, userDto.getPoint())
                 .set(user.password, passwordEncoder.encode(userDto.getPassword()))
                 .set(user.lastModifiedDate, LocalDateTime.now())
                 .where(user.username.eq(userDto.getUsername()))
@@ -63,7 +61,6 @@ public class UserDslRepository {
                 .set(user.address.detailAddress, userDto.getDetailAddress())
                 .set(user.phoneNumber, userDto.getPhoneNumber())
                 .set(user.email, userDto.getEmail())
-                .set(user.point, userDto.getPoint())
                 .set(user.lastModifiedDate, LocalDateTime.now())
                 .where(user.username.eq(userDto.getUsername()))
                 .execute();
@@ -76,9 +73,10 @@ public class UserDslRepository {
                                 user.email, user.phoneNumber,
                                 user.address.zoneCode, user.address.roadAddress,
                                 user.address.address, user.address.detailAddress,
-                                order.paymentPrice.sum(), user.point))
+                                order.paymentPrice.sum(), pointHistory.point.sum().coalesce(0)))
                 .from(user)
                 .leftJoin(order).on(order.user.id.eq(user.id))
+                .leftJoin(pointHistory).on(pointHistory.user.id.eq(user.id))
                 .where(user.username.eq(username))
                 .groupBy(user.id)
                 .fetchOne());
@@ -89,9 +87,11 @@ public class UserDslRepository {
         List<UserDto> content = queryFactory.select(
                         new QUserDto(
                                 user.id, user.username, user.name,
-                                user.createdDate, order.paymentPrice.sum(), user.point))
+                                user.createdDate, order.paymentPrice.sum(),
+                                pointHistory.point.sum()))
                 .from(user)
                 .leftJoin(order).on(order.user.id.eq(user.id))
+                .leftJoin(pointHistory).on(pointHistory.user.id.eq(user.id))
                 .where(
                         nameContains(userSearchCondition.getName()),
                         usernameContains(userSearchCondition.getUsername()),

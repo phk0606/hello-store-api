@@ -4,11 +4,11 @@ import com.hellostore.ecommerce.dto.LoginDto;
 import com.hellostore.ecommerce.dto.PolicyDto;
 import com.hellostore.ecommerce.dto.TokenDto;
 import com.hellostore.ecommerce.dto.UserDto;
-import com.hellostore.ecommerce.entity.Address;
-import com.hellostore.ecommerce.entity.Authority;
-import com.hellostore.ecommerce.entity.RefreshToken;
-import com.hellostore.ecommerce.entity.User;
+import com.hellostore.ecommerce.entity.*;
+import com.hellostore.ecommerce.enumType.PointUseDetailType;
+import com.hellostore.ecommerce.enumType.PointUseType;
 import com.hellostore.ecommerce.jwt.TokenProvider;
+import com.hellostore.ecommerce.repository.PointRepository;
 import com.hellostore.ecommerce.repository.PolicyRepository;
 import com.hellostore.ecommerce.repository.RefreshTokenRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
@@ -37,6 +37,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PolicyRepository policyRepository;
+    private final PointRepository pointRepository;
 
     @Transactional
     public UserDto signup(UserDto userDto) throws DuplicateMemberException {
@@ -61,9 +62,16 @@ public class AuthService {
                 .phoneNumber(userDto.getPhoneNumber())
                 .address(address)
                 .authorities(Collections.singleton(authority))
-                .point(policy.getSignUpPoint())
                 .activated(true)
                 .build();
+
+        PointHistory pointHistory = PointHistory.builder()
+                .point(policy.getSignUpPoint())
+                .pointUseType(PointUseType.SAVE)
+                .pointUseDetailType(PointUseDetailType.SIGNUP)
+                .user(user).build();
+
+        pointRepository.createPointHistory(pointHistory);
 
         return new UserDto().of(userRepository.save(user));
     }
