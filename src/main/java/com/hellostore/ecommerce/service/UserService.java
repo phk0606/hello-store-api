@@ -66,7 +66,7 @@ public class UserService {
 
         boolean matches = passwordEncoder.matches(userDto.getPassword(), user.get().getPassword());
         if (!matches) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            throw new BadCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
 
         userDslRepository.modifyPassword(userDto);

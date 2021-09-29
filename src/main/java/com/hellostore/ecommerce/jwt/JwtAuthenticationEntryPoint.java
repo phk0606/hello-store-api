@@ -22,7 +22,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         if (expired != null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, expired);
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "비밀번호가 일치하지 않습니다.");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "아이디 또는 비밀번호가 일치하지 않습니다.");
         }
     }
 }
