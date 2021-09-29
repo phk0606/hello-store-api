@@ -26,7 +26,7 @@ public class PaymentMethodController {
     }
 
     @GetMapping("/getPaymentMethodTypes")
-    public List<PaymentMethodType> getBankAccounts() {
+    public List<PaymentMethodType> getPaymentMethodTypes() {
         return paymentMethodService.getPaymentMethodTypes();
     }
 }
