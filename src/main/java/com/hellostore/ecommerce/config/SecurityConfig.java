@@ -56,6 +56,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/community/getCommunities")
                 .antMatchers("/api/community/getCommunity")
                 .antMatchers("/api/productComment/getProductComments")
+                .antMatchers("/api/bankAccount/getBankAccount")
+                .antMatchers("/api/bankAccount/getBankAccounts")
+                .antMatchers("/api/paymentMethod/getPaymentMethodTypes")
+                .antMatchers("/api/paymentMethod/getPaymentMethodTypesWithValues")
                 .antMatchers("/images/products/**")
         ;
     }

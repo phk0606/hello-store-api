@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.PaymentMethodDto;
+import com.hellostore.ecommerce.dto.PaymentMethodTypeDto;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.service.PaymentMethodService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,10 @@ public class PaymentMethodController {
     @GetMapping("/getPaymentMethodTypes")
     public List<PaymentMethodType> getPaymentMethodTypes() {
         return paymentMethodService.getPaymentMethodTypes();
+    }
+
+    @GetMapping("/getPaymentMethodTypesWithValues")
+    public List<PaymentMethodTypeDto> getPaymentMethodTypesWithValues() {
+        return paymentMethodService.getPaymentMethodTypesWithValues();
     }
 }

@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.PaymentMethodTypeDto;
 import com.hellostore.ecommerce.entity.PaymentMethod;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.repository.PaymentMethodRepository;
@@ -36,5 +37,9 @@ public class PaymentMethodService {
 
     public List<PaymentMethodType> getPaymentMethodTypes() {
         return paymentMethodRepository.getPaymentMethodTypes();
+    }
+
+    public List<PaymentMethodTypeDto> getPaymentMethodTypesWithValues() {
+        return paymentMethodRepository.getPaymentMethodTypesWithValues();
     }
 }

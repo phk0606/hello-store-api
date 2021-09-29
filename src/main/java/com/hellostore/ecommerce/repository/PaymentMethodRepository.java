@@ -1,5 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.PaymentMethodTypeDto;
+import com.hellostore.ecommerce.dto.QPaymentMethodTypeDto;
 import com.hellostore.ecommerce.entity.PaymentMethod;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,6 +35,13 @@ public class PaymentMethodRepository {
 
     public List<PaymentMethodType> getPaymentMethodTypes() {
         return queryFactory.select(paymentMethod.paymentMethodType)
+                .from(paymentMethod)
+                .fetch();
+    }
+
+    public List<PaymentMethodTypeDto> getPaymentMethodTypesWithValues() {
+        return queryFactory.select(
+                new QPaymentMethodTypeDto(paymentMethod.paymentMethodType))
                 .from(paymentMethod)
                 .fetch();
     }
