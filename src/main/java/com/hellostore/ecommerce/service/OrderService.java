@@ -38,6 +38,7 @@ public class OrderService {
     private final ProductOptionRepository productOptionRepository;
     private final PointRepository pointRepository;
     private final BankAccountRepository bankAccountRepository;
+    private final OrderPointRepository orderPointRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -80,16 +81,29 @@ public class OrderService {
                 = Order.createOrder(user, delivery, orderProducts, orderDto);
 
         //주문 저장
-        orderRepository.save(order);
+        Order order1 = orderRepository.save(order);
+
+        // 포인트 추가
+        PointHistory pointHistory1 = PointHistory.builder()
+                .point(orderDto.getAddPoint())
+                .pointUseType(PointUseType.SAVE)
+                .pointUseDetailType(PointUseDetailType.PURCHASE)
+                .user(user.get()).build();
+        pointRepository.createPointHistory(pointHistory1);
 
         // 포인트 사용 저장
         if (orderDto.getUsedPoint() > 0) {
             PointHistory pointHistory = PointHistory.builder()
-                    .point(orderDto.getUsedPoint())
+                    .point(orderDto.getUsedPoint() * -1)
                     .pointUseType(PointUseType.USE)
                     .pointUseDetailType(PointUseDetailType.PURCHASE)
                     .user(user.get()).build();
             pointRepository.createPointHistory(pointHistory);
+
+            // 주문 완료 시 사용 포인트 표출
+            orderPointRepository
+                    .createOrderPoint(
+                            OrderUsePoint.builder().order(order1).pointHistory(pointHistory).build());
         }
 
         return order.getId();

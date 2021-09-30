@@ -2,12 +2,13 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Order;
-import com.hellostore.ecommerce.entity.QBankAccount;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -20,10 +21,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QBankAccount.*;
+import static com.hellostore.ecommerce.entity.QBankAccount.bankAccount;
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
 import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
+import static com.hellostore.ecommerce.entity.QOrderUsePoint.orderUsePoint;
+import static com.hellostore.ecommerce.entity.QPointHistory.pointHistory;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
 import static com.hellostore.ecommerce.entity.QUser.user;
@@ -40,8 +43,9 @@ public class OrderRepository {
         this.em = em;
     }
 
-    public void save(Order order) {
+    public Order save(Order order) {
         em.persist(order);
+        return order;
     }
 
     public void modifyOrdererPhoneNumber(OrderDto orderDto) {
@@ -78,9 +82,14 @@ public class OrderRepository {
                         order.depositorName, order.depositDueDate,
                         order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                        delivery.address
+                        delivery.address,
+                        pointHistory.point
                 ))
                 .from(order)
+                .join(orderUsePoint)
+                .on(orderUsePoint.order.id.eq(order.id))
+                .join(pointHistory)
+                .on(orderUsePoint.pointHistory.id.eq(pointHistory.id))
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))

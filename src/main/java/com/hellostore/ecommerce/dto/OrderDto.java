@@ -38,6 +38,7 @@ public class OrderDto {
     private String paymentStatusValue;
     private Integer paymentPrice;
     private Integer usedPoint;
+    private Integer addPoint;
 
     private String depositAccount;
     private Long depositAccountId;
@@ -83,7 +84,8 @@ public class OrderDto {
                     String depositorName, LocalDate depositDueDate,
                     OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
-                    String requirement, Address address) {
+                    String requirement, Address address,
+                    Integer usedPoint) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.orderCancelDate = orderCancelDate;
@@ -105,6 +107,7 @@ public class OrderDto {
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
+        this.usedPoint = usedPoint;
     }
 
     @QueryProjection
