@@ -61,7 +61,7 @@ public class UserDto {
     @Size(max = 100)
     private String detailAddress;
 
-    private Integer purchasePrice;
+    private Integer purchasePriceSum;
     private Integer pointSum;
 
     public UserDto(Long userNo, String username, String name, String email, String phoneNumber,
@@ -87,13 +87,13 @@ public class UserDto {
 
     @QueryProjection
     public UserDto(Long userNo, String username, String name,
-                   LocalDateTime createdDate, Integer purchasePrice, Integer pointSum
+                   LocalDateTime createdDate, Integer purchasePriceSum, Integer pointSum
                    ) {
         this.userNo = userNo;
         this.username = username;
         this.createdDate = createdDate;
         this.name = name;
-        this.purchasePrice = purchasePrice;
+        this.purchasePriceSum = purchasePriceSum;
         this.pointSum = pointSum;
     }
 
@@ -102,7 +102,7 @@ public class UserDto {
                    LocalDateTime createdDate,
                    String email, String phoneNumber,
                    String zoneCode, String roadAddress, String address, String detailAddress,
-                   Integer purchasePrice, Integer pointSum
+                   Integer purchasePriceSum, Integer pointSum
     ) {
         this.userNo = userNo;
         this.username = username;
@@ -114,7 +114,7 @@ public class UserDto {
         this.address = address;
         this.detailAddress = detailAddress;
         this.name = name;
-        this.purchasePrice = purchasePrice;
+        this.purchasePriceSum = purchasePriceSum;
         this.pointSum = pointSum;
     }
 }

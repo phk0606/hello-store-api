@@ -4,7 +4,9 @@ import com.hellostore.ecommerce.dto.QUserDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
 import com.hellostore.ecommerce.entity.User;
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -68,17 +70,26 @@ public class UserDslRepository {
 
     public Optional<UserDto> findByUsername(String username) {
 
-        return Optional.ofNullable(queryFactory.select(
+        return Optional.ofNullable(
+                queryFactory.select(
                         new QUserDto(user.id, user.username, user.name, user.createdDate,
                                 user.email, user.phoneNumber,
                                 user.address.zoneCode, user.address.roadAddress,
                                 user.address.address, user.address.detailAddress,
-                                order.paymentPrice.sum(), pointHistory.point.sum().coalesce(0)))
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(
+                                                order.paymentPrice.sum()
+                                        ).from(order)
+                                                .where(order.user.id.eq(user.id)), "paymentPriceSum"),
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(
+                                                pointHistory.point.sum()
+                                        ).from(pointHistory)
+                                                .where(pointHistory.user.id.eq(user.id)), "pointSum")
+                                )
+                        )
                 .from(user)
-                .leftJoin(order).on(order.user.id.eq(user.id))
-                .leftJoin(pointHistory).on(pointHistory.user.id.eq(user.id))
                 .where(user.username.eq(username))
-                .groupBy(user.id)
                 .fetchOne());
     }
 
@@ -87,11 +98,20 @@ public class UserDslRepository {
         List<UserDto> content = queryFactory.select(
                         new QUserDto(
                                 user.id, user.username, user.name,
-                                user.createdDate, order.paymentPrice.sum(),
-                                pointHistory.point.sum()))
+                                user.createdDate,
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(
+                                                        order.paymentPrice.sum()
+                                                ).from(order)
+                                                .where(order.user.id.eq(user.id)), "paymentPriceSum"),
+                                ExpressionUtils.as(
+                                        JPAExpressions.select(
+                                                        pointHistory.point.sum()
+                                                ).from(pointHistory)
+                                                .where(pointHistory.user.id.eq(user.id)), "pointSum")
+                        )
+                )
                 .from(user)
-                .leftJoin(order).on(order.user.id.eq(user.id))
-                .leftJoin(pointHistory).on(pointHistory.user.id.eq(user.id))
                 .where(
                         nameContains(userSearchCondition.getName()),
                         usernameContains(userSearchCondition.getUsername()),
@@ -99,7 +119,6 @@ public class UserDslRepository {
                         userJoinDateA(userSearchCondition.getUserJoinDateA()),
                         userJoinDateB(userSearchCondition.getUserJoinDateB())
                 )
-                .groupBy(user.id)
                 .having(
                         purchasePriceMin(userSearchCondition.getPurchasePriceMin()),
                         purchasePriceMax(userSearchCondition.getPurchasePriceMax())

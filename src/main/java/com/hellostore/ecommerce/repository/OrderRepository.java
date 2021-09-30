@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.Order;
+import com.hellostore.ecommerce.entity.QBankAccount;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QBankAccount.*;
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
 import static com.hellostore.ecommerce.entity.QOrder.order;
 import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
@@ -71,7 +73,9 @@ public class OrderRepository {
                         order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.paymentStatus,
-                        order.depositAccount, order.depositorName, order.depositDueDate,
+                        bankAccount.bankName.concat(" ").concat(bankAccount.accountNumber).concat(" ")
+                                .concat(bankAccount.accountHolder).as("depositAccount"),
+                        order.depositorName, order.depositDueDate,
                         order.status,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                         delivery.address
@@ -79,6 +83,7 @@ public class OrderRepository {
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
+                .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))
                 .where(order.id.eq(orderId))
                 .fetchOne();
     }
@@ -93,7 +98,9 @@ public class OrderRepository {
                         new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
                                 order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
-                                order.depositAccount, order.depositorName, order.depositDueDate,
+                                bankAccount.bankName.concat(" ").concat(bankAccount.accountNumber).concat(" ")
+                                        .concat(bankAccount.accountHolder).as("depositAccount"),
+                                order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                                 delivery.address, orderProduct.id.count()))
@@ -101,6 +108,7 @@ public class OrderRepository {
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))
                 .where(
                         user.username.eq(orderSearchCondition.getUsername()),
                         orderDateA(orderSearchCondition.getOrderDateA()),
@@ -154,7 +162,9 @@ public class OrderRepository {
                         new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
                                 order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
-                                order.depositAccount, order.depositorName, order.depositDueDate,
+                                bankAccount.bankName.concat(" ").concat(bankAccount.accountNumber).concat(" ")
+                                        .concat(bankAccount.accountHolder).as("depositAccount"),
+                                order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                                 delivery.address, orderProduct.id.count()))
@@ -170,6 +180,7 @@ public class OrderRepository {
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))
                 .groupBy(order.id)
                 .orderBy(order.id.desc())
                 .offset(pageable.getOffset())

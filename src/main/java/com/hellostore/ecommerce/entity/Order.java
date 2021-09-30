@@ -5,6 +5,7 @@ import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.*;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -52,7 +53,12 @@ public class Order extends BaseEntity{
 
     private Integer paymentPrice;
 
-    private String depositAccount;
+//    private String depositAccount;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "bank_account_id")
+    private BankAccount bankAccount;
+
     private String depositorName;
     private LocalDate depositDueDate;
 
@@ -91,8 +97,9 @@ public class Order extends BaseEntity{
         order.setPaymentMethodType(orderDto.getPaymentMethodType());
         order.setPaymentPrice(orderDto.getPaymentPrice());
 //        order.setOrderDate(LocalDateTime.now());
-        if(!orderDto.getDepositAccount().isEmpty()) {
-            order.setDepositAccount(orderDto.getDepositAccount());
+        if(!ObjectUtils.isEmpty(orderDto.getDepositAccountId())) {
+
+            order.setBankAccount(orderDto.getBankAccount());
             order.setDepositorName(orderDto.getDepositorName());
             order.setDepositDueDate(orderDto.getDepositDueDate());
         }

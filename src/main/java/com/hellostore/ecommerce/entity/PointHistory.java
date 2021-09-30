@@ -17,7 +17,9 @@ public class PointHistory extends BaseTimeEntity {
     @Column(name = "point_id")
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private PointUseType pointUseType;
+    @Enumerated(EnumType.STRING)
     private PointUseDetailType pointUseDetailType;
     private int point;
 

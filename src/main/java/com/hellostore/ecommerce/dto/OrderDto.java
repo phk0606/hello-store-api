@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hellostore.ecommerce.entity.Address;
+import com.hellostore.ecommerce.entity.BankAccount;
 import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
@@ -39,6 +40,10 @@ public class OrderDto {
     private Integer usedPoint;
 
     private String depositAccount;
+    private Long depositAccountId;
+    @Setter
+    private BankAccount bankAccount;
+
     private String depositorName;
     private LocalDate depositDueDate;
     private OrderDeliveryStatus orderDeliveryStatus;
@@ -65,7 +70,6 @@ public class OrderDto {
         this.username = order.getUser().getUsername();
         this.phoneNumber = order.getPhoneNumber();
         this.paymentMethodType = order.getPaymentMethodType();
-        this.depositAccount = order.getDepositAccount();
         this.depositorName = order.getDepositorName();
         this.depositDueDate = order.getDepositDueDate();
     }
@@ -75,7 +79,8 @@ public class OrderDto {
                     Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     PaymentStatus paymentStatus,
-                    String depositAccount, String depositorName, LocalDate depositDueDate,
+                    String depositAccount,
+                    String depositorName, LocalDate depositDueDate,
                     OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address) {
@@ -106,7 +111,8 @@ public class OrderDto {
     public OrderDto(Long orderId, LocalDateTime createdDate, LocalDateTime orderCancelDate,
                     Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
-                    String depositAccount, String depositorName, LocalDate depositDueDate,
+                    String depositAccount,
+                    String depositorName, LocalDate depositDueDate,
                     PaymentStatus paymentStatus,
                     OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,

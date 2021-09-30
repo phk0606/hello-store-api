@@ -66,4 +66,8 @@ public class BankAccountRepository {
                 .where(bankAccount.id.eq(bankAccountId))
                 .fetchOne();
     }
+
+    public BankAccount getBankAccountById(Long bankAccountId) {
+        return em.find(BankAccount.class, bankAccountId);
+    }
 }

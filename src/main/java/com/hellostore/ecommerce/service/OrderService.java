@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,6 +37,7 @@ public class OrderService {
     private final OderProductOptionRepository oderProductOptionRepository;
     private final ProductOptionRepository productOptionRepository;
     private final PointRepository pointRepository;
+    private final BankAccountRepository bankAccountRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -66,6 +68,12 @@ public class OrderService {
                 .recipientName(orderDto.getDelivery().getRecipientName())
                 .requirement(orderDto.getDelivery().getRequirement())
                 .build();
+
+        if (!ObjectUtils.isEmpty(orderDto.getDepositAccountId())) {
+            BankAccount bankAccount
+                    = bankAccountRepository.getBankAccountById(orderDto.getDepositAccountId());
+            orderDto.setBankAccount(bankAccount);
+        }
 
         //주문 생성
         Order order
