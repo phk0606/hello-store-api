@@ -39,7 +39,6 @@ public class UserController {
     }
 
     @GetMapping("/user/getUsername")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<String> getUsername(@RequestParam String name, @RequestParam String email) {
         return ResponseEntity.ok(userService.getUsername(name, email));
     }

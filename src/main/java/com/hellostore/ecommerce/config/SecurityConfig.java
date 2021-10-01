@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/bankAccount/getBankAccounts")
                 .antMatchers("/api/paymentMethod/getPaymentMethodTypes")
                 .antMatchers("/api/paymentMethod/getPaymentMethodTypesWithValues")
+                .antMatchers("/api/user/getUsername")
                 .antMatchers("/images/products/**")
         ;
     }
