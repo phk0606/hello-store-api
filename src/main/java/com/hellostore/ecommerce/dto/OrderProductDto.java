@@ -25,6 +25,7 @@ public class OrderProductDto {
     private int salePrice;
     private int quantity;
     private Integer point;
+    private Integer calculatedPoint;
     private Integer shippingFee;
     private int totalPrice;
 

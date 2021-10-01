@@ -42,7 +42,7 @@ public class OrderProduct {
         orderProduct.setProduct(product);
         orderProduct.setSalePrice(orderProductDto.getSalePrice());
         orderProduct.setQuantity(orderProductDto.getQuantity());
-        orderProduct.setPoint(orderProductDto.getPoint());
+        orderProduct.setPoint(orderProductDto.getCalculatedPoint());
         orderProduct.setShippingFee(orderProductDto.getShippingFee());
         orderProduct.setTotalPrice(orderProductDto.getTotalPrice());
 

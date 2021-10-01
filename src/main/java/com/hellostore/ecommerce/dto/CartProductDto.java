@@ -32,8 +32,12 @@ public class CartProductDto {
 
     private PointType pointType;
     private int pointPerPrice;
+
     @Setter
     private double point;
+    @Setter
+    private double calculatedPoint;
+
     private ShippingFeeType shippingFeeType;
     private int eachShippingFee;
     @Setter

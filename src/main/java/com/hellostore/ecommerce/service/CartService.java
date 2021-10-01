@@ -2,16 +2,14 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.CartProductDto;
 import com.hellostore.ecommerce.dto.CartProductOptionDto;
+import com.hellostore.ecommerce.dto.PolicyDto;
 import com.hellostore.ecommerce.entity.Cart;
 import com.hellostore.ecommerce.entity.CartProduct;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
-import com.hellostore.ecommerce.repository.CartProductOptionRepository;
-import com.hellostore.ecommerce.repository.CartProductRepository;
-import com.hellostore.ecommerce.repository.CartRepository;
-import com.hellostore.ecommerce.repository.ProductRepository;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,6 +32,7 @@ public class CartService {
     private final CartProductOptionRepository cartProductOptionRepository;
     private final UserService userService;
     private final ProductRepository productRepository;
+    private final PolicyRepository policyRepository;
 
     @Transactional
     public void addCartProduct(CartProductDto cartProductDto) {
@@ -63,9 +62,14 @@ public class CartService {
         for (CartProductDto cartProduct : cartProducts) {
 
             if (cartProduct.getPointType().equals(PointType.DEFAULT)) {
-                cartProduct.setPoint((cartProduct.getSalePrice() * 0.5) / 100);
+                PolicyDto policy = policyRepository.getPolicy();
+                double originPoint = policy.getDefaultPoint();
+                cartProduct.setPoint(originPoint);
+                cartProduct.setCalculatedPoint(originPoint * cartProduct.getQuantity());
             } else if (cartProduct.getPointType().equals(PointType.EACH)) {
-                cartProduct.setPoint((cartProduct.getSalePrice() * cartProduct.getPointPerPrice()) / 100);
+                double originPoint = (cartProduct.getSalePrice() * cartProduct.getPointPerPrice()) / 100;
+                cartProduct.setPoint(originPoint);
+                cartProduct.setCalculatedPoint(originPoint * cartProduct.getQuantity());
             }
 
             if (cartProduct.getShippingFeeType().equals(ShippingFeeType.DEFAULT)) {
