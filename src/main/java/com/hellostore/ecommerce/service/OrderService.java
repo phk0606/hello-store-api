@@ -232,12 +232,6 @@ public class OrderService {
         // orderProduct, product image 가져오기
         List<OrderProductDto> orderProduct = orderRepository.getOrderProduct(toOrderIds(orders.getContent()));
 
-        for (OrderProductDto orderProductDto : orderProduct) {
-            orderProductDto.setImage(
-                    Files.readAllBytes(
-                            Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
-        }
-
         Map<Long, List<OrderProductDto>> collect = orderProduct.stream()
                 .collect(Collectors.groupingBy(OrderProductDto::getOrderId));
 
