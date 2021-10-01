@@ -78,12 +78,12 @@ public class UserDslRepository {
                                 user.address.address, user.address.detailAddress,
                                 ExpressionUtils.as(
                                         JPAExpressions.select(
-                                                order.paymentPrice.sum()
+                                                order.paymentPrice.sum().coalesce(0)
                                         ).from(order)
                                                 .where(order.user.id.eq(user.id)), "paymentPriceSum"),
                                 ExpressionUtils.as(
                                         JPAExpressions.select(
-                                                pointHistory.point.sum()
+                                                pointHistory.point.sum().coalesce(0)
                                         ).from(pointHistory)
                                                 .where(pointHistory.user.id.eq(user.id)), "pointSum")
                                 )

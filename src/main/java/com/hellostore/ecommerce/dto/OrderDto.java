@@ -10,6 +10,7 @@ import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
+import org.springframework.util.ObjectUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -107,7 +108,7 @@ public class OrderDto {
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;
         this.address = address;
-        this.usedPoint = usedPoint;
+        this.usedPoint = ObjectUtils.isEmpty(usedPoint) ? 0 : usedPoint;
     }
 
     @QueryProjection

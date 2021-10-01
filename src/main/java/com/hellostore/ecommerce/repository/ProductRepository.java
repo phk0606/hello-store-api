@@ -137,7 +137,7 @@ public class ProductRepository {
                         categoryProduct.category.id,
                         category.name,
                         product.id, product.name,
-                        product.salePrice, product.productShowType, product.clickCount,
+                        product.salePrice, product.stockQuantity, product.productShowType, product.clickCount,
                         product.createdDate,
                         product.lastModifiedDate, product.createdBy,
                         productImage.id, productImage.originalFileName, productImage.fileName,

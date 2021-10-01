@@ -23,6 +23,7 @@ public class ProductListDto {
     private Long productId;
     private String name;
     private int salePrice;
+    private int stockQuantity;
 
     private ProductShowType productShowType;
     private String productShowTypeValue;
@@ -46,12 +47,13 @@ public class ProductListDto {
 
 
     @QueryProjection
-    public ProductListDto(Long categoryId, String categoryName, Long productId, String name, int salePrice, ProductShowType productShowType, int clickCount, LocalDateTime createdDate, LocalDateTime lastModifiedDate, String createBy, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
+    public ProductListDto(Long categoryId, String categoryName, Long productId, String name, int salePrice, int stockQuantity, ProductShowType productShowType, int clickCount, LocalDateTime createdDate, LocalDateTime lastModifiedDate, String createBy, Long imageId, String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.productId = productId;
         this.name = name;
         this.salePrice = salePrice;
+        this.stockQuantity = stockQuantity;
         this.productShowTypeValue = productShowType.getValue();
         this.clickCount = clickCount;
         this.createdDate = createdDate;

@@ -86,9 +86,9 @@ public class OrderRepository {
                         pointHistory.point
                 ))
                 .from(order)
-                .join(orderUsePoint)
+                .leftJoin(orderUsePoint)
                 .on(orderUsePoint.order.id.eq(order.id))
-                .join(pointHistory)
+                .leftJoin(pointHistory)
                 .on(orderUsePoint.pointHistory.id.eq(pointHistory.id))
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
