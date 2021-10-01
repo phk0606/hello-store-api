@@ -81,4 +81,9 @@ public class ProductController {
         return productService.getProductsPage(productSearchCondition, pageable);
     }
 
+    @GetMapping("/getProductCount")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public Long getProductCount() {
+        return productService.getProductCount();
+    }
 }

@@ -206,4 +206,10 @@ public class ProductRepository {
         return StringUtils.hasText(productRegistryDateB)
                 ? product.createdDate.loe(LocalDateTime.parse(productRegistryDateB + " 23:59:59", formatter)) : null;
     }
+
+    public Long getProductCount() {
+        return queryFactory.select(product.id.count())
+                .from(product)
+                .fetchOne();
+    }
 }
