@@ -11,8 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QPointHistory.pointHistory;
@@ -56,7 +59,9 @@ public class PointHistoryRepository {
                 .from(pointHistory)
                 .join(user).on(user.id.eq(pointHistory.user.id))
                 .where(
-                        usernameEq(pointHistorySearchCondition.getUsername())
+                        usernameEq(pointHistorySearchCondition.getUsername()),
+                        pointDateA(pointHistorySearchCondition.getPointDateA()),
+                        pointDateB(pointHistorySearchCondition.getPointDateB())
                 )
                 .orderBy(pointHistory.id.desc())
                 .offset(pageable.getOffset())
@@ -71,5 +76,17 @@ public class PointHistoryRepository {
     private BooleanExpression usernameEq(String username) {
         return !isEmpty(username)
                 ? user.username.eq(username) : null;
+    }
+
+    private BooleanExpression pointDateA(String pointDateA) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(pointDateA)
+                ? pointHistory.createdDate.goe(LocalDateTime.parse(pointDateA + " 00:00:00", formatter)) : null;
+    }
+
+    private BooleanExpression pointDateB(String pointDateB) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return StringUtils.hasText(pointDateB)
+                ? pointHistory.createdDate.loe(LocalDateTime.parse(pointDateB + " 23:59:59", formatter)) : null;
     }
 }
