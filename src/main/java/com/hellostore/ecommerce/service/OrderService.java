@@ -36,7 +36,7 @@ public class OrderService {
     private final OrderProductRepository orderProductRepository;
     private final OderProductOptionRepository oderProductOptionRepository;
     private final ProductOptionRepository productOptionRepository;
-    private final PointRepository pointRepository;
+    private final PointHistoryRepository pointHistoryRepository;
     private final BankAccountRepository bankAccountRepository;
     private final OrderPointRepository orderPointRepository;
 
@@ -84,12 +84,14 @@ public class OrderService {
         Order order1 = orderRepository.save(order);
 
         // 포인트 추가
-        PointHistory pointHistory1 = PointHistory.builder()
-                .point(orderDto.getAddPoint())
-                .pointUseType(PointUseType.SAVE)
-                .pointUseDetailType(PointUseDetailType.PURCHASE)
-                .user(user.get()).build();
-        pointRepository.createPointHistory(pointHistory1);
+        if (orderDto.getAddPoint() > 0) {
+            PointHistory pointHistory1 = PointHistory.builder()
+                    .point(orderDto.getAddPoint())
+                    .pointUseType(PointUseType.SAVE)
+                    .pointUseDetailType(PointUseDetailType.PURCHASE)
+                    .user(user.get()).build();
+            pointHistoryRepository.createPointHistory(pointHistory1);
+        }
 
         // 포인트 사용 저장
         if (orderDto.getUsedPoint() > 0) {
@@ -98,7 +100,7 @@ public class OrderService {
                     .pointUseType(PointUseType.USE)
                     .pointUseDetailType(PointUseDetailType.PURCHASE)
                     .user(user.get()).build();
-            pointRepository.createPointHistory(pointHistory);
+            pointHistoryRepository.createPointHistory(pointHistory);
 
             // 주문 완료 시 사용 포인트 표출
             orderPointRepository

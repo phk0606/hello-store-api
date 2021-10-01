@@ -8,7 +8,7 @@ import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.PointUseDetailType;
 import com.hellostore.ecommerce.enumType.PointUseType;
 import com.hellostore.ecommerce.jwt.TokenProvider;
-import com.hellostore.ecommerce.repository.PointRepository;
+import com.hellostore.ecommerce.repository.PointHistoryRepository;
 import com.hellostore.ecommerce.repository.PolicyRepository;
 import com.hellostore.ecommerce.repository.RefreshTokenRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
@@ -21,9 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.Collections;
 
 @Service
@@ -37,7 +35,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PolicyRepository policyRepository;
-    private final PointRepository pointRepository;
+    private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional
     public UserDto signup(UserDto userDto) throws DuplicateMemberException {
@@ -71,7 +69,7 @@ public class AuthService {
                 .pointUseDetailType(PointUseDetailType.SIGNUP)
                 .user(user).build();
 
-        pointRepository.createPointHistory(pointHistory);
+        pointHistoryRepository.createPointHistory(pointHistory);
 
         return new UserDto().of(userRepository.save(user));
     }
