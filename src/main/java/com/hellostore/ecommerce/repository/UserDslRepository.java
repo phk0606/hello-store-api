@@ -200,6 +200,7 @@ public class UserDslRepository {
     public void modifyPassword(UserDto userDto) {
         queryFactory.update(user)
                 .set(user.password, passwordEncoder.encode(userDto.getNewPassword()))
+                .where(user.username.eq(userDto.getUsername()))
                 .execute();
     }
 }
