@@ -1,5 +1,7 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.FaqTypeDto;
+import com.hellostore.ecommerce.enumType.FaqType;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SpringBootTest
 @Transactional
@@ -29,5 +32,17 @@ class ProductServiceTest {
 
         productService.removeProducts(productIds);
 
+    }
+
+    @Test
+    public void test() {
+
+        List<FaqTypeDto> faqTypes = new ArrayList<>();
+        List<FaqType> collect1 = Arrays.asList(FaqType.values()).stream().sorted(Comparator.comparing(FaqType::getSequence)).collect(Collectors.toList());
+        for (FaqType faqType : collect1) {
+            log.debug("faqType: {}", faqType);
+            faqTypes.add(new FaqTypeDto(faqType, faqType.getValue()));
+        }
+        log.debug("faqTypes: {}", faqTypes);
     }
 }
