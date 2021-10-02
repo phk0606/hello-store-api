@@ -61,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/paymentMethod/getPaymentMethodTypes")
                 .antMatchers("/api/paymentMethod/getPaymentMethodTypesWithValues")
                 .antMatchers("/api/user/getUsername")
+                .antMatchers("/api/user/createTempPassword")
                 .antMatchers("/images/products/**")
         ;
     }

@@ -1,23 +1,24 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.TempPasswordDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
-import com.hellostore.ecommerce.entity.Authority;
 import com.hellostore.ecommerce.entity.User;
 import com.hellostore.ecommerce.repository.UserDslRepository;
 import com.hellostore.ecommerce.repository.UserRepository;
 import com.hellostore.ecommerce.util.SecurityUtil;
-import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.List;
+import java.security.SecureRandom;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserDslRepository userDslRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Transactional(readOnly = true)
     public UserDto getUserInfo(String username) {
@@ -56,6 +58,24 @@ public class UserService {
     }
 
     @Transactional
+    public void createTempPasswordSendEmail(TempPasswordDto tempPasswordDto) {
+
+        boolean userExist = userDslRepository.userExist(tempPasswordDto);
+
+        if (!userExist) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data");
+        }
+
+        String randomPassword = getRandomPassword(10);
+
+        UserDto userDto = UserDto.builder().newPassword(randomPassword).build();
+        userDslRepository.modifyPassword(userDto);
+
+        tempPasswordDto.setTempPassword(randomPassword);
+        emailService.sendEmail(tempPasswordDto);
+    }
+
+    @Transactional
     public void modifyPerson(UserDto userDto) {
         userDslRepository.modifyPerson(userDto);
     }
@@ -70,5 +90,20 @@ public class UserService {
         }
 
         userDslRepository.modifyPassword(userDto);
+    }
+
+    private String getRandomPassword(int size) {
+        char[] charSet = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '!', '@', '#', '$', '%', '^', '&'};
+        StringBuffer sb = new StringBuffer();
+        SecureRandom sr = new SecureRandom();
+        sr.setSeed(new Date().getTime());
+        int idx = 0;
+        int len = charSet.length;
+        for (int i = 0; i < size; i++) {
+            // idx = (int) (len * Math.random());
+            idx = sr.nextInt(len); // 강력한 난수를 발생시키기 위해 SecureRandom을 사용한다.
+            sb.append(charSet[idx]);
+        }
+        return sb.toString();
     }
 }

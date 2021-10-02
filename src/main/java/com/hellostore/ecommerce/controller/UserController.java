@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
+import com.hellostore.ecommerce.dto.TempPasswordDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
 import com.hellostore.ecommerce.service.UserService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,14 @@ public class UserController {
     @GetMapping("/user/getUsername")
     public ResponseEntity<String> getUsername(@RequestParam String name, @RequestParam String email) {
         return ResponseEntity.ok(userService.getUsername(name, email));
+    }
+
+    @PostMapping("/user/createTempPassword")
+    public ResponseEntity<HttpStatus> sendTempPassword(@RequestBody TempPasswordDto tempPasswordDto) {
+
+        log.debug("tempPasswordDto: {}", tempPasswordDto);
+        userService.createTempPasswordSendEmail(tempPasswordDto);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PutMapping("/user/modifyUser")

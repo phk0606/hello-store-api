@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.QUserDto;
+import com.hellostore.ecommerce.dto.TempPasswordDto;
 import com.hellostore.ecommerce.dto.UserDto;
 import com.hellostore.ecommerce.dto.UserSearchCondition;
 import com.hellostore.ecommerce.entity.User;
@@ -181,6 +182,19 @@ public class UserDslRepository {
                 .from(user)
                 .where(user.name.eq(name).and(user.email.eq(email)))
                 .fetchOne();
+    }
+
+    public boolean userExist(TempPasswordDto tempPasswordDto) {
+
+        Integer fetchFirst = queryFactory.selectOne()
+                .from(user)
+                .where(
+                        user.username.eq(tempPasswordDto.getUsername()),
+                        user.name.eq(tempPasswordDto.getPersonName()),
+                        user.email.eq(tempPasswordDto.getEmailAddress())
+                ).fetchFirst();
+
+        return fetchFirst != null;
     }
 
     public void modifyPassword(UserDto userDto) {
