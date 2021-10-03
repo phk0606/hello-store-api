@@ -45,6 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.ignoring()
                 .antMatchers("h2-console/**", "/favicon.ico", "/error", "/resources/**")
+                .antMatchers("/images/products/**")
                 .antMatchers("/api/getCategories")
                 .antMatchers("/api/getChildCategories")
                 .antMatchers("/api/getCategory")
@@ -62,7 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/paymentMethod/getPaymentMethodTypesWithValues")
                 .antMatchers("/api/user/getUsername")
                 .antMatchers("/api/user/createTempPassword")
-                .antMatchers("/images/products/**")
+                .antMatchers("/api/faq/getCategories")
+                .antMatchers("/api/faq/getFaqs")
+                .antMatchers("/api/faq/getFaq")
+
         ;
     }
 

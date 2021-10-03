@@ -23,5 +23,6 @@ public class FaqDto {
         this.question = question;
         this.answer = answer;
         this.faqType = faqType;
+        this.faqTypeValue = faqType.getValue();
     }
 }
