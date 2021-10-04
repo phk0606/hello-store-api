@@ -55,7 +55,8 @@ public class ManToManQnARepository {
                 .on(manToManAnswer.manToManQuestion.id.eq(manToManQuestion.id))
                 .where(
                         manToManQuestionContains(manToManQuestionSearchCondition.getSearchText()),
-                        noAnswer(manToManQuestionSearchCondition.getNoAnswer())
+                        noAnswer(manToManQuestionSearchCondition.getNoAnswer()),
+                        usernameEq(manToManQuestionSearchCondition.getUsername())
                 ).orderBy(manToManQuestion.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -64,6 +65,11 @@ public class ManToManQnARepository {
         List<ManToManQuestionDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression usernameEq(String username) {
+        return !isEmpty(username)
+                ? manToManQuestion.createdBy.eq(username) : null;
     }
 
     private BooleanExpression manToManQuestionContains(String searchText) {
