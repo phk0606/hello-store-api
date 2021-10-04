@@ -4,6 +4,7 @@ import com.hellostore.ecommerce.dto.FaqDto;
 import com.hellostore.ecommerce.dto.FaqSearchCondition;
 import com.hellostore.ecommerce.dto.QFaqDto;
 import com.hellostore.ecommerce.entity.Faq;
+import com.hellostore.ecommerce.enumType.FaqType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -40,7 +41,8 @@ public class FaqRepository {
                 new QFaqDto(faq.id, faq.question, faq.answer, faq.faqType))
                 .from(faq)
                 .where(
-                        faqContains(faqSearchCondition.getSearchText())
+                        faqContains(faqSearchCondition.getSearchText()),
+                        faqTypeEq(faqSearchCondition.getFaqType())
                 ).orderBy(faq.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -54,6 +56,11 @@ public class FaqRepository {
     private BooleanExpression faqContains(String searchText) {
         return !isEmpty(searchText)
                 ? faq.question.contains(searchText).or(faq.answer.contains(searchText)) : null;
+    }
+
+    private BooleanExpression faqTypeEq(FaqType faqType) {
+        return !isEmpty(faqType)
+                ? faq.faqType.eq(faqType) : null;
     }
 
     public void modifyFaq(FaqDto faqDto) {
