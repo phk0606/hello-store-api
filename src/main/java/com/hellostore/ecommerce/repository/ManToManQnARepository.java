@@ -49,7 +49,8 @@ public class ManToManQnARepository {
                 .leftJoin(manToManAnswer)
                 .on(manToManAnswer.manToManQuestion.id.eq(manToManQuestion.id))
                 .where(
-                        manToManQuestionContains(manToManQuestionSearchCondition.getSearchText())
+                        manToManQuestionContains(manToManQuestionSearchCondition.getSearchText()),
+                        noAnswer(manToManQuestionSearchCondition.getNoAnswer())
                 ).orderBy(manToManQuestion.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -63,6 +64,11 @@ public class ManToManQnARepository {
     private BooleanExpression manToManQuestionContains(String searchText) {
         return !isEmpty(searchText)
                 ? manToManQuestion.title.contains(searchText).or(manToManQuestion.content.contains(searchText)) : null;
+    }
+
+    private BooleanExpression noAnswer(Boolean noAnswer) {
+        return !isEmpty(noAnswer) && noAnswer == true
+                ? manToManAnswer.id.isNull() : null;
     }
 
     public ManToManQnADto getManToManQnA(Long manToManQuestionId) {
