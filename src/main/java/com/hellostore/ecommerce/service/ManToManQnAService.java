@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.ManToManQnADto;
 import com.hellostore.ecommerce.dto.ManToManQuestionDto;
 import com.hellostore.ecommerce.dto.ManToManQuestionSearchCondition;
+import com.hellostore.ecommerce.entity.ManToManAnswer;
 import com.hellostore.ecommerce.entity.ManToManQuestion;
 import com.hellostore.ecommerce.repository.ManToManQnARepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -38,5 +40,37 @@ public class ManToManQnAService {
 
     public ManToManQnADto getManToManQnA(Long manToManQuestionId) {
         return manToManQnARepository.getManToManQnA(manToManQuestionId);
+    }
+
+    @Transactional
+    public void modifyManToManQuestion(ManToManQuestionDto manToManQuestionDto) {
+        manToManQnARepository.modifyManToManQuestion(manToManQuestionDto);
+    }
+
+    @Transactional
+    public void createOrModifyAnswer(ManToManQnADto manToManQnADto) {
+
+        if (!ObjectUtils.isEmpty(manToManQnADto.getManToManAnswerId())) {
+            manToManQnARepository.modifyAnswer(manToManQnADto);
+        } else {
+            ManToManQuestion manToManQuestion
+                    = manToManQnARepository.getManToManQuestion(manToManQnADto.getManToManQuestionId());
+            ManToManAnswer manToManAnswer = ManToManAnswer.builder()
+                    .manToManQuestion(manToManQuestion)
+                    .content(manToManQnADto.getManToManAnswerContent())
+                    .build();
+            manToManQnARepository.createAnswer(manToManAnswer);
+        }
+    }
+
+    @Transactional
+    public void removeManToManQuestion(ManToManQnADto manToManQnADto) {
+        manToManQnARepository.removeManToManAnswer(manToManQnADto);
+        manToManQnARepository.removeManToManQuestion(manToManQnADto);
+    }
+
+    @Transactional
+    public void removeManToManAnswer(ManToManQnADto manToManQnADto) {
+        manToManQnARepository.removeManToManAnswer(manToManQnADto);
     }
 }

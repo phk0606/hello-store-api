@@ -64,4 +64,29 @@ public class ManToManQnAController {
         log.debug("manToManQuestionId: {}", manToManQuestionId);
         return manToManQnAService.getManToManQnA(manToManQuestionId);
     }
+
+    @PostMapping("/createOrModifyAnswer")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void createOrModifyAnswer(@RequestBody ManToManQnADto manToManQnADto) {
+        log.debug("manToManQnADto: {}", manToManQnADto);
+        manToManQnAService.createOrModifyAnswer(manToManQnADto);
+    }
+
+    @PutMapping("/modifyManToManQuestion")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void modifyManToManQuestion(@RequestBody ManToManQuestionDto manToManQuestionDto) {
+        manToManQnAService.modifyManToManQuestion(manToManQuestionDto);
+    }
+
+    @DeleteMapping("/removeManToManQuestion")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public void removeManToManQuestion(@RequestBody ManToManQnADto manToManQnADto) {
+        manToManQnAService.removeManToManQuestion(manToManQnADto);
+    }
+
+    @DeleteMapping("/removeManToManAnswer")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void removeManToManAnswer(@RequestBody ManToManQnADto manToManAnswerDto) {
+        manToManQnAService.removeManToManAnswer(manToManAnswerDto);
+    }
 }

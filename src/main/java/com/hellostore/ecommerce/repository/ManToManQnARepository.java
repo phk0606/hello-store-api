@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.entity.ManToManAnswer;
 import com.hellostore.ecommerce.entity.ManToManQuestion;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -31,6 +32,10 @@ public class ManToManQnARepository {
     public ManToManQuestion createManToManQuestion(ManToManQuestion manToManQuestion) {
         em.persist(manToManQuestion);
         return manToManQuestion;
+    }
+
+    public ManToManQuestion getManToManQuestion(Long manToManQuestionId) {
+        return em.find(ManToManQuestion.class, manToManQuestionId);
     }
 
     public Page<ManToManQuestionDto> getManToManQuestions(
@@ -91,5 +96,51 @@ public class ManToManQnARepository {
                 .on(manToManAnswer.manToManQuestion.id.eq(manToManQuestion.id))
                 .where(manToManQuestion.id.eq(manToManQuestionId))
                 .fetchOne();
+    }
+
+    public void modifyManToManQuestion(ManToManQuestionDto manToManQuestionDto) {
+
+        queryFactory.update(manToManQuestion)
+                .set(manToManQuestion.title, manToManQuestionDto.getManToManQuestionTitle())
+                .set(manToManQuestion.content, manToManQuestionDto.getManToManQuestionContent())
+                .set(manToManQuestion.manToManQuestionType, manToManQuestionDto.getManToManQuestionType())
+                .where(manToManQuestion.id.eq(manToManQuestionDto.getManToManQuestionId()))
+                .execute();
+    }
+
+    public void modifyAnswer(ManToManQnADto manToManQnADto) {
+
+        queryFactory.update(manToManAnswer)
+                .set(manToManAnswer.content, manToManQnADto.getManToManAnswerContent())
+                .where(manToManAnswer.id.eq(manToManQnADto.getManToManAnswerId()))
+                .execute();
+    }
+
+    public void createAnswer(ManToManAnswer manToManAnswer) {
+        em.persist(manToManAnswer);
+    }
+
+    public void removeManToManQuestion(ManToManQnADto manToManQnADto) {
+        queryFactory.delete(manToManQuestion)
+                .where(manToManQuestion.id.eq(manToManQnADto.getManToManQuestionId()))
+                .execute();
+    }
+
+    public void removeManToManAnswer(ManToManQnADto manToManQnADto) {
+        queryFactory.delete(manToManAnswer)
+                .where(
+                        manToManQuestionIdEq(manToManQnADto.getManToManQuestionId()),
+                        manToManAnswerIdEq(manToManQnADto.getManToManAnswerId())
+                ).execute();
+    }
+
+    private BooleanExpression manToManQuestionIdEq(Long manToManQuestionId) {
+        return !isEmpty(manToManQuestionId)
+                ? manToManAnswer.manToManQuestion.id.eq(manToManQuestionId) : null;
+    }
+
+    private BooleanExpression manToManAnswerIdEq(Long manToManAnswerId) {
+        return !isEmpty(manToManAnswerId)
+                ? manToManAnswer.id.eq(manToManAnswerId) : null;
     }
 }
