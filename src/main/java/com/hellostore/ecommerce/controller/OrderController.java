@@ -91,4 +91,11 @@ public class OrderController {
 
         orderService.modifyPaymentStatus(orderDto.getOrderIds(), orderDto.getPaymentStatus());
     }
+
+    @PutMapping("/modifyOrder")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyOrder(@RequestBody OrderDto orderDto) {
+
+        orderService.modifyOrder(orderDto);
+    }
 }

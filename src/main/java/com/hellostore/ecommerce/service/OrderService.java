@@ -39,6 +39,7 @@ public class OrderService {
     private final PointHistoryRepository pointHistoryRepository;
     private final BankAccountRepository bankAccountRepository;
     private final OrderPointRepository orderPointRepository;
+    private final DeliveryRepository deliveryRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -248,6 +249,37 @@ public class OrderService {
     @Transactional
     public void modifyDeliveryInfo(OrderDto orderDto) {
         orderRepository.modifyDeliveryInfo(orderDto);
+    }
+
+    @Transactional
+    public void modifyOrder(OrderDto orderDto) {
+
+        deliveryRepository.modifyDelivery(orderDto);
+
+        List<OrderProductDto> orderProductDtos = orderDto.getOrderProducts();
+        for (OrderProductDto orderProductDto : orderProductDtos) {
+
+            OrderProduct orderProduct
+                    = orderProductRepository.getOrderProductById(orderProductDto.getOrderProductId());
+
+            oderProductOptionRepository.removeProductOption(orderProductDto.getOrderProductId());
+
+            List<OrderProductOptionDto> orderProductOptionDtos = orderProductDto.getProductOptions();
+
+            for (OrderProductOptionDto orderProductOptionDto : orderProductOptionDtos) {
+
+                OrderProductOption orderProductOption = OrderProductOption.builder()
+                        .orderProduct(orderProduct)
+                        .optionGroupNumber(orderProductOptionDto.getOptionGroupNumber())
+                        .optionName(orderProductOptionDto.getOptionName())
+                        .optionValue(orderProductOptionDto.getOptionValue())
+                        .build();
+
+                oderProductOptionRepository.createOrderProductOption(orderProductOption);
+            }
+        }
+
+        orderRepository.modifyOrder(orderDto);
     }
 
 //    public List<Order> findOrders(OrderSearch orderSearch) {

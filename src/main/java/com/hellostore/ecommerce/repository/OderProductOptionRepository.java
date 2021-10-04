@@ -2,7 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.OrderProductOptionDto;
 import com.hellostore.ecommerce.dto.QOrderProductOptionDto;
-import com.hellostore.ecommerce.entity.QOrderProductOption;
+import com.hellostore.ecommerce.entity.OrderProductOption;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.hellostore.ecommerce.entity.QOrderProductOption.orderProductOption;
 
 @Repository
 public class OderProductOptionRepository {
@@ -23,7 +25,6 @@ public class OderProductOptionRepository {
     }
 
     public Map<Long, List<OrderProductOptionDto>> getOrderProductOption(List<Long> orderProductIds) {
-        QOrderProductOption orderProductOption = QOrderProductOption.orderProductOption;
 
         List<OrderProductOptionDto> orderProductOptionDtos = queryFactory.select(
                         new QOrderProductOptionDto(
@@ -36,5 +37,15 @@ public class OderProductOptionRepository {
 
         return orderProductOptionDtos.stream()
                 .collect(Collectors.groupingBy(OrderProductOptionDto::getOrderProductId));
+    }
+
+    public void removeProductOption(Long orderProductId) {
+        queryFactory.delete(orderProductOption)
+                .where(orderProductOption.orderProduct.id.eq(orderProductId))
+                .execute();
+    }
+
+    public void createOrderProductOption(OrderProductOption orderProductOption) {
+        em.persist(orderProductOption);
     }
 }

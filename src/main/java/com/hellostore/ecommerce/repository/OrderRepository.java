@@ -6,9 +6,7 @@ import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.QueryResults;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -81,6 +79,7 @@ public class OrderRepository {
                                 .concat(bankAccount.accountHolder).as("depositAccount"),
                         order.depositorName, order.depositDueDate,
                         order.status,
+                        delivery.id,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                         delivery.address,
                         pointHistory.point
@@ -236,13 +235,7 @@ public class OrderRepository {
         queryFactory.update(order)
                 .set(order.paymentStatus, orderDto.getPaymentStatus())
                 .set(order.status, orderDto.getOrderDeliveryStatus())
-                .set(order.delivery.recipientName, orderDto.getRecipientName())
-                .set(order.delivery.address.zoneCode, orderDto.getAddress().getZoneCode())
-                .set(order.delivery.address.roadAddress, orderDto.getAddress().getRoadAddress())
-                .set(order.delivery.address.address, orderDto.getAddress().getAddress())
-                .set(order.delivery.address.detailAddress, orderDto.getAddress().getDetailAddress())
-                .set(order.delivery.phoneNumber, orderDto.getRecipientPhoneNumber())
-                .set(order.delivery.requirement, orderDto.getRequirement())
+                .where(order.id.eq(orderDto.getOrderId()))
                 .execute();
     }
 

@@ -58,6 +58,7 @@ public class OrderDto {
     private DeliveryStatus deliveryStatus;
     private String deliveryStatusValue;
 
+    private Long deliveryId;
     private String recipientName;
     private String recipientPhoneNumber;
     private String requirement;
@@ -84,6 +85,7 @@ public class OrderDto {
                     String depositAccount,
                     String depositorName, LocalDate depositDueDate,
                     OrderDeliveryStatus orderDeliveryStatus,
+                    Long deliveryId,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
                     Integer usedPoint) {
@@ -104,6 +106,7 @@ public class OrderDto {
         this.depositDueDate = depositDueDate;
         this.orderDeliveryStatus = orderDeliveryStatus;
         this.orderDeliveryStatusValue = orderDeliveryStatus.getValue();
+        this.deliveryId = deliveryId;
         this.recipientName = recipientName;
         this.recipientPhoneNumber = recipientPhoneNumber;
         this.requirement = requirement;

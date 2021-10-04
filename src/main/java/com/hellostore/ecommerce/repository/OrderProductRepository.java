@@ -42,7 +42,7 @@ public class OrderProductRepository {
                                 orderProduct.product.id,
                                 product.name,
                                 orderProduct.id, orderProduct.salePrice,
-                                orderProduct.quantity, orderProduct.point,
+                                orderProduct.quantity, orderProduct.point.coalesce(0),
                                 orderProduct.shippingFee, orderProduct.totalPrice,
                                 productImage.filePath, productImage.fileName
                         ))
