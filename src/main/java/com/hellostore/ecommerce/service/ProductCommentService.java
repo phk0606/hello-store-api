@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class ProductCommentService {
 
     private final ProductCommentRepository productCommentRepository;
-    private final OrderProductRepository orderProductRepository;
     private final ProductCommentImageService productCommentImageService;
     private final ProductCommentReplyRepository productCommentReplyRepository;
     private final ProductCommentImageRepository productCommentImageRepository;
@@ -39,8 +38,6 @@ public class ProductCommentService {
                                      List<MultipartFile> productCommentImages) {
 
         // 상품 조회
-//        OrderProduct orderProduct
-//                = orderProductRepository.getOrderProductById(productCommentDto.getOrderProductId());
         Product product = productRepository.getProduct(productCommentDto.getProductId());
         Optional<User> user = userRepository.findByUsername(productCommentDto.getUsername());
 

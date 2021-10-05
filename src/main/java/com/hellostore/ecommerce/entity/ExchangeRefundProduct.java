@@ -18,8 +18,8 @@ public class ExchangeRefundProduct {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "order_product_id")
+    private OrderProduct orderProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exchange_refund_id")
@@ -27,4 +27,11 @@ public class ExchangeRefundProduct {
 
     @Enumerated(EnumType.STRING)
     private ExchangeRefundType exchangeRefundType;
+
+    @Builder
+    public ExchangeRefundProduct(OrderProduct orderProduct, ExchangeRefund exchangeRefund, ExchangeRefundType exchangeRefundType) {
+        this.orderProduct = orderProduct;
+        this.exchangeRefund = exchangeRefund;
+        this.exchangeRefundType = exchangeRefundType;
+    }
 }

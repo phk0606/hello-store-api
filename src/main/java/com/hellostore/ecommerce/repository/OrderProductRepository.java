@@ -66,7 +66,5 @@ public class OrderProductRepository {
                 .where(user.username.eq(username), productComment.product.id.isNull())
                 .orderBy(order.id.desc())
                 .fetch();
-
-
     }
 }

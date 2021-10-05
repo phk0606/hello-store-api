@@ -1,10 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.enumType.ExchangeRefundReasonType;
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,5 +27,11 @@ public class ExchangeRefund extends BaseEntity {
     private String content;
 
     @OneToMany(mappedBy = "exchangeRefund", cascade = CascadeType.ALL)
-    private List<ExchangeRefundImage> images = new ArrayList<>();
+    private List<ExchangeRefundImage> exchangeRefundImages = new ArrayList<>();
+
+    @Builder
+    public ExchangeRefund(ExchangeRefundReasonType exchangeRefundReasonType, String content) {
+        this.exchangeRefundReasonType = exchangeRefundReasonType;
+        this.content = content;
+    }
 }
