@@ -1,16 +1,11 @@
 package com.hellostore.ecommerce.service;
 
-import com.hellostore.ecommerce.dto.ExchangeRefundDto;
-import com.hellostore.ecommerce.dto.ExchangeRefundProductDto;
-import com.hellostore.ecommerce.dto.ExchangeRefundSearchCondition;
-import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.ExchangeRefund;
 import com.hellostore.ecommerce.entity.ExchangeRefundProduct;
 import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.enumType.ExchangeRefundStatus;
-import com.hellostore.ecommerce.repository.ExchangeRefundProductRepository;
-import com.hellostore.ecommerce.repository.ExchangeRefundRepository;
-import com.hellostore.ecommerce.repository.OrderProductRepository;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,6 +29,8 @@ public class ExchangeRefundService {
     private final ExchangeRefundProductRepository exchangeRefundProductRepository;
     private final OrderProductRepository orderProductRepository;
     private final ExchangeRefundImageService exchangeRefundImageService;
+    private final ExchangeRefundImageRepository exchangeRefundImageRepository;
+    private final OderProductOptionRepository oderProductOptionRepository;
 
     @Transactional
     public void createExchangeRefund(ExchangeRefundDto exchangeRefundDto,
@@ -90,5 +88,40 @@ public class ExchangeRefundService {
         return result.stream()
                 .map(o -> o.getExchangeRefundId())
                 .collect(Collectors.toList());
+    }
+
+    private List<Long> toOrderProductIds(List<ExchangeRefundProductDto> result) {
+        return result.stream()
+                .map(o -> o.getOrderProductId())
+                .collect(Collectors.toList());
+    }
+
+    public ExchangeRefundDto getExchangeRefund(Long exchangeRefundId) {
+
+        ExchangeRefundDto exchangeRefund
+                = exchangeRefundRepository.getExchangeRefund(exchangeRefundId);
+
+        // exchangeRefund image 가져오기
+        List<ExchangeRefundImageDto> exchangeRefundImages = exchangeRefundImageRepository
+                .getExchangeRefundImages(exchangeRefundId);
+
+        exchangeRefund.setExchangeRefundImages(exchangeRefundImages);
+
+        // exchangeRefund product 가져오기
+        List<ExchangeRefundProductDto> exchangeRefundProducts = exchangeRefundProductRepository
+                .getExchangeRefundProduct(Arrays.asList(exchangeRefundId));
+
+        // orderProductOptions 조회
+        Map<Long, List<OrderProductOptionDto>> orderProductOptionMap
+                = oderProductOptionRepository
+                .getOrderProductOption(toOrderProductIds(exchangeRefundProducts));
+
+        log.debug("orderProductOptionMap: {}", orderProductOptionMap);
+        // orderProduct 루프 돌면서 orderProductOption 추가
+        exchangeRefundProducts.forEach(o -> o.setProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
+
+        exchangeRefund.setExchangeRefundProducts(exchangeRefundProducts);
+
+        return exchangeRefund;
     }
 }

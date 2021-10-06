@@ -40,4 +40,11 @@ public class ExchangeRefundController {
 
         return exchangeRefundService.getExchangeRefunds(exchangeRefundSearchCondition, pageable);
     }
+
+    @GetMapping("/getExchangeRefund")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ExchangeRefundDto getExchangeRefund (@RequestParam Long exchangeRefundId) {
+
+        return exchangeRefundService.getExchangeRefund(exchangeRefundId);
+    }
 }

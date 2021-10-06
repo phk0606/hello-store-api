@@ -32,7 +32,7 @@ public class ExchangeRefundDto {
     private List<ExchangeRefundProductDto> exchangeRefundProducts = new ArrayList<>();
 
     @Setter
-    private List<ExchangeRefundImage> exchangeRefundImages = new ArrayList<>();
+    private List<ExchangeRefundImageDto> exchangeRefundImages = new ArrayList<>();
     private ExchangeRefundReasonType exchangeRefundReasonType;
     private String content;
 
@@ -49,5 +49,17 @@ public class ExchangeRefundDto {
         this.exchangeRefundReasonType = exchangeRefundReasonType;
         this.content = content;
         this.exchangeRefundProductCount = exchangeRefundProductCount;
+    }
+
+    @QueryProjection
+    public ExchangeRefundDto(Long exchangeRefundId, LocalDateTime createdDate, String username, String name, ExchangeRefundStatus exchangeRefundStatus, ExchangeRefundReasonType exchangeRefundReasonType, String content) {
+        this.exchangeRefundId = exchangeRefundId;
+        this.createdDate = createdDate;
+        this.username = username;
+        this.name = name;
+        this.exchangeRefundStatus = exchangeRefundStatus;
+        this.exchangeRefundStatusValue = exchangeRefundStatus.getValue();
+        this.exchangeRefundReasonType = exchangeRefundReasonType;
+        this.content = content;
     }
 }

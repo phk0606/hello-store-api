@@ -4,6 +4,8 @@ import com.hellostore.ecommerce.dto.ExchangeRefundDto;
 import com.hellostore.ecommerce.dto.ExchangeRefundSearchCondition;
 import com.hellostore.ecommerce.dto.QExchangeRefundDto;
 import com.hellostore.ecommerce.entity.ExchangeRefund;
+import com.hellostore.ecommerce.entity.QOrderProduct;
+import com.hellostore.ecommerce.entity.QProduct;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -20,7 +22,6 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QExchangeRefund.exchangeRefund;
 import static com.hellostore.ecommerce.entity.QExchangeRefundProduct.exchangeRefundProduct;
-import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -43,6 +44,8 @@ public class ExchangeRefundRepository {
     public Page<ExchangeRefundDto> getExchangeRefunds (
             ExchangeRefundSearchCondition exchangeRefundSearchCondition, Pageable pageable) {
 
+        QOrderProduct orderProduct = QOrderProduct.orderProduct;
+        QProduct product = QProduct.product;
         QueryResults<ExchangeRefundDto> results = queryFactory.select(
                         new QExchangeRefundDto(
                                 exchangeRefund.id,
@@ -74,11 +77,6 @@ public class ExchangeRefundRepository {
         return new PageImpl<>(content, pageable, total);
     }
 
-    private BooleanExpression exchangeRefundProductNameContains(String exchangeRefundProductName) {
-        return !isEmpty(exchangeRefundProductName)
-                ? product.name.contains(exchangeRefundProductName) : null;
-    }
-
     private BooleanExpression exchangeRefundIdEq(Long exchangeRefundId) {
         return !isEmpty(exchangeRefundId)
                 ? exchangeRefund.id.eq(exchangeRefundId) : null;
@@ -104,5 +102,24 @@ public class ExchangeRefundRepository {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return StringUtils.hasText(applicationDateB)
                 ? exchangeRefund.createdDate.loe(LocalDateTime.parse(applicationDateB + " 23:59:59", formatter)) : null;
+    }
+
+    public ExchangeRefundDto getExchangeRefund(Long exchangeRefundId) {
+
+        return queryFactory.select(
+                new QExchangeRefundDto(
+                        exchangeRefund.id,
+                        exchangeRefund.createdDate,
+                        exchangeRefund.createdBy,
+                        user.name,
+                        exchangeRefund.exchangeRefundStatus,
+                        exchangeRefund.exchangeRefundReasonType,
+                        exchangeRefund.content
+                        )
+                )
+                .from(exchangeRefund)
+                .join(user).on(user.username.eq(exchangeRefund.createdBy))
+                .where(exchangeRefund.id.eq(exchangeRefundId))
+                .fetchOne();
     }
 }
