@@ -5,10 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum DeliveryStatus {
-    READY_SHIP("배송 준비 중"),
-    SHIPPING("배송 중"),
-    COMPLETE_SHIP("배송 완료");
+public enum ExchangeRefundStatus {
+    BEFORE("처리 전"),
+    FINISHED("처리 완료");
 
     private final String value;
 }

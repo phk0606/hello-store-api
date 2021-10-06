@@ -183,7 +183,9 @@ public class OrderRepository {
                         orderIdEq(orderSearchCondition.getOrderId()),
                         ordererIdEq(orderSearchCondition.getOrdererId()),
                         ordererNameContains(orderSearchCondition.getOrdererName()),
-                        productNameContains(orderSearchCondition.getProductName())
+                        productNameContains(orderSearchCondition.getProductName()),
+                        orderDateA(orderSearchCondition.getOrderDateA()),
+                        orderDateB(orderSearchCondition.getOrderDateB())
                 )
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))

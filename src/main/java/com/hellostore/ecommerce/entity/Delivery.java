@@ -1,6 +1,5 @@
 package com.hellostore.ecommerce.entity;
 
-import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,13 +28,9 @@ public class Delivery {
     @Embedded
     private Address address;
 
-//    @Enumerated(EnumType.STRING)
-//    private DeliveryStatus status;
-
     @Builder
-    public Delivery(Address address, DeliveryStatus status, String recipientName, String phoneNumber, String requirement) {
+    public Delivery(Address address, String recipientName, String phoneNumber, String requirement) {
         this.address = address;
-//        this.status = status;
         this.recipientName = recipientName;
         this.phoneNumber = phoneNumber;
         this.requirement = requirement;

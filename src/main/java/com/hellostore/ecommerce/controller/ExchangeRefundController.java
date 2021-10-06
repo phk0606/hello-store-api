@@ -1,9 +1,12 @@
 package com.hellostore.ecommerce.controller;
 
 import com.hellostore.ecommerce.dto.ExchangeRefundDto;
+import com.hellostore.ecommerce.dto.ExchangeRefundSearchCondition;
 import com.hellostore.ecommerce.service.ExchangeRefundService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,5 +31,13 @@ public class ExchangeRefundController {
 
         // 상품평 저장
         exchangeRefundService.createExchangeRefund(exchangeRefundDto, exchangeRefundImages);
+    }
+
+    @GetMapping("/getExchangeRefunds")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public Page<ExchangeRefundDto> getExchangeRefunds (
+            ExchangeRefundSearchCondition exchangeRefundSearchCondition, Pageable pageable) {
+
+        return exchangeRefundService.getExchangeRefunds(exchangeRefundSearchCondition, pageable);
     }
 }

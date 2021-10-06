@@ -2,19 +2,26 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ExchangeRefundDto;
 import com.hellostore.ecommerce.dto.ExchangeRefundProductDto;
+import com.hellostore.ecommerce.dto.ExchangeRefundSearchCondition;
+import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.entity.ExchangeRefund;
 import com.hellostore.ecommerce.entity.ExchangeRefundProduct;
 import com.hellostore.ecommerce.entity.OrderProduct;
+import com.hellostore.ecommerce.enumType.ExchangeRefundStatus;
 import com.hellostore.ecommerce.repository.ExchangeRefundProductRepository;
 import com.hellostore.ecommerce.repository.ExchangeRefundRepository;
 import com.hellostore.ecommerce.repository.OrderProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +41,7 @@ public class ExchangeRefundService {
         // 교환 환불 신청서 저장
         ExchangeRefund exchangeRefund = ExchangeRefund.builder()
                 .exchangeRefundReasonType(exchangeRefundDto.getExchangeRefundReasonType())
+                .exchangeRefundStatus(ExchangeRefundStatus.BEFORE)
                 .content(exchangeRefundDto.getContent()).build();
 
         ExchangeRefund exchangeRefund1 = exchangeRefundRepository.createExchangeRefund(exchangeRefund);
@@ -59,5 +67,28 @@ public class ExchangeRefundService {
         if(exchangeRefundImages != null) {
             exchangeRefundImageService.uploadExchangeRefundImage(exchangeRefundImages, exchangeRefund1);
         }
+    }
+
+    public Page<ExchangeRefundDto> getExchangeRefunds (
+            ExchangeRefundSearchCondition exchangeRefundSearchCondition, Pageable pageable) {
+
+        Page<ExchangeRefundDto> exchangeRefunds
+                = exchangeRefundRepository.getExchangeRefunds(exchangeRefundSearchCondition, pageable);
+
+        // exchangeRefund product 가져오기
+        List<ExchangeRefundProductDto> exchangeRefundProduct = exchangeRefundProductRepository
+                .getExchangeRefundProduct(toExchangeRefundIds(exchangeRefunds.getContent()));
+
+        Map<Long, List<ExchangeRefundProductDto>> collect = exchangeRefundProduct.stream()
+                .collect(Collectors.groupingBy(ExchangeRefundProductDto::getExchangeRefundId));
+
+        exchangeRefunds.forEach(e -> e.setExchangeRefundProducts(collect.get(e.getExchangeRefundId())));
+        return exchangeRefunds;
+    }
+
+    private List<Long> toExchangeRefundIds(List<ExchangeRefundDto> result) {
+        return result.stream()
+                .map(o -> o.getExchangeRefundId())
+                .collect(Collectors.toList());
     }
 }

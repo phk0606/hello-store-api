@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hellostore.ecommerce.entity.Address;
 import com.hellostore.ecommerce.entity.BankAccount;
 import com.hellostore.ecommerce.entity.Order;
-import com.hellostore.ecommerce.enumType.DeliveryStatus;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
@@ -55,8 +54,6 @@ public class OrderDto {
     private List<OrderProductDto> orderProducts = new ArrayList<>();
 
     private DeliveryDto delivery;
-    private DeliveryStatus deliveryStatus;
-    private String deliveryStatusValue;
 
     private Long deliveryId;
     private String recipientName;

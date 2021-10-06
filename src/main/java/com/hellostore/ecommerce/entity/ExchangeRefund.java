@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.enumType.ExchangeRefundReasonType;
+import com.hellostore.ecommerce.enumType.ExchangeRefundStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,14 +25,18 @@ public class ExchangeRefund extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ExchangeRefundReasonType exchangeRefundReasonType;
 
+    @Enumerated(EnumType.STRING)
+    private ExchangeRefundStatus exchangeRefundStatus;
+
     private String content;
 
     @OneToMany(mappedBy = "exchangeRefund", cascade = CascadeType.ALL)
     private List<ExchangeRefundImage> exchangeRefundImages = new ArrayList<>();
 
     @Builder
-    public ExchangeRefund(ExchangeRefundReasonType exchangeRefundReasonType, String content) {
+    public ExchangeRefund(ExchangeRefundReasonType exchangeRefundReasonType, ExchangeRefundStatus exchangeRefundStatus, String content) {
         this.exchangeRefundReasonType = exchangeRefundReasonType;
+        this.exchangeRefundStatus = exchangeRefundStatus;
         this.content = content;
     }
 }
