@@ -71,7 +71,9 @@ public class AuthService {
 
         pointHistoryRepository.createPointHistory(pointHistory);
 
-        return new UserDto().of(userRepository.save(user));
+        UserDto userDto1 = UserDto.of(userRepository.save(user));
+        userDto1.setSignUpPoint(policy.getSignUpPoint());
+        return userDto1;
     }
 
     @Transactional

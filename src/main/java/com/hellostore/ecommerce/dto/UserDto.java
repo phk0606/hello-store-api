@@ -63,6 +63,8 @@ public class UserDto {
 
     private Integer purchasePriceSum;
     private Integer pointSum;
+    @Setter
+    private int signUpPoint;
 
     public UserDto(Long userNo, String username, String name, String email, String phoneNumber,
                    String zoneCode, String roadAddress, String address, String detailAddress) {
@@ -78,7 +80,12 @@ public class UserDto {
     }
 
     public static UserDto of(User user) {
-        return new UserDto(user.getId(), user.getUsername(), user.getName(), user.getEmail(), user.getPhoneNumber(),
+        return new UserDto(
+                user.getId(),
+                user.getUsername(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhoneNumber(),
                 user.getAddress().getZoneCode(),
                 user.getAddress().getRoadAddress(),
                 user.getAddress().getAddress(),
