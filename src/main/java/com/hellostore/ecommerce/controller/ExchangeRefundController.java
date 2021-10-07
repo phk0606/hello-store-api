@@ -34,7 +34,7 @@ public class ExchangeRefundController {
     }
 
     @GetMapping("/getExchangeRefunds")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public Page<ExchangeRefundDto> getExchangeRefunds (
             ExchangeRefundSearchCondition exchangeRefundSearchCondition, Pageable pageable) {
 
@@ -42,9 +42,17 @@ public class ExchangeRefundController {
     }
 
     @GetMapping("/getExchangeRefund")
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ExchangeRefundDto getExchangeRefund (@RequestParam Long exchangeRefundId) {
 
         return exchangeRefundService.getExchangeRefund(exchangeRefundId);
+    }
+
+    @PutMapping("/modifyExchangeRefundStatus")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyExchangeRefundStatus(@RequestBody ExchangeRefundDto exchangeRefundDto) {
+
+        exchangeRefundService.modifyExchangeRefundStatus(
+                exchangeRefundDto.getExchangeRefundIds(), exchangeRefundDto.getExchangeRefundStatus());
     }
 }

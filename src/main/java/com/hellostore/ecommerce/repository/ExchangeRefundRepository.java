@@ -6,6 +6,7 @@ import com.hellostore.ecommerce.dto.QExchangeRefundDto;
 import com.hellostore.ecommerce.entity.ExchangeRefund;
 import com.hellostore.ecommerce.entity.QOrderProduct;
 import com.hellostore.ecommerce.entity.QProduct;
+import com.hellostore.ecommerce.enumType.ExchangeRefundStatus;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -62,7 +63,8 @@ public class ExchangeRefundRepository {
                         applicationDateB(exchangeRefundSearchCondition.getApplicationDateB()),
                         exchangeRefundIdEq(exchangeRefundSearchCondition.getExchangeRefundId()),
                         usernameEq(exchangeRefundSearchCondition.getUsername()),
-                        nameEq(exchangeRefundSearchCondition.getName())
+                        nameEq(exchangeRefundSearchCondition.getName()),
+                        exchangeRefundStatusEq(exchangeRefundSearchCondition.getExchangeRefundStatus())
                 )
                 .join(user).on(user.username.eq(exchangeRefund.createdBy))
                 .join(exchangeRefundProduct)
@@ -90,6 +92,11 @@ public class ExchangeRefundRepository {
     private BooleanExpression nameEq(String name) {
         return !isEmpty(name)
                 ? user.name.eq(name) : null;
+    }
+
+    private BooleanExpression exchangeRefundStatusEq(ExchangeRefundStatus exchangeRefundStatus) {
+        return !isEmpty(exchangeRefundStatus)
+                ? exchangeRefund.exchangeRefundStatus.eq(exchangeRefundStatus) : null;
     }
 
     private BooleanExpression applicationDateA(String applicationDateA) {
@@ -121,5 +128,12 @@ public class ExchangeRefundRepository {
                 .join(user).on(user.username.eq(exchangeRefund.createdBy))
                 .where(exchangeRefund.id.eq(exchangeRefundId))
                 .fetchOne();
+    }
+
+    public void modifyExchangeRefundStatus(List<Long> exchangeRefundIds, ExchangeRefundStatus exchangeRefundStatus) {
+        queryFactory.update(exchangeRefund)
+                .set(exchangeRefund.exchangeRefundStatus, exchangeRefundStatus)
+                .where(exchangeRefund.id.in(exchangeRefundIds))
+                .execute();
     }
 }

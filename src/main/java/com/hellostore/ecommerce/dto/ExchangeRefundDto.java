@@ -21,6 +21,8 @@ public class ExchangeRefundDto {
 
     private Long exchangeRefundId;
 
+    private List<Long> exchangeRefundIds;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
     private String username;

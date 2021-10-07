@@ -124,4 +124,9 @@ public class ExchangeRefundService {
 
         return exchangeRefund;
     }
+
+    @Transactional
+    public void modifyExchangeRefundStatus(List<Long> exchangeRefundIds, ExchangeRefundStatus exchangeRefundStatus) {
+        exchangeRefundRepository.modifyExchangeRefundStatus(exchangeRefundIds, exchangeRefundStatus);
+    }
 }
