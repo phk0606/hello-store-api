@@ -84,6 +84,7 @@ public class ProductRepository {
                 .set(product.shippingInfo, productEntity.getShippingInfo())
                 .set(product.exchangeReturnInfo, productEntity.getExchangeReturnInfo())
                 .set(product.productShowType, productEntity.getProductShowType())
+                .set(product.lastModifiedDate, LocalDateTime.now())
                 .where(product.id.eq(productEntity.getId()))
                 .execute();
 
