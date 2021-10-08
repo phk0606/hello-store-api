@@ -17,7 +17,6 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QEvent.event;
 import static com.hellostore.ecommerce.entity.QEventImage.eventImage;
-import static com.hellostore.ecommerce.entity.QExchangeRefund.exchangeRefund;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
@@ -38,16 +37,19 @@ public class EventRepository {
 
     public EventDto getEvent(Long eventId) {
 
-        return queryFactory.select(new QEventDto(
-                event.id,
-                event.title,
-                event.description,
-                event.eventDateA,
-                event.eventDateB,
-                event.content,
-                eventImage.filePath,
-                eventImage.fileName,
-                eventImage.fileSize))
+        return queryFactory.select(
+                new QEventDto(
+                    event.id,
+                    event.title,
+                    event.description,
+                    event.eventDateA,
+                    event.eventDateB,
+                    event.content,
+                    eventImage.filePath,
+                    eventImage.fileName,
+                    eventImage.fileSize,
+                        eventImage.originalFileName)
+                )
                 .from(event)
                 .join(eventImage).on(eventImage.event.id.eq(event.id))
                 .where(event.id.eq(eventId))

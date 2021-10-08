@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,9 +29,13 @@ public class EventDto {
     private String filePath;
     private String fileName;
     private long fileSize;
+    private String originalFileName;
+
+    @Setter
+    private byte[] image;
 
     @QueryProjection
-    public EventDto(Long eventId, String title, String description, LocalDate eventDateA, LocalDate eventDateB, String content, String filePath, String fileName, long fileSize) {
+    public EventDto(Long eventId, String title, String description, LocalDate eventDateA, LocalDate eventDateB, String content, String filePath, String fileName, long fileSize, String originalFileName) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
@@ -40,6 +45,7 @@ public class EventDto {
         this.filePath = filePath;
         this.fileName = fileName;
         this.fileSize = fileSize;
+        this.originalFileName = originalFileName;
     }
 
     @QueryProjection

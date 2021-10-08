@@ -29,7 +29,7 @@ public class EventImageRepository {
 
     public void removeEventImage(Long eventId) {
         queryFactory.delete(eventImage)
-                .where(eventImage.id.eq(eventId))
+                .where(eventImage.event.id.eq(eventId))
                 .execute();
     }
 

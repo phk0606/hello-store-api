@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class EventController {
     }
 
     @GetMapping("/getEvent")
-    public EventDto getEvents(@RequestParam Long eventId) {
+    public EventDto getEvents(@RequestParam Long eventId) throws IOException {
         log.debug("eventId: {}", eventId);
         return eventService.getEvent(eventId);
     }
