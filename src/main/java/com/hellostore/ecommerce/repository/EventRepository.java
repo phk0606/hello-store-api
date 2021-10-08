@@ -36,6 +36,24 @@ public class EventRepository {
         return event;
     }
 
+    public EventDto getEvent(Long eventId) {
+
+        return queryFactory.select(new QEventDto(
+                event.id,
+                event.title,
+                event.description,
+                event.eventDateA,
+                event.eventDateB,
+                event.content,
+                eventImage.filePath,
+                eventImage.fileName,
+                eventImage.fileSize))
+                .from(event)
+                .join(eventImage).on(eventImage.event.id.eq(event.id))
+                .where(event.id.eq(eventId))
+                .fetchOne();
+    }
+
     public Page<EventDto> getEvents(EventSearchCondition eventSearchCondition, Pageable pageable) {
 
         QueryResults<EventDto> results = queryFactory.select(

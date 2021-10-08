@@ -41,4 +41,8 @@ public class EventService {
     public Page<EventDto> getEvents(EventSearchCondition eventSearchCondition, Pageable pageable) {
         return eventRepository.getEvents(eventSearchCondition, pageable);
     }
+
+    public EventDto getEvent(Long eventId) {
+        return eventRepository.getEvent(eventId);
+    }
 }

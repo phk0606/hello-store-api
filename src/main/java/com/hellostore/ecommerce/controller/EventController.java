@@ -32,4 +32,10 @@ public class EventController {
         log.debug("eventSearchCondition: {}", eventSearchCondition);
         return eventService.getEvents(eventSearchCondition, pageable);
     }
+
+    @GetMapping("/getEvent")
+    public EventDto getEvents(@RequestParam Long eventId) {
+        log.debug("eventId: {}", eventId);
+        return eventService.getEvent(eventId);
+    }
 }
