@@ -29,7 +29,8 @@ public class Event {
     private String content;
 
     @Builder
-    public Event(String title, String description, LocalDate eventDateA, LocalDate eventDateB, EventImage eventImage, String content) {
+    public Event(Long id, String title, String description, LocalDate eventDateA, LocalDate eventDateB, EventImage eventImage, String content) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.eventDateA = eventDateA;

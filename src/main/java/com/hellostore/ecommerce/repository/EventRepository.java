@@ -86,4 +86,16 @@ public class EventRepository {
                 ? event.title.contains(searchText)
                 .or(event.content.contains(searchText)) : null;
     }
+
+    public Event modifyEvent(Event event1) {
+        queryFactory.update(event)
+                .set(event.title, event1.getTitle())
+                .set(event.description, event1.getDescription())
+                .set(event.content, event1.getContent())
+                .set(event.eventDateA, event1.getEventDateA())
+                .set(event.eventDateB, event1.getEventDateB())
+                .where(event.id.eq(event1.getId()))
+                .execute();
+        return event1;
+    }
 }

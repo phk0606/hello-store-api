@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 
+import static com.hellostore.ecommerce.entity.QEventImage.eventImage;
+
 @Repository
 public class EventImageRepository {
 
@@ -23,4 +25,9 @@ public class EventImageRepository {
     }
 
 
+    public void removeEventImage(Long eventId) {
+        queryFactory.delete(eventImage)
+                .where(eventImage.id.eq(eventId))
+                .execute();
+    }
 }

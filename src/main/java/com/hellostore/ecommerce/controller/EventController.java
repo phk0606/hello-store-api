@@ -38,4 +38,11 @@ public class EventController {
         log.debug("eventId: {}", eventId);
         return eventService.getEvent(eventId);
     }
+
+    @PutMapping("/modifyEvent")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyEvent(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) {
+
+        eventService.modifyEvent(eventDto, eventImage);
+    }
 }

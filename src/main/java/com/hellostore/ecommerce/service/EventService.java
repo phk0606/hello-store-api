@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.EventDto;
 import com.hellostore.ecommerce.dto.EventSearchCondition;
 import com.hellostore.ecommerce.entity.Event;
+import com.hellostore.ecommerce.repository.EventImageRepository;
 import com.hellostore.ecommerce.repository.EventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,7 @@ public class EventService {
 
     private final EventRepository eventRepository;
     private final EventImageService eventImageService;
+    private final EventImageRepository eventImageRepository;
 
     @Transactional
     public void createEvent(EventDto eventDto, MultipartFile eventImage) {
@@ -44,5 +46,24 @@ public class EventService {
 
     public EventDto getEvent(Long eventId) {
         return eventRepository.getEvent(eventId);
+    }
+
+    @Transactional
+    public void modifyEvent(EventDto eventDto, MultipartFile eventImage) {
+
+        Event event = Event.builder()
+                .id(eventDto.getEventId())
+                .title(eventDto.getTitle())
+                .description(eventDto.getDescription())
+                .content(eventDto.getContent())
+                .eventDateA(eventDto.getEventDateA())
+                .eventDateB(eventDto.getEventDateB()).build();
+
+        Event event1 = eventRepository.modifyEvent(event);
+
+        if (eventImage != null) {
+            eventImageRepository.removeEventImage(eventDto.getEventId());
+            eventImageService.uploadEventImage(eventImage, event1);
+        }
     }
 }
