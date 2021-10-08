@@ -98,4 +98,10 @@ public class EventRepository {
                 .execute();
         return event1;
     }
+
+    public void removeEvents(List<Long> eventIds) {
+        queryFactory.delete(event)
+                .where(event.id.in(eventIds))
+                .execute();
+    }
 }

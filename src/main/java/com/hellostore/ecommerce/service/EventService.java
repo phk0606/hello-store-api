@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -65,5 +67,12 @@ public class EventService {
             eventImageRepository.removeEventImage(eventDto.getEventId());
             eventImageService.uploadEventImage(eventImage, event1);
         }
+    }
+
+    @Transactional
+    public void removeEvents(List<Long> eventIds) {
+
+        eventImageRepository.removeEventImages(eventIds);
+        eventRepository.removeEvents(eventIds);
     }
 }

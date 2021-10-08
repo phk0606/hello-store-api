@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 public class EventDto {
 
     private Long eventId;
+    private List<Long> eventIds;
     private String title;
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

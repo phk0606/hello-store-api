@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/event")
 @RequiredArgsConstructor
@@ -44,5 +46,14 @@ public class EventController {
     public void modifyEvent(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) {
 
         eventService.modifyEvent(eventDto, eventImage);
+    }
+
+    @DeleteMapping("/removeEvents")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void removeEvents(@RequestBody EventDto eventDto) {
+
+        List<Long> eventIds = eventDto.getEventIds();
+        log.debug("eventIds: {}", eventIds);
+        eventService.removeEvents(eventIds);
     }
 }
