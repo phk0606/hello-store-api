@@ -108,7 +108,7 @@ public class ProductQnARepository {
                 .where(
                         productIdEq(qnASearchCondition.getProductId()),
                         noAnswer(qnASearchCondition.getNoAnswer()),
-                        searchTextEq(qnASearchCondition.getSearchText()),
+                        searchTextContains(qnASearchCondition.getSearchText()),
                         usernameEq(qnASearchCondition.getUsername())
                 )
                 .orderBy(productQuestion.id.desc())
@@ -131,7 +131,7 @@ public class ProductQnARepository {
                 ? productQuestion.product.id.eq(productId) : null;
     }
 
-    private BooleanExpression searchTextEq(String searchText) {
+    private BooleanExpression searchTextContains(String searchText) {
         return !isEmpty(searchText)
                 ? productQuestion.content.contains(searchText)
                 .or(productAnswer.content.contains(searchText)) : null;
