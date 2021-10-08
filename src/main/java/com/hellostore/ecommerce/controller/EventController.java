@@ -37,7 +37,7 @@ public class EventController {
     }
 
     @GetMapping("/getEvent")
-    public EventDto getEvents(@RequestParam Long eventId) throws IOException {
+    public EventDto getEvent(@RequestParam Long eventId) throws IOException {
         log.debug("eventId: {}", eventId);
         return eventService.getEvent(eventId);
     }
