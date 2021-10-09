@@ -32,6 +32,13 @@ public class ShopProductRepository {
         this.em = em;
     }
 
+    public void modifyClickCount(Long productId) {
+        queryFactory.update(product)
+                .set(product.clickCount, product.clickCount.add(1))
+                .where(product.id.eq(productId))
+                .execute();
+    }
+
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition condition, Pageable pageable) {
 

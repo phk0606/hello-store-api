@@ -37,20 +37,16 @@ public class ShopProductService {
     private final PolicyRepository policyRepository;
 
     public Page<ShopProductDto> getProductsPageCondition(
-            ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
+            ProductSearchCondition productSearchCondition, Pageable pageable) {
         Page<ShopProductDto> productsPage
                 = shopProductRepository.getProductsPageCondition(productSearchCondition, pageable);
 
-//        for (ShopProductDto shopProductDto : productsPage.getContent()) {
-//            if(!ObjectUtils.isEmpty(shopProductDto.getImageId())) {
-//                shopProductDto.setImage(
-//                        Files.readAllBytes(
-//                                Paths.get(shopProductDto.getFilePath(),
-//                                        shopProductDto.getFileName())));
-//            }
-//        }
-
         return productsPage;
+    }
+
+    @Transactional
+    public void modifyClickCount(Long productId) {
+        shopProductRepository.modifyClickCount(productId);
     }
 
     public ShopProductDto getProductById(Long productId) throws IOException {

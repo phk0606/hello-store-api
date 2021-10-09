@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
+import com.hellostore.ecommerce.dto.ProductDto;
 import com.hellostore.ecommerce.dto.ProductImageDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.ShopProductDto;
@@ -9,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -25,8 +23,13 @@ public class ShopProductController {
     private final ShopProductService shopProductService;
     private final ProductImageService productImageService;
 
+    @PutMapping("/modifyClickCount")
+    public void modifyClickCount(@RequestBody ProductDto productDto) {
+
+        shopProductService.modifyClickCount(productDto.getProductId());
+    }
+
     @GetMapping("/getProductsPageCondition")
-//    @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
 
