@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,16 +20,17 @@ public class ProductOptionService {
     private final ProductOptionRepository productOptionRepository;
 
     @Transactional
-    public void createProductOption(List<ProductOption> firstOptions, List<ProductOption> secondOptions, Product product) {
+    public List<ProductOption> createProductOption(List<ProductOption> productOptions, Product product) {
 
-        for (ProductOption firstOption : firstOptions) {
-            firstOption.setProduct(product);
-            productOptionRepository.createProductOption(firstOption);
+        List<ProductOption> productOptions1 = new ArrayList<>();
+        for (ProductOption productOption : productOptions) {
+            productOption.setProduct(product);
+            ProductOption productOption1 = productOptionRepository.createProductOption(productOption);
+            productOptions1.add(productOption1);
         }
-        for (ProductOption secondOption : secondOptions) {
-            secondOption.setProduct(product);
-            productOptionRepository.createProductOption(secondOption);
-        }
+        log.debug("productOptions1: {}", productOptions1);
+
+        return productOptions1;
     }
 
     @Transactional

@@ -3,10 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.ProductShowType;
-import com.hellostore.ecommerce.repository.CategoryProductRepository;
-import com.hellostore.ecommerce.repository.ProductImageRepository;
-import com.hellostore.ecommerce.repository.ProductOptionRepository;
-import com.hellostore.ecommerce.repository.ProductRepository;
+import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,6 +32,7 @@ public class ProductService {
     private final ProductImageService productImageService;
     private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
+    private final StockQuantityRepository stockQuantityRepository;
 
     @Transactional
     public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) {
@@ -51,7 +49,23 @@ public class ProductService {
 
         Product product1 = productRepository.createProduct(product);
         // 상품 옵션 저장
-        productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product1);
+        List<ProductOption> firstOptions
+                = productOptionService.createProductOption(productDto.getFirstOptions(), product1);
+        List<ProductOption> secondOptions
+                = productOptionService.createProductOption(productDto.getSecondOptions(), product1);
+
+        // 재고 리스트 저장
+        for (ProductOption secondOption : secondOptions) {
+            for (ProductOption firstOption : firstOptions) {
+
+                StockQuantity stockQuantity = StockQuantity.builder()
+                        .product(product1)
+                        .firstOption(firstOption)
+                        .secondOption(secondOption)
+                        .build();
+                stockQuantityRepository.createStockQuantity(stockQuantity);
+            }
+        }
 
         // 상품 이미지 저장
         if(productImages != null) {
@@ -92,9 +106,11 @@ public class ProductService {
             productImageService.uploadProductImage(productImages, product1);
         }
 
+        // TODO: 2021-10-09  재고 수량이 옵션에 의존되어 수정 방법 변경 필요
         // 옵션 수정 (기존 것 삭제 후 신규 등록)
-        productOptionRepository.removeProductOption(productDto.getProductId());
-        productOptionService.createProductOption(productDto.getFirstOptions(), productDto.getSecondOptions(), product1);
+//        productOptionRepository.removeProductOption(productDto.getProductId());
+//        productOptionService.createProductOption(productDto.getFirstOptions(), product1);
+//        productOptionService.createProductOption(productDto.getSecondOptions(), product1);
 
     }
 

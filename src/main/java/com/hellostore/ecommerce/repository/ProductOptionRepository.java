@@ -17,9 +17,9 @@ public class ProductOptionRepository {
     private final JPAQueryFactory queryFactory;
     private final EntityManager em;
 
-    public void createProductOption(ProductOption productOption) {
-        em.merge(productOption);
-
+    public ProductOption createProductOption(ProductOption productOption) {
+        em.persist(productOption);
+        return productOption;
     }
 
     public void removeProductOption(Long productId) {
