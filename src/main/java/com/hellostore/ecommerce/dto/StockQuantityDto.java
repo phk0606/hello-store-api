@@ -1,6 +1,7 @@
 package com.hellostore.ecommerce.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -34,6 +35,14 @@ public class StockQuantityDto {
         this.secondOptionId = secondOptionId;
         this.secondOptionName = secondOptionName;
         this.secondOptionValue = secondOptionValue;
+        this.stockQuantity = stockQuantity;
+    }
+
+    @Builder
+    public StockQuantityDto(Long productId, Long firstOptionId, Long secondOptionId, int stockQuantity) {
+        this.productId = productId;
+        this.firstOptionId = firstOptionId;
+        this.secondOptionId = secondOptionId;
         this.stockQuantity = stockQuantity;
     }
 }

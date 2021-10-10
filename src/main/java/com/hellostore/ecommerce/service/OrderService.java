@@ -40,6 +40,7 @@ public class OrderService {
     private final BankAccountRepository bankAccountRepository;
     private final OrderPointRepository orderPointRepository;
     private final DeliveryRepository deliveryRepository;
+    private final StockQuantityRepository stockQuantityRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -54,6 +55,26 @@ public class OrderService {
             Product product = productRepository.getProduct(orderProductDto.getProductId());
             //주문상품 생성
             orderProducts.add(OrderProduct.createOrderProduct(product, orderProductDto));
+
+            // 상품 재고 빼기
+            List<OrderProductOptionDto> productOptions = orderProductDto.getProductOptions();
+
+            Long firstOptionId = 0l;
+            Long secondOptionId = 0l;
+            for (OrderProductOptionDto productOption : productOptions) {
+                if(productOption.getOptionGroupNumber() == 1) {
+                    firstOptionId = productOption.getOptionId();
+                } else {
+                    secondOptionId = productOption.getOptionId();
+                }
+            }
+            StockQuantityDto stockQuantityDto = StockQuantityDto.builder()
+                    .productId(orderProductDto.getProductId())
+                    .firstOptionId(firstOptionId)
+                    .secondOptionId(secondOptionId)
+                    .stockQuantity(orderProductDto.getQuantity())
+                    .build();
+            stockQuantityRepository.subtractStockQuantity(stockQuantityDto);
         }
 
         //배송 정보 생성
@@ -177,8 +198,33 @@ public class OrderService {
     public void cancelOrder(Long orderId) {
 
         Order order = orderRepository.findOne(orderId);
-
         order.cancel();
+
+        List<OrderProductDto> orderProducts = orderProductRepository.getOrderProducts(orderId);
+
+        for (OrderProductDto orderProduct : orderProducts) {
+
+            // 주문 수량 복구
+            List<OrderProductOptionDto> orderProductOptions
+                    = oderProductOptionRepository.getOrderProductOptions(orderProduct.getOrderProductId());
+
+            Long firstOptionId = 0l;
+            Long secondOptionId = 0l;
+            for (OrderProductOptionDto productOption : orderProductOptions) {
+                if(productOption.getOptionGroupNumber() == 1) {
+                    firstOptionId = productOption.getOptionId();
+                } else {
+                    secondOptionId = productOption.getOptionId();
+                }
+            }
+            StockQuantityDto stockQuantityDto = StockQuantityDto.builder()
+                    .productId(orderProduct.getProductId())
+                    .firstOptionId(firstOptionId)
+                    .secondOptionId(secondOptionId)
+                    .stockQuantity(orderProduct.getQuantity())
+                    .build();
+            stockQuantityRepository.addStockQuantity(stockQuantityDto);
+        }
     }
 
     @Transactional
@@ -270,6 +316,7 @@ public class OrderService {
 
                 OrderProductOption orderProductOption = OrderProductOption.builder()
                         .orderProduct(orderProduct)
+                        .optionId(orderProductOptionDto.getOptionId())
                         .optionGroupNumber(orderProductOptionDto.getOptionGroupNumber())
                         .optionName(orderProductOptionDto.getOptionName())
                         .optionValue(orderProductOptionDto.getOptionValue())

@@ -70,7 +70,7 @@ public class ProductRepository {
                 .set(product.name, productEntity.getName())
                 .set(product.salePrice, productEntity.getSalePrice())
                 .set(product.regularPrice, productEntity.getRegularPrice())
-                .set(product.stockQuantity, productEntity.getStockQuantity())
+//                .set(product.stockQuantity, productEntity.getStockQuantity())
                 .set(product.maxPurchaseQuantity, productEntity.getMaxPurchaseQuantity())
                 .set(product.pointType, productEntity.getPointType())
                 .set(product.pointPerPrice, productEntity.getPointPerPrice())
@@ -108,7 +108,6 @@ public class ProductRepository {
                         product.name.as("productName"),
                         product.salePrice,
                         product.regularPrice,
-                        product.stockQuantity,
                         product.maxPurchaseQuantity,
                         product.pointType,
                         product.pointPerPrice,
@@ -138,7 +137,7 @@ public class ProductRepository {
                         categoryProduct.category.id,
                         category.name,
                         product.id, product.name,
-                        product.salePrice, product.stockQuantity, product.productShowType, product.clickCount,
+                        product.salePrice, product.productShowType, product.clickCount,
                         product.createdDate,
                         product.lastModifiedDate, product.createdBy,
                         productImage.id, productImage.originalFileName, productImage.fileName,

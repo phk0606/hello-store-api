@@ -39,6 +39,19 @@ public class OderProductOptionRepository {
                 .collect(Collectors.groupingBy(OrderProductOptionDto::getOrderProductId));
     }
 
+    public List<OrderProductOptionDto> getOrderProductOptions(Long orderProductId) {
+
+        return queryFactory.select(
+                        new QOrderProductOptionDto(
+                                orderProductOption.id, orderProductOption.orderProduct.id,
+                                orderProductOption.optionId,
+                                orderProductOption.optionGroupNumber, orderProductOption.optionName,
+                                orderProductOption.optionValue))
+                .from(orderProductOption)
+                .where(orderProductOption.orderProduct.id.eq(orderProductId))
+                .fetch();
+    }
+
     public void removeProductOption(Long orderProductId) {
         queryFactory.delete(orderProductOption)
                 .where(orderProductOption.orderProduct.id.eq(orderProductId))

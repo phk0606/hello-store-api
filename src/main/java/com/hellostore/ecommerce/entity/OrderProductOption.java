@@ -17,6 +17,7 @@ public class OrderProductOption {
     @Column(name = "order_product_option_id")
     private Long id;
 
+    private Long optionId;
     private Integer optionGroupNumber;
     private String optionName;
     private String optionValue;
@@ -27,8 +28,9 @@ public class OrderProductOption {
     private OrderProduct orderProduct;
 
     @Builder
-    public OrderProductOption(OrderProduct orderProduct, Integer optionGroupNumber, String optionName, String optionValue) {
+    public OrderProductOption(OrderProduct orderProduct, Long optionId, Integer optionGroupNumber, String optionName, String optionValue) {
         this.orderProduct = orderProduct;
+        this.optionId = optionId;
         this.optionGroupNumber = optionGroupNumber;
         this.optionName = optionName;
         this.optionValue = optionValue;

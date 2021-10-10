@@ -48,6 +48,7 @@ public class CartProduct {
                             .optionGroupNumber(cartProductOption.getOptionGroupNumber())
                             .optionName(cartProductOption.getOptionName())
                             .optionValue(cartProductOption.getOptionValue())
+                            .optionId(cartProductOption.getOptionId())
                             .build());
         }
         cartProduct.setCartProductOptions(cartProductOptions);

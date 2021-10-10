@@ -30,7 +30,7 @@ public class Product extends BaseEntity {
     private int salePrice;
     private int regularPrice;
 
-    private int stockQuantity;
+//    private int stockQuantity;
 
     private Integer maxPurchaseQuantity;
 
@@ -73,28 +73,27 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ProductShowType productShowType;
 
-    public void addStock(int quantity) {
-        this.stockQuantity += quantity;
-    }
-
-    public void removeStock(int quantity) {
-        int restStock = this.stockQuantity - quantity;
-        if (restStock < 0) {
-            throw new NotEnoughStockException("재고 부족");
-        }
-        this.stockQuantity = restStock;
-    }
+//    public void addStock(int quantity) {
+//        this.stockQuantity += quantity;
+//    }
+//
+//    public void removeStock(int quantity) {
+//        int restStock = this.stockQuantity - quantity;
+//        if (restStock < 0) {
+//            throw new NotEnoughStockException("재고 부족");
+//        }
+//        this.stockQuantity = restStock;
+//    }
 
     public Product(Long id) {
         this.id = id;
     }
 
-    public Product(String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
 
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
-        this.stockQuantity = stockQuantity;
         this.maxPurchaseQuantity = maxPurchaseQuantity;
         this.pointType = pointType;
         this.pointPerPrice = pointPerPrice;
@@ -111,12 +110,11 @@ public class Product extends BaseEntity {
     }
 
     @Builder
-    public Product(Long id, String name, int salePrice, int regularPrice, int stockQuantity, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(Long id, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
         this.id = id;
         this.name = name;
         this.salePrice = salePrice;
         this.regularPrice = regularPrice;
-        this.stockQuantity = stockQuantity;
         this.maxPurchaseQuantity = maxPurchaseQuantity;
         this.pointType = pointType;
         this.pointPerPrice = pointPerPrice;

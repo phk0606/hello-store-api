@@ -52,6 +52,7 @@ public class OrderProduct {
             orderProductOptions.add(
                     OrderProductOption.builder()
                             .orderProduct(orderProduct)
+                            .optionId(orderProductOption.getOptionId())
                             .optionGroupNumber(orderProductOption.getOptionGroupNumber())
                             .optionName(orderProductOption.getOptionName())
                             .optionValue(orderProductOption.getOptionValue())
@@ -59,13 +60,13 @@ public class OrderProduct {
         }
         orderProduct.setOrderProductOptions(orderProductOptions);
 
-        product.removeStock(orderProductDto.getQuantity());
+//        product.removeStock(orderProductDto.getQuantity());
         return orderProduct;
     }
     
-    public void cancel() {
-        getProduct().addStock(quantity);
-    } 
+//    public void cancel() {
+//        getProduct().addStock(quantity);
+//    }
     
     public int getTotalPrice() {
         return getSalePrice() * getQuantity();

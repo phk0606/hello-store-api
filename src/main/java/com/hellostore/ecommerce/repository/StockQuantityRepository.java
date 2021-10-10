@@ -2,11 +2,11 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.QStockQuantityDto;
 import com.hellostore.ecommerce.dto.StockQuantityDto;
-import com.hellostore.ecommerce.entity.QProduct;
+import com.hellostore.ecommerce.dto.StockQuantitySearchCondition;
 import com.hellostore.ecommerce.entity.QProductOption;
-import com.hellostore.ecommerce.entity.QStockQuantity;
 import com.hellostore.ecommerce.entity.StockQuantity;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
+import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QStockQuantity.stockQuantity1;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
 @Repository
 public class StockQuantityRepository {
@@ -32,31 +37,69 @@ public class StockQuantityRepository {
         return stockQuantity;
     }
 
-    public Page<StockQuantityDto> getStockQuantities(Pageable pageable) {
+    public void modifyStockQuantity(StockQuantityDto stockQuantityDto) {
 
-        QStockQuantity stockQuantity = QStockQuantity.stockQuantity1;
-        QProduct product = QProduct.product;
+        queryFactory.update(stockQuantity1)
+                .set(stockQuantity1.stockQuantity, stockQuantityDto.getStockQuantity())
+                .where(stockQuantity1.id.eq(stockQuantityDto.getStockQuantityId()))
+                .execute();
+    }
+
+    public void subtractStockQuantity(StockQuantityDto stockQuantityDto) {
+
+        queryFactory.update(stockQuantity1)
+                .set(stockQuantity1.stockQuantity,
+                        stockQuantity1.stockQuantity.subtract(stockQuantityDto.getStockQuantity()))
+                .where(
+                        stockQuantity1.product.id.eq(stockQuantityDto.getProductId()),
+                        stockQuantity1.firstOption.id.eq(stockQuantityDto.getFirstOptionId()),
+                        stockQuantity1.secondOption.id.eq(stockQuantityDto.getSecondOptionId())
+                        )
+                .execute();
+    }
+
+    public void addStockQuantity(StockQuantityDto stockQuantityDto) {
+
+        queryFactory.update(stockQuantity1)
+                .set(stockQuantity1.stockQuantity,
+                        stockQuantity1.stockQuantity.add(stockQuantityDto.getStockQuantity()))
+                .where(
+                        stockQuantity1.product.id.eq(stockQuantityDto.getProductId()),
+                        stockQuantity1.firstOption.id.eq(stockQuantityDto.getFirstOptionId()),
+                        stockQuantity1.secondOption.id.eq(stockQuantityDto.getSecondOptionId())
+                )
+                .execute();
+    }
+
+    public Page<StockQuantityDto> getStockQuantities(
+            StockQuantitySearchCondition stockQuantitySearchCondition, Pageable pageable) {
+
         QProductOption firstOption = new QProductOption("firstOption");
         QProductOption secondOption = new QProductOption("secondOption");
 
         QueryResults<StockQuantityDto> results = queryFactory.select(
                         new QStockQuantityDto(
-                                stockQuantity.id, stockQuantity.product.id, product.name,
-                                stockQuantity.firstOption.id,
+                                stockQuantity1.id, stockQuantity1.product.id, product.name,
+                                stockQuantity1.firstOption.id,
                                 firstOption.optionName, firstOption.optionValue,
-                                stockQuantity.secondOption.id,
+                                stockQuantity1.secondOption.id,
                                 secondOption.optionName, secondOption.optionValue,
-                                stockQuantity.stockQuantity
+                                stockQuantity1.stockQuantity
                         )
                 )
-                .from(stockQuantity)
-                .join(product).on(product.id.eq(stockQuantity.product.id))
-                .join(firstOption).on(firstOption.id.eq(stockQuantity.firstOption.id))
-                .join(secondOption).on(secondOption.id.eq(stockQuantity.secondOption.id))
+                .from(stockQuantity1)
+                .where(
+                    productNameContains(stockQuantitySearchCondition.getSearchText()),
+                        stockQuantityMin(stockQuantitySearchCondition.getStockQuantityMin()),
+                        stockQuantityMax(stockQuantitySearchCondition.getStockQuantityMax())
+                )
+                .join(product).on(product.id.eq(stockQuantity1.product.id))
+                .join(firstOption).on(firstOption.id.eq(stockQuantity1.firstOption.id))
+                .join(secondOption).on(secondOption.id.eq(stockQuantity1.secondOption.id))
                 .orderBy(
-                        stockQuantity.product.id.asc(),
-                        stockQuantity.firstOption.id.asc(),
-                        stockQuantity.secondOption.id.asc())
+                        stockQuantity1.product.id.asc(),
+                        stockQuantity1.firstOption.id.asc(),
+                        stockQuantity1.secondOption.id.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -64,5 +107,18 @@ public class StockQuantityRepository {
         List<StockQuantityDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression productNameContains(String searchText) {
+        return !isEmpty(searchText)
+                ? product.name.contains(searchText) : null;
+    }
+
+    private BooleanExpression stockQuantityMin(Integer stockQuantityMin) {
+        return !isEmpty(stockQuantityMin) ? stockQuantity1.stockQuantity.goe(stockQuantityMin) : null;
+    }
+
+    private BooleanExpression stockQuantityMax(Integer stockQuantityMax) {
+        return !isEmpty(stockQuantityMax) ? stockQuantity1.stockQuantity.loe(stockQuantityMax) : null;
     }
 }

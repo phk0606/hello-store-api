@@ -17,6 +17,7 @@ public class CartProductOption {
     @Column(name = "cart_product_option_id")
     private Long id;
 
+    private Long optionId;
     private Integer optionGroupNumber;
     private String optionName;
     private String optionValue;
@@ -27,10 +28,11 @@ public class CartProductOption {
     private CartProduct cartProduct;
 
     @Builder
-    public CartProductOption(CartProduct cartProduct, Integer optionGroupNumber, String optionName, String optionValue) {
+    public CartProductOption(CartProduct cartProduct, Integer optionGroupNumber, String optionName, String optionValue, Long optionId) {
         this.cartProduct = cartProduct;
         this.optionGroupNumber = optionGroupNumber;
         this.optionName = optionName;
         this.optionValue = optionValue;
+        this.optionId = optionId;
     }
 }

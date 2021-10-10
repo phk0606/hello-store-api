@@ -25,7 +25,7 @@ public class ProductDto {
     private int salePrice;
     private int regularPrice;
     private Integer maxPurchaseQuantity;
-    private int stockQuantity;
+//    private int stockQuantity;
     private PointType pointType;
     private Integer pointPerPrice;
     private ShippingFeeType shippingFeeType;
@@ -53,7 +53,7 @@ public class ProductDto {
                 .name(productDto.getName())
                 .salePrice(productDto.getSalePrice())
                 .regularPrice(productDto.getRegularPrice())
-                .stockQuantity(productDto.getStockQuantity())
+//                .stockQuantity(productDto.getStockQuantity())
                 .maxPurchaseQuantity(productDto.getMaxPurchaseQuantity())
                 .pointType(productDto.getPointType())
                 .pointPerPrice(productDto.getPointPerPrice())

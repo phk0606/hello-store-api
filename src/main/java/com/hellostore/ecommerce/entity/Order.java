@@ -118,9 +118,9 @@ public class Order extends BaseEntity{
                 this.paymentStatus.equals(PaymentStatus.BEFORE)
                         ? PaymentStatus.CANCEL_FINISHED : PaymentStatus.CANCEL_BEFORE);
         this.setOrderCancelDate(LocalDateTime.now());
-        for (OrderProduct orderProduct : orderProducts) {
-            orderProduct.cancel();
-        }
+//        for (OrderProduct orderProduct : orderProducts) {
+//            orderProduct.cancel();
+//        }
     }
 
 }

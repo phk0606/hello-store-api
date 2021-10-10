@@ -31,6 +31,7 @@ public class CartProductOptionRepository {
         return queryFactory.select(
                         new QCartProductOptionDto(
                                 cartProductOption.id, cartProductOption.cartProduct.id,
+                                cartProductOption.optionId,
                                 cartProductOption.optionGroupNumber, cartProductOption.optionName,
                                 cartProductOption.optionValue))
                 .from(cartProductOption)
