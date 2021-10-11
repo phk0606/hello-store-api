@@ -17,6 +17,8 @@ public class ProductOptionDto {
     private String optionName;
     private String optionValue;
 
+    private int stockQuantity;
+
     public ProductOptionDto(ProductOption productOption) {
         this.id = productOption.getId();
         this.optionGroupNumber = productOption.getOptionGroupNumber();
@@ -39,5 +41,14 @@ public class ProductOptionDto {
         this.optionGroupNumber = optionGroupNumber;
         this.optionName = optionName;
         this.optionValue = optionValue;
+    }
+
+    @QueryProjection
+    public ProductOptionDto(Long id, Integer optionGroupNumber, String optionName, String optionValue, int stockQuantity) {
+        this.id = id;
+        this.optionGroupNumber = optionGroupNumber;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
+        this.stockQuantity = stockQuantity;
     }
 }

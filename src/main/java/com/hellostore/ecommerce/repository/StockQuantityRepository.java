@@ -51,7 +51,8 @@ public class StockQuantityRepository {
                                 stockQuantity1.secondOption.id,
                                 productOption.optionGroupNumber,
                                 productOption.optionName,
-                                productOption.optionValue))
+                                productOption.optionValue,
+                                stockQuantity1.stockQuantity))
                 .from(stockQuantity1)
                 .where(
                         stockQuantity1.product.id.eq(productId),
