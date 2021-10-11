@@ -8,6 +8,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@Table(uniqueConstraints
+        = {@UniqueConstraint(columnNames = {"product_id", "first_option_id", "second_option_id"})})
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StockQuantity {

@@ -18,6 +18,13 @@ public class StockQuantityController {
 
     private final StockQuantityService stockQuantityService;
 
+    @PostMapping("/createStockQuantity")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void createStockQuantity(@RequestBody StockQuantityDto stockQuantityDto) {
+        log.debug("stockQuantityDto: {}", stockQuantityDto);
+        stockQuantityService.createStockQuantity(stockQuantityDto);
+    }
+
     @GetMapping("/getStockQuantities")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<StockQuantityDto> getStockQuantities(

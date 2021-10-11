@@ -14,4 +14,7 @@ public class StockQuantitySearchCondition {
     private Integer stockQuantityMin;
     private Integer stockQuantityMax;
     private String searchText;
+    private Long productId;
+    private Long firstOptionId;
+    private Long secondOptionId;
 }

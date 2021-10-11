@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.service;
 
+import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.repository.ProductOptionRepository;
@@ -36,5 +37,15 @@ public class ProductOptionService {
     @Transactional
     public void removeProductOption(Long productId) {
         productOptionRepository.removeProductOption(productId);
+    }
+
+    public List<ProductOptionDto> getFirstOptions(Long productId) {
+
+        return productOptionRepository.getProductOptions(productId, 1);
+    }
+
+    public List<ProductOptionDto> getSecondOptions(Long productId) {
+
+        return productOptionRepository.getProductOptions(productId, 2);
     }
 }

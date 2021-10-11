@@ -69,8 +69,14 @@ public class ProductController {
 
     @GetMapping("/getProductsByCategoryId")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<ProductSelectDto> getProductsByCategoryId(@RequestParam Long categoryId) throws IOException {
+    public List<ProductSelectDto> getProductsByCategoryId(@RequestParam Long categoryId) {
         return productService.getProductsByCategoryId(categoryId);
+    }
+
+    @GetMapping("/getProducts")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public List<ProductSelectDto> getProducts() {
+        return productService.getProducts();
     }
 
     @GetMapping("/getProductsPageCondition")

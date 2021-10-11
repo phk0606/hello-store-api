@@ -89,6 +89,9 @@ public class StockQuantityRepository {
                 )
                 .from(stockQuantity1)
                 .where(
+                        productIdEq(stockQuantitySearchCondition.getProductId()),
+                        firstOptionIdEq(stockQuantitySearchCondition.getFirstOptionId()),
+                    secondOptionIdEq(stockQuantitySearchCondition.getSecondOptionId()),
                     productNameContains(stockQuantitySearchCondition.getSearchText()),
                         stockQuantityMin(stockQuantitySearchCondition.getStockQuantityMin()),
                         stockQuantityMax(stockQuantitySearchCondition.getStockQuantityMax())
@@ -107,6 +110,21 @@ public class StockQuantityRepository {
         List<StockQuantityDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression productIdEq(Long productId) {
+        return !isEmpty(productId)
+                ? stockQuantity1.product.id.eq(productId) : null;
+    }
+
+    private BooleanExpression firstOptionIdEq(Long firstOptionId) {
+        return !isEmpty(firstOptionId)
+                ? stockQuantity1.firstOption.id.eq(firstOptionId) : null;
+    }
+
+    private BooleanExpression secondOptionIdEq(Long secondOptionId) {
+        return !isEmpty(secondOptionId)
+                ? stockQuantity1.secondOption.id.eq(secondOptionId) : null;
     }
 
     private BooleanExpression productNameContains(String searchText) {

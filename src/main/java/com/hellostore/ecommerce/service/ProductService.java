@@ -48,24 +48,10 @@ public class ProductService {
                         .category(category).build());
 
         Product product1 = productRepository.createProduct(product);
+
         // 상품 옵션 저장
-        List<ProductOption> firstOptions
-                = productOptionService.createProductOption(productDto.getFirstOptions(), product1);
-        List<ProductOption> secondOptions
-                = productOptionService.createProductOption(productDto.getSecondOptions(), product1);
-
-        // 재고 리스트 저장
-        for (ProductOption secondOption : secondOptions) {
-            for (ProductOption firstOption : firstOptions) {
-
-                StockQuantity stockQuantity = StockQuantity.builder()
-                        .product(product1)
-                        .firstOption(firstOption)
-                        .secondOption(secondOption)
-                        .build();
-                stockQuantityRepository.createStockQuantity(stockQuantity);
-            }
-        }
+        productOptionService.createProductOption(productDto.getFirstOptions(), product1);
+        productOptionService.createProductOption(productDto.getSecondOptions(), product1);
 
         // 상품 이미지 저장
         if(productImages != null) {
@@ -76,6 +62,10 @@ public class ProductService {
 
     public List<ProductSelectDto> getProductsByCategoryId(Long categoryId) {
         return productRepository.getProductsByCategoryId(categoryId);
+    }
+
+    public List<ProductSelectDto> getProducts() {
+        return productRepository.getProducts();
     }
 
     @Transactional
@@ -106,8 +96,24 @@ public class ProductService {
             productImageService.uploadProductImage(productImages, product1);
         }
 
-        // TODO: 2021-10-09  재고 수량이 옵션에 의존되어 수정 방법 변경 필요
+        // TODO: 2021-10-09  재고 수량이 옵션에 의존되어 수정 방법 변경 필요 => 추가만 가능하게 수정
         // 옵션 수정 (기존 것 삭제 후 신규 등록)
+        List<ProductOption> firstOptions = productDto.getFirstOptions();
+        List<ProductOption> firstOptions1  = new ArrayList<>();
+        for (ProductOption firstOption : firstOptions) {
+            if (ObjectUtils.isEmpty(firstOption.getId())) {
+                firstOptions1.add(firstOption);
+            }
+        }
+        productOptionService.createProductOption(firstOptions1, product1);
+        List<ProductOption> secondOptions = productDto.getSecondOptions();
+        List<ProductOption> secondOptions1 = new ArrayList<>();
+        for (ProductOption secondOption : secondOptions) {
+            if (ObjectUtils.isEmpty(secondOption.getId())) {
+                secondOptions1.add(secondOption);
+            }
+        }
+        productOptionService.createProductOption(secondOptions1, product1);
 //        productOptionRepository.removeProductOption(productDto.getProductId());
 //        productOptionService.createProductOption(productDto.getFirstOptions(), product1);
 //        productOptionService.createProductOption(productDto.getSecondOptions(), product1);
@@ -121,20 +127,20 @@ public class ProductService {
 
     public ProductModifyDto getProductById(Long id) throws IOException {
         ProductModifyDto productModifyDto = productRepository.getProductById(id);
-        List<ProductOption> productOptions1 = productOptionRepository.getProductOptions(id, 1);
+        List<ProductOptionDto> productOptions1 = productOptionRepository.getProductOptions(id, 1);
 
         List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
-        for (ProductOption productOption : productOptions1) {
-            productOptionDtos1.add(new ProductOptionDto(productOption));
+        for (ProductOptionDto productOption : productOptions1) {
+            productOptionDtos1.add(productOption);
         }
 
         productModifyDto.setFirstOptions(productOptionDtos1);
 
-        List<ProductOption> productOptions2 = productOptionRepository.getProductOptions(id, 2);
+        List<ProductOptionDto> productOptions2 = productOptionRepository.getProductOptions(id, 2);
 
         List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
-        for (ProductOption productOption : productOptions2) {
-            productOptionDtos2.add(new ProductOptionDto(productOption));
+        for (ProductOptionDto productOption : productOptions2) {
+            productOptionDtos2.add(productOption);
         }
 
         productModifyDto.setSecondOptions(productOptionDtos2);

@@ -74,22 +74,22 @@ public class ShopProductService {
         }
         product.setByteImages(byteImages);
 
-        List<ProductOption> productOptions1
+        List<ProductOptionDto> productOptions1
                 = productOptionRepository.getProductOptions(productId, 1);
 
         List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
-        for (ProductOption productOption : productOptions1) {
-            productOptionDtos1.add(new ProductOptionDto(productOption));
+        for (ProductOptionDto productOption : productOptions1) {
+            productOptionDtos1.add(productOption);
         }
 
         product.setFirstOptions(productOptionDtos1);
 
-        List<ProductOption> productOptions2
+        List<ProductOptionDto> productOptions2
                 = productOptionRepository.getProductOptions(productId, 2);
 
         List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
-        for (ProductOption productOption : productOptions2) {
-            productOptionDtos2.add(new ProductOptionDto(productOption));
+        for (ProductOptionDto productOption : productOptions2) {
+            productOptionDtos2.add(productOption);
         }
 
         product.setSecondOptions(productOptionDtos2);

@@ -151,23 +151,23 @@ public class OrderService {
             orderProductDto.setImage(Files.readAllBytes(
                     Paths.get(orderProductDto.getFilePath(), orderProductDto.getFileName())));
 
-            List<ProductOption> productOptions1 =
+            List<ProductOptionDto> productOptions1 =
                     productOptionRepository.getProductOptions(orderProductDto.getProductId(), 1);
 
             // product option 목록
             List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
-            for (ProductOption productOption : productOptions1) {
-                productOptionDtos1.add(new ProductOptionDto(productOption));
+            for (ProductOptionDto productOption : productOptions1) {
+                productOptionDtos1.add(productOption);
             }
 
             orderProductDto.setFirstOptions(productOptionDtos1);
 
-            List<ProductOption> productOptions2 =
+            List<ProductOptionDto> productOptions2 =
                     productOptionRepository.getProductOptions(orderProductDto.getProductId(), 2);
 
             List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
-            for (ProductOption productOption : productOptions2) {
-                productOptionDtos2.add(new ProductOptionDto(productOption));
+            for (ProductOptionDto productOption : productOptions2) {
+                productOptionDtos2.add(productOption);
             }
 
             orderProductDto.setSecondOptions(productOptionDtos2);

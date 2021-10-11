@@ -1,5 +1,7 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ProductOptionDto;
+import com.hellostore.ecommerce.dto.QProductOptionDto;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -28,14 +30,24 @@ public class ProductOptionRepository {
                 .execute();
     }
 
-    public List<ProductOption> getProductOptions(Long productId, Integer optionGroupNumber) {
-        return queryFactory.selectFrom(productOption)
+    public List<ProductOptionDto> getProductOptions(Long productId, Integer optionGroupNumber) {
+        return queryFactory.select(
+                new QProductOptionDto(productOption.id, productOption.optionGroupNumber,
+                        productOption.optionName, productOption.optionValue))
+                .from(productOption)
                 .where(
                         productOption.product.id.eq(productId),
                         productOption.optionGroupNumber.eq(optionGroupNumber)
                         )
                 .orderBy(productOption.id.asc())
                 .fetch();
+    }
+
+    public ProductOption getProductOption(Long productOptionId) {
+
+        return queryFactory.selectFrom(productOption)
+                .where(productOption.id.eq(productOptionId))
+                .fetchOne();
     }
 
     public void modifyProductOptions(ProductOption productOption1) {

@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.ProductListDto;
 import com.hellostore.ecommerce.dto.ProductModifyDto;
+import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.entity.*;
 import com.hellostore.ecommerce.enumType.PointType;
@@ -103,7 +104,7 @@ class ProductRepositoryTest {
 
         log.debug("product: {}", product);
 
-        List<ProductOption> productOptions
+        List<ProductOptionDto> productOptions
                 = productOptionRepository.getProductOptions(product.getProductId(), 1);
         log.debug("productOptions: {}", productOptions);
 

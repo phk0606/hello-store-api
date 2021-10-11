@@ -40,7 +40,8 @@ public class ProductOption {
     }
 
     @Builder
-    public ProductOption(Integer optionGroupNumber, Product product, String optionName, String optionValue) {
+    public ProductOption(Long id, Integer optionGroupNumber, Product product, String optionName, String optionValue) {
+        this.id = id;
         this.optionGroupNumber = optionGroupNumber;
         this.product = product;
         this.optionName = optionName;

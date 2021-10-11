@@ -49,6 +49,14 @@ public class ProductRepository {
                 .fetch();
     }
 
+    public List<ProductSelectDto> getProducts() {
+
+        return queryFactory.select(new QProductSelectDto(product.id, product.name))
+                .from(product)
+                .orderBy(product.name.asc())
+                .fetch();
+    }
+
     public void removeProduct(Long productId) {
 
         queryFactory.delete(product)

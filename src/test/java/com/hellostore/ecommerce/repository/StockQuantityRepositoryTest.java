@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.entity.StockQuantity;
@@ -31,18 +32,18 @@ class StockQuantityRepositoryTest {
     public void createStockQuantityTest() {
 
         Product product = productRepository.getProduct(1l);
-        List<ProductOption> firstOptions
+        List<ProductOptionDto> firstOptions
                 = productOptionRepository.getProductOptions(1l, 1);
-        List<ProductOption> secondOptions
+        List<ProductOptionDto> secondOptions
                 = productOptionRepository.getProductOptions(1l, 2);
 
-        for (ProductOption secondOption : secondOptions) {
-            for (ProductOption firstOption : firstOptions) {
+        for (ProductOptionDto secondOption : secondOptions) {
+            for (ProductOptionDto firstOption : firstOptions) {
 
                 StockQuantity stockQuantity = StockQuantity.builder()
                         .product(product)
-                        .firstOption(firstOption)
-                        .secondOption(secondOption)
+                        .firstOption(ProductOptionDto.toEntity(firstOption))
+                        .secondOption(ProductOptionDto.toEntity(secondOption))
                         .stockQuantity(120)
                         .build();
                 stockQuantityRepository.createStockQuantity(stockQuantity);
