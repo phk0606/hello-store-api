@@ -1,8 +1,6 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.QStockQuantityDto;
-import com.hellostore.ecommerce.dto.StockQuantityDto;
-import com.hellostore.ecommerce.dto.StockQuantitySearchCondition;
+import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.entity.StockQuantity;
 import com.querydsl.core.QueryResults;
@@ -16,8 +14,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QCategoryProduct.categoryProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
+import static com.hellostore.ecommerce.entity.QProductOption.productOption;
 import static com.hellostore.ecommerce.entity.QStockQuantity.stockQuantity1;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -30,6 +28,37 @@ public class StockQuantityRepository {
     public StockQuantityRepository(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
         this.em = em;
+    }
+
+    public List<ProductOptionDto> getFirstOptionsInStockQuantity(Long productId) {
+
+        return queryFactory.select(
+                new QProductOptionDto(
+                        stockQuantity1.firstOption.id,
+                        productOption.optionGroupNumber,
+                        productOption.optionName,
+                        productOption.optionValue))
+                .from(stockQuantity1)
+                .where(stockQuantity1.product.id.eq(productId))
+                .join(productOption).on(productOption.id.eq(stockQuantity1.firstOption.id))
+                .fetch();
+    }
+
+    public List<ProductOptionDto> getSecondOptionsInStockQuantity(Long productId, Long firstOptionId) {
+
+        return queryFactory.select(
+                        new QProductOptionDto(
+                                stockQuantity1.secondOption.id,
+                                productOption.optionGroupNumber,
+                                productOption.optionName,
+                                productOption.optionValue))
+                .from(stockQuantity1)
+                .where(
+                        stockQuantity1.product.id.eq(productId),
+                        stockQuantity1.firstOption.id.eq(firstOptionId)
+                        )
+                .join(productOption).on(productOption.id.eq(stockQuantity1.secondOption.id))
+                .fetch();
     }
 
     public StockQuantity createStockQuantity(StockQuantity stockQuantity) {

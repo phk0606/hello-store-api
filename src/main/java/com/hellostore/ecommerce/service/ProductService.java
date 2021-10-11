@@ -127,23 +127,23 @@ public class ProductService {
 
     public ProductModifyDto getProductById(Long id) throws IOException {
         ProductModifyDto productModifyDto = productRepository.getProductById(id);
-        List<ProductOptionDto> productOptions1 = productOptionRepository.getProductOptions(id, 1);
+//        List<ProductOptionDto> productOptions1 = productOptionRepository.getProductOptions(id, 1);
+//
+//        List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
+//        for (ProductOptionDto productOption : productOptions1) {
+//            productOptionDtos1.add(productOption);
+//        }
+//
+//        productModifyDto.setFirstOptions(productOptionDtos1);
 
-        List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
-        for (ProductOptionDto productOption : productOptions1) {
-            productOptionDtos1.add(productOption);
-        }
-
-        productModifyDto.setFirstOptions(productOptionDtos1);
-
-        List<ProductOptionDto> productOptions2 = productOptionRepository.getProductOptions(id, 2);
-
-        List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
-        for (ProductOptionDto productOption : productOptions2) {
-            productOptionDtos2.add(productOption);
-        }
-
-        productModifyDto.setSecondOptions(productOptionDtos2);
+//        List<ProductOptionDto> productOptions2 = productOptionRepository.getProductOptions(id, 2);
+//
+//        List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
+//        for (ProductOptionDto productOption : productOptions2) {
+//            productOptionDtos2.add(productOption);
+//        }
+//
+//        productModifyDto.setSecondOptions(productOptionDtos2);
 
         List<ProductImage> productImages = productImageRepository.getProductImages(id);
 

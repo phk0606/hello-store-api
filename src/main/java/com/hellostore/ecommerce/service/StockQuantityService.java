@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,6 +32,14 @@ public class StockQuantityService {
             StockQuantitySearchCondition stockQuantitySearchCondition, Pageable pageable) {
 
         return stockQuantityRepository.getStockQuantities(stockQuantitySearchCondition, pageable);
+    }
+
+    public List<ProductOptionDto> getFirstOptionsInStockQuantity(Long productId) {
+        return stockQuantityRepository.getFirstOptionsInStockQuantity(productId);
+    }
+
+    public List<ProductOptionDto> getSecondOptionsInStockQuantity(Long productId, Long firstOptionId) {
+        return stockQuantityRepository.getSecondOptionsInStockQuantity(productId, firstOptionId);
     }
 
     @Transactional

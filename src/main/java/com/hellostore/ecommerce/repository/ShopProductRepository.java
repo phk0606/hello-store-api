@@ -2,6 +2,7 @@ package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.QProductOption;
+import com.hellostore.ecommerce.entity.QStockQuantity;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -42,6 +43,7 @@ public class ShopProductRepository {
     public Page<ShopProductDto> getProductsPageCondition(
             ProductSearchCondition condition, Pageable pageable) {
 
+        QStockQuantity stockQuantity = QStockQuantity.stockQuantity1;
         QueryResults<ShopProductDto> results = queryFactory
                 .select(new QShopProductDto(
                         categoryProduct.category.id,
@@ -57,6 +59,7 @@ public class ShopProductRepository {
                 .from(product)
                 .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))
                 .join(category).on(categoryProduct.category.id.eq(category.id))
+                .join(stockQuantity).on(stockQuantity.product.id.eq(product.id))
                 .leftJoin(productImage)
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
