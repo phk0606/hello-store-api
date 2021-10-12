@@ -27,6 +27,12 @@ public class EventImageRepository {
     }
 
 
+    public EventImage getEventImage(Long eventId) {
+        return queryFactory.selectFrom(eventImage)
+                .where(eventImage.event.id.eq(eventId))
+                .fetchOne();
+    }
+
     public void removeEventImage(Long eventId) {
         queryFactory.delete(eventImage)
                 .where(eventImage.event.id.eq(eventId))

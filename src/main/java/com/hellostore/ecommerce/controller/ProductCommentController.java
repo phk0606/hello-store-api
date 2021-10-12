@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public class ProductCommentController {
 
     @DeleteMapping("/removeProductComment")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public void removeProductComment(@RequestBody ProductCommentDto productCommentDto) {
+    public void removeProductComment(@RequestBody ProductCommentDto productCommentDto) throws IOException {
         productCommentService.removeProductComment(productCommentDto.getProductCommentId());
     }
 

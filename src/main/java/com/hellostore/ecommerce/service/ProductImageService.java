@@ -42,7 +42,11 @@ public class ProductImageService {
     }
 
     @Transactional
-    public void removeProductImage(Long productId) {
+    public void removeProductImage(Long productId) throws IOException {
+        List<ProductImage> productImages = productImageRepository.getProductImages(productId);
+        for (ProductImage productImage : productImages) {
+            Files.deleteIfExists(Paths.get(productImage.getFilePath(), productImage.getFileName()));
+        }
         productImageRepository.removeProductImage(productId);
     }
 

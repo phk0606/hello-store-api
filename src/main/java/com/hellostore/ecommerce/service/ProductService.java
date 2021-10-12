@@ -69,7 +69,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void removeProducts(List<Long> productIds) {
+    public void removeProducts(List<Long> productIds) throws IOException {
 
         for (Long productId : productIds) {
 
@@ -81,7 +81,7 @@ public class ProductService {
     }
 
     @Transactional
-    public void modifyProduct(ProductDto productDto, List<MultipartFile> productImages) {
+    public void modifyProduct(ProductDto productDto, List<MultipartFile> productImages) throws IOException {
 
         // 카테고리 수정
         categoryProductRepository.modifyCategoryProduct(productDto.getProductId(), productDto.getCategoryId());
@@ -92,7 +92,7 @@ public class ProductService {
 
         // 이미지 수정 (기존 것 삭제 후 신규 등록)
         if(productImages != null) {
-            productImageRepository.removeProductImage(productDto.getProductId());
+            productImageService.removeProductImage(productDto.getProductId());
             productImageService.uploadProductImage(productImages, product1);
         }
 

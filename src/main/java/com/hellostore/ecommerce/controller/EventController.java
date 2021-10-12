@@ -44,14 +44,14 @@ public class EventController {
 
     @PutMapping("/modifyEvent")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void modifyEvent(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) {
+    public void modifyEvent(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) throws IOException {
 
         eventService.modifyEvent(eventDto, eventImage);
     }
 
     @DeleteMapping("/removeEvents")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void removeEvents(@RequestBody EventDto eventDto) {
+    public void removeEvents(@RequestBody EventDto eventDto) throws IOException {
 
         List<Long> eventIds = eventDto.getEventIds();
         log.debug("eventIds: {}", eventIds);

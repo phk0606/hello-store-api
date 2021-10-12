@@ -57,7 +57,7 @@ public class EventService {
     }
 
     @Transactional
-    public void modifyEvent(EventDto eventDto, MultipartFile eventImage) {
+    public void modifyEvent(EventDto eventDto, MultipartFile eventImage) throws IOException {
 
         Event event = Event.builder()
                 .id(eventDto.getEventId())
@@ -70,15 +70,17 @@ public class EventService {
         Event event1 = eventRepository.modifyEvent(event);
 
         if (eventImage != null) {
-            eventImageRepository.removeEventImage(eventDto.getEventId());
+            eventImageService.removeEventImage(eventDto.getEventId());
             eventImageService.uploadEventImage(eventImage, event1);
         }
     }
 
     @Transactional
-    public void removeEvents(List<Long> eventIds) {
+    public void removeEvents(List<Long> eventIds) throws IOException {
 
-        eventImageRepository.removeEventImages(eventIds);
+        for (Long eventId : eventIds) {
+            eventImageService.removeEventImage(eventId);
+        }
         eventRepository.removeEvents(eventIds);
     }
 }

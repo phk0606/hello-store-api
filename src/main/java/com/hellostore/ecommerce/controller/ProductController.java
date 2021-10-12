@@ -35,7 +35,7 @@ public class ProductController {
 
     @DeleteMapping("/removeProducts")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void removeProducts(@RequestBody ProductDto productDto) {
+    public void removeProducts(@RequestBody ProductDto productDto) throws IOException {
 
         List<Long> productIds = productDto.getProductIds();
         log.debug("removeProducts: {}", productIds);
@@ -44,7 +44,8 @@ public class ProductController {
 
     @PutMapping("/modifyProduct")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void modifyProduct(@RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) {
+    public void modifyProduct(
+            @RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) throws IOException {
 
         productService.modifyProduct(productDto, productImages);
     }

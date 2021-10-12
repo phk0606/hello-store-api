@@ -62,4 +62,11 @@ public class EventImageService {
             log.debug("eventImage1: {}", eventImage1);
             eventImageRepository.createEventImage(eventImage1);
     }
+
+    @Transactional
+    public void removeEventImage(Long eventId) throws IOException {
+        eventImageRepository.removeEventImage(eventId);
+        EventImage eventImage = eventImageRepository.getEventImage(eventId);
+        Files.deleteIfExists(Paths.get(eventImage.getFilePath(), eventImage.getFileName()));
+    }
 }

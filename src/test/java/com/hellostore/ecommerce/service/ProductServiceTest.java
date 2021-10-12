@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +24,7 @@ class ProductServiceTest {
     ProductService productService;
 
     @Test
-    public void removeProducts() {
+    public void removeProducts() throws IOException {
 
         List<Long> productIds = new ArrayList<>();
         productIds.add(10l);

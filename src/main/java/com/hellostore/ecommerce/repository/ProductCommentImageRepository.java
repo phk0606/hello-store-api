@@ -22,6 +22,13 @@ public class ProductCommentImageRepository {
         this.em = em;
     }
 
+    public ProductCommentImage getProductCommentImage(Long productCommentImageId) {
+        QProductCommentImage productCommentImage = QProductCommentImage.productCommentImage;
+        return queryFactory.selectFrom(productCommentImage)
+                .where(productCommentImage.id.eq(productCommentImageId))
+                .fetchOne();
+    }
+
     public void createProductCommentImage(ProductCommentImage productCommentImage) {
 
         em.persist(productCommentImage);

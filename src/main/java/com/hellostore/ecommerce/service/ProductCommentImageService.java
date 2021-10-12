@@ -29,6 +29,12 @@ public class ProductCommentImageService {
     @Value("${file.store.path}")
     private String fileStorePath;
 
+    @Transactional
+    public void removeProductCommentImage(Long productCommentId) throws IOException {
+        productCommentImageRepository.removeProductCommentImages(productCommentId);
+        ProductCommentImage productCommentImage = productCommentImageRepository.getProductCommentImage(productCommentId);
+        Files.deleteIfExists(Paths.get(productCommentImage.getFilePath(), productCommentImage.getFileName()));
+    }
 
     @Transactional
     public void uploadProductCommentImage(List<MultipartFile> productCommentImages,
