@@ -39,11 +39,11 @@ public class StockQuantityRepository {
     public List<ProductOptionDto> getFirstOptionsInStockQuantity(Long productId) {
 
         return queryFactory.select(
-                new QProductOptionDto(
-                        stockQuantity1.firstOption.id,
-                        productOption.optionGroupNumber,
-                        productOption.optionName,
-                        productOption.optionValue))
+                        new QProductOptionDto(
+                                stockQuantity1.firstOption.id,
+                                productOption.optionGroupNumber,
+                                productOption.optionName,
+                                productOption.optionValue))
                 .from(stockQuantity1)
                 .where(stockQuantity1.product.id.eq(productId))
                 .join(productOption).on(productOption.id.eq(stockQuantity1.firstOption.id))
@@ -63,7 +63,7 @@ public class StockQuantityRepository {
                 .where(
                         stockQuantity1.product.id.eq(productId),
                         stockQuantity1.firstOption.id.eq(firstOptionId)
-                        )
+                )
                 .join(productOption).on(productOption.id.eq(stockQuantity1.secondOption.id))
                 .fetch();
     }
@@ -90,7 +90,7 @@ public class StockQuantityRepository {
                         stockQuantity1.firstOption.id.eq(stockQuantityDto.getFirstOptionId()),
                         stockQuantity1.secondOption.id.eq(stockQuantityDto.getSecondOptionId())
                 ).fetchOne();
-        fetchOne < 0
+        return fetchOne < 0;
     }
 
     public void subtractStockQuantity(StockQuantityDto stockQuantityDto) {
@@ -102,7 +102,7 @@ public class StockQuantityRepository {
                         stockQuantity1.product.id.eq(stockQuantityDto.getProductId()),
                         stockQuantity1.firstOption.id.eq(stockQuantityDto.getFirstOptionId()),
                         stockQuantity1.secondOption.id.eq(stockQuantityDto.getSecondOptionId())
-                        )
+                )
                 .execute();
     }
 
@@ -139,8 +139,8 @@ public class StockQuantityRepository {
                 .where(
                         productIdEq(stockQuantitySearchCondition.getProductId()),
                         firstOptionIdEq(stockQuantitySearchCondition.getFirstOptionId()),
-                    secondOptionIdEq(stockQuantitySearchCondition.getSecondOptionId()),
-                    productNameContains(stockQuantitySearchCondition.getSearchText()),
+                        secondOptionIdEq(stockQuantitySearchCondition.getSecondOptionId()),
+                        productNameContains(stockQuantitySearchCondition.getSearchText()),
                         stockQuantityMin(stockQuantitySearchCondition.getStockQuantityMin()),
                         stockQuantityMax(stockQuantitySearchCondition.getStockQuantityMax())
                 )
