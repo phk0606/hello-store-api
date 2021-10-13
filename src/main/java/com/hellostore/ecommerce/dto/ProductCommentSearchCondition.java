@@ -12,4 +12,7 @@ public class ProductCommentSearchCondition {
     private Long productId;
     private String productName;
     private String username;
+
+    private Long firstCategoryId;
+    private Long secondCategoryId;
 }

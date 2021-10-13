@@ -86,7 +86,9 @@ public class ProductCommentRepository {
                 .where(
                         productIdEq(productCommentSearchCondition.getProductId()),
                         usernameEq(productCommentSearchCondition.getUsername()),
-                        productNameContains(productCommentSearchCondition.getProductName())
+                        productNameContains(productCommentSearchCondition.getProductName()),
+                        firstCategoryEq(productCommentSearchCondition.getFirstCategoryId()),
+                        secondCategoryEq(productCommentSearchCondition.getSecondCategoryId())
                 )
                 .orderBy(productComment.id.desc())
                 .groupBy(productComment.id)
@@ -97,6 +99,16 @@ public class ProductCommentRepository {
         List<ProductCommentDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression firstCategoryEq(Long firstCategoryId) {
+        return !isEmpty(firstCategoryId)
+                ? category.parent.id.eq(firstCategoryId) : null;
+    }
+
+    private BooleanExpression secondCategoryEq(Long secondCategoryId) {
+        return !isEmpty(secondCategoryId)
+                ? categoryProduct.category.id.eq(secondCategoryId) : null;
     }
 
     private BooleanExpression productIdEq(Long productId) {
