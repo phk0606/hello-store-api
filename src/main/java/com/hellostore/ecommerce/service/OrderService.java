@@ -6,6 +6,7 @@ import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.hellostore.ecommerce.enumType.PointUseDetailType;
 import com.hellostore.ecommerce.enumType.PointUseType;
+import com.hellostore.ecommerce.exception.NotEnoughStockException;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,11 @@ public class OrderService {
                     .secondOptionId(secondOptionId)
                     .stockQuantity(orderProductDto.getQuantity())
                     .build();
+
+            boolean stockQuantityCheck = stockQuantityRepository.stockQuantityCheck(stockQuantityDto);
+            if (stockQuantityCheck) {
+                throw new NotEnoughStockException("재고 부족");
+            }
             stockQuantityRepository.subtractStockQuantity(stockQuantityDto);
         }
 

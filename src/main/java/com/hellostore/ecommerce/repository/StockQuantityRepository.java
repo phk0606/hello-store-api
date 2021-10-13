@@ -81,6 +81,18 @@ public class StockQuantityRepository {
                 .execute();
     }
 
+    public boolean stockQuantityCheck(StockQuantityDto stockQuantityDto) {
+
+        Long fetchOne = queryFactory.select(stockQuantity1.id.count().subtract(stockQuantityDto.getStockQuantity()))
+                .from(stockQuantity1)
+                .where(
+                        stockQuantity1.product.id.eq(stockQuantityDto.getProductId()),
+                        stockQuantity1.firstOption.id.eq(stockQuantityDto.getFirstOptionId()),
+                        stockQuantity1.secondOption.id.eq(stockQuantityDto.getSecondOptionId())
+                ).fetchOne();
+        fetchOne < 0
+    }
+
     public void subtractStockQuantity(StockQuantityDto stockQuantityDto) {
 
         queryFactory.update(stockQuantity1)
