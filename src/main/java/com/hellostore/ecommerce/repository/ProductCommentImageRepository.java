@@ -1,15 +1,12 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.entity.ProductCommentImage;
-import com.hellostore.ecommerce.entity.ProductImage;
-import com.hellostore.ecommerce.entity.QProductCommentImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
-import static com.hellostore.ecommerce.entity.QProductImage.productImage;
+import static com.hellostore.ecommerce.entity.QProductCommentImage.productCommentImage;
 
 @Repository
 public class ProductCommentImageRepository {
@@ -23,7 +20,6 @@ public class ProductCommentImageRepository {
     }
 
     public ProductCommentImage getProductCommentImage(Long productCommentImageId) {
-        QProductCommentImage productCommentImage = QProductCommentImage.productCommentImage;
         return queryFactory.selectFrom(productCommentImage)
                 .where(productCommentImage.id.eq(productCommentImageId))
                 .fetchOne();
@@ -36,7 +32,6 @@ public class ProductCommentImageRepository {
 
     public void removeProductCommentImages(Long productCommentId) {
 
-        QProductCommentImage productCommentImage = QProductCommentImage.productCommentImage;
         queryFactory.delete(productCommentImage)
                 .where(productCommentImage.productComment.id.eq(productCommentId))
                 .execute();

@@ -44,7 +44,7 @@ public class OrderProductRepository {
                                 orderProduct.id, orderProduct.salePrice,
                                 orderProduct.quantity, orderProduct.point.coalesce(0),
                                 orderProduct.shippingFee, orderProduct.totalPrice,
-                                productImage.filePath, productImage.fileName
+                                productImage.imageFile.filePath, productImage.imageFile.fileName
                         ))
                 .from(orderProduct)
                 .join(product).on(product.id.eq(orderProduct.product.id))
@@ -66,5 +66,13 @@ public class OrderProductRepository {
                 .where(user.username.eq(username), productComment.product.id.isNull())
                 .orderBy(order.id.desc())
                 .fetch();
+    }
+
+    public boolean getOrderProductsExist(List<Long> productIds) {
+        Integer fetchOne = queryFactory.selectOne()
+                .from(orderProduct)
+                .where(orderProduct.product.id.in(productIds))
+                .fetchFirst();
+        return fetchOne != null;
     }
 }

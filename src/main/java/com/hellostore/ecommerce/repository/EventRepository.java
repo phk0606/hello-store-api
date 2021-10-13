@@ -45,10 +45,7 @@ public class EventRepository {
                     event.eventDateA,
                     event.eventDateB,
                     event.content,
-                    eventImage.filePath,
-                    eventImage.fileName,
-                    eventImage.fileSize,
-                        eventImage.originalFileName)
+                    eventImage.imageFile)
                 )
                 .from(event)
                 .join(eventImage).on(eventImage.event.id.eq(event.id))
@@ -65,9 +62,7 @@ public class EventRepository {
                                 event.description,
                                 event.eventDateA,
                                 event.eventDateB,
-                                eventImage.filePath,
-                                eventImage.fileName,
-                                eventImage.fileSize))
+                                eventImage.imageFile))
                 .from(event)
                 .join(eventImage).on(eventImage.event.id.eq(event.id))
                 .where(

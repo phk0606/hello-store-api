@@ -44,7 +44,7 @@ public class ExchangeRefundProductRepository {
                                 product.name,
                                 orderProduct.salePrice,
                                 orderProduct.quantity,
-                                productImage.filePath, productImage.fileName
+                                productImage.imageFile.filePath, productImage.imageFile.fileName
                         )
                 )
                 .from(exchangeRefundProduct)

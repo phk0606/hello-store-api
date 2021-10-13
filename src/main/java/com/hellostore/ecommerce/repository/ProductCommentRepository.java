@@ -67,7 +67,7 @@ public class ProductCommentRepository {
                         new QProductCommentDto(
                                 productComment.id, user.username,
                                 productComment.content, productComment.grade,
-                                productCommentImage.fileName, productComment.createdDate,
+                                productCommentImage.imageFile.fileName, productComment.createdDate,
                                 productCommentReply.id.count(),
                                 product.id, product.name, category.name
                         )

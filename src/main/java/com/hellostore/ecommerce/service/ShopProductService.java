@@ -5,7 +5,6 @@ import com.hellostore.ecommerce.dto.ProductOptionDto;
 import com.hellostore.ecommerce.dto.ProductSearchCondition;
 import com.hellostore.ecommerce.dto.ShopProductDto;
 import com.hellostore.ecommerce.entity.ProductImage;
-import com.hellostore.ecommerce.entity.ProductOption;
 import com.hellostore.ecommerce.enumType.PointType;
 import com.hellostore.ecommerce.enumType.ShippingFeeType;
 import com.hellostore.ecommerce.repository.PolicyRepository;
@@ -69,8 +68,8 @@ public class ShopProductService {
 
         List<byte[]> byteImages = new ArrayList<>();
         for (ProductImage productImage : productImages) {
-            byteImages.add(Files.readAllBytes(Paths.get(productImage.getFilePath(),
-                    productImage.getFileName())));
+            byteImages.add(Files.readAllBytes(Paths.get(productImage.getImageFile().getFilePath(),
+                    productImage.getImageFile().getFileName())));
         }
         product.setByteImages(byteImages);
 

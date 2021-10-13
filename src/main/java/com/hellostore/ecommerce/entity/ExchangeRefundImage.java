@@ -17,22 +17,16 @@ public class ExchangeRefundImage extends BaseEntity {
     @Column(name = "exchange_refund_image_id")
     private Long id;
 
-    private String originalFileName;
-    private String fileName;
-    private String filePath;
-
-    private long fileSize;
+    @Embedded
+    private ImageFile imageFile;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "exchange_refund_id")
     private ExchangeRefund exchangeRefund;
 
     @Builder
-    public ExchangeRefundImage(String originalFileName, String fileName, String filePath, long fileSize, ExchangeRefund exchangeRefund) {
-        this.originalFileName = originalFileName;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.fileSize = fileSize;
+    public ExchangeRefundImage(ImageFile imageFile, ExchangeRefund exchangeRefund) {
+        this.imageFile = imageFile;
         this.exchangeRefund = exchangeRefund;
     }
 }

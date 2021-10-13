@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -100,11 +101,24 @@ public class CartService {
 
     @Transactional
     public void removeCartProducts(List<Long> cartProductIds, Long cartId) {
-        cartProductRepository.removeCartProductOptions(cartProductIds);
+        cartProductOptionRepository.removeCartProductOptions(cartProductIds);
         cartProductRepository.removeCartProducts(cartProductIds);
         boolean existCartProducts = cartProductRepository.existCartProducts(cartId);
         if (!existCartProducts) {
             cartRepository.removeCart(cartId);
         }
+    }
+
+    @Transactional
+    public void removeCartProducts(Long productId) {
+        List<CartProduct> cartProducts = cartProductRepository.getCartProducts(productId);
+        cartProductOptionRepository.removeCartProductOptions(toCartProductIds(cartProducts));
+        cartProductRepository.removeCartProducts(productId);
+    }
+
+    private List<Long> toCartProductIds(List<CartProduct> result) {
+        return result.stream()
+                .map(o -> o.getId())
+                .collect(Collectors.toList());
     }
 }

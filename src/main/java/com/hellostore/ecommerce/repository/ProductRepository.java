@@ -148,8 +148,8 @@ public class ProductRepository {
                         product.salePrice, product.productShowType, product.clickCount,
                         product.createdDate,
                         product.lastModifiedDate, product.createdBy,
-                        productImage.id, productImage.originalFileName, productImage.fileName,
-                        productImage.filePath, productImage.fileSize,
+                        productImage.id, productImage.imageFile.originalFileName, productImage.imageFile.fileName,
+                        productImage.imageFile.filePath, productImage.imageFile.fileSize,
                         productImage.imageType))
                 .from(product)
                 .join(categoryProduct).on(categoryProduct.product.id.eq(product.id))

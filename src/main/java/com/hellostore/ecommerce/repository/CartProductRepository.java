@@ -13,7 +13,6 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCart.cart;
 import static com.hellostore.ecommerce.entity.QCartProduct.cartProduct;
-import static com.hellostore.ecommerce.entity.QCartProductOption.cartProductOption;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
 import static com.hellostore.ecommerce.entity.QUser.user;
@@ -52,7 +51,7 @@ public class CartProductRepository {
                         product.salePrice.multiply(cartProduct.quantity).as("totalPrice"),
                         product.pointType, product.pointPerPrice,
                         product.shippingFeeType, product.eachShippingFee,
-                        productImage.filePath, productImage.fileName
+                        productImage.imageFile.filePath, productImage.imageFile.fileName
                         ))
                 .from(cartProduct)
                 .join(cart).on(cartProduct.cart.id.eq(cart.id))
@@ -64,6 +63,12 @@ public class CartProductRepository {
                         usernameEq(username),
                         idIn(cartProductIds)
                 )
+                .fetch();
+    }
+
+    public List<CartProduct> getCartProducts(Long productId) {
+        return queryFactory.selectFrom(cartProduct)
+                .where(cartProduct.product.id.eq(productId))
                 .fetch();
     }
 
@@ -90,9 +95,10 @@ public class CartProductRepository {
                 .execute();
     }
 
-    public void removeCartProductOptions(List<Long> cartProductIds) {
-        queryFactory.delete(cartProductOption)
-                .where(cartProductOption.cartProduct.id.in(cartProductIds))
+    public void removeCartProducts(Long productId) {
+
+        queryFactory.delete(cartProduct)
+                .where(cartProduct.product.id.eq(productId))
                 .execute();
     }
 

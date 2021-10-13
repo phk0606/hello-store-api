@@ -18,22 +18,16 @@ public class ProductCommentImage extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
-    private String originalFileName;
-    private String fileName;
-    private String filePath;
-
-    private long fileSize;
+    @Embedded
+    private ImageFile imageFile;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "product_comment_id")
     private ProductComment productComment;
 
     @Builder
-    public ProductCommentImage(String originalFileName, String fileName, String filePath, long fileSize, ProductComment productComment) {
-        this.originalFileName = originalFileName;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.fileSize = fileSize;
+    public ProductCommentImage(ImageFile imageFile, ProductComment productComment) {
+        this.imageFile = imageFile;
         this.productComment = productComment;
     }
 }

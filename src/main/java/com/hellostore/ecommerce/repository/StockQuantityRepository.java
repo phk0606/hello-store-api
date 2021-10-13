@@ -30,6 +30,12 @@ public class StockQuantityRepository {
         this.em = em;
     }
 
+    public void removeStockQuantity(Long productId) {
+        queryFactory.delete(stockQuantity1)
+                .where(stockQuantity1.product.id.eq(productId))
+                .execute();
+    }
+
     public List<ProductOptionDto> getFirstOptionsInStockQuantity(Long productId) {
 
         return queryFactory.select(

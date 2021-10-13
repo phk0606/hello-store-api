@@ -19,11 +19,8 @@ public class ProductImage extends BaseEntity {
     @Column(name = "image_id")
     private Long id;
 
-    private String originalFileName;
-    private String fileName;
-    private String filePath;
-
-    private long fileSize;
+    @Embedded
+    private ImageFile imageFile;
 
     @Enumerated(EnumType.STRING)
     private ImageType imageType;
@@ -33,11 +30,8 @@ public class ProductImage extends BaseEntity {
     private Product product;
 
     @Builder
-    public ProductImage(String originalFileName, String fileName, String filePath, long fileSize, ImageType imageType, Product product) {
-        this.originalFileName = originalFileName;
-        this.fileName = fileName;
-        this.filePath = filePath;
-        this.fileSize = fileSize;
+    public ProductImage(ImageFile imageFile, ImageType imageType, Product product) {
+        this.imageFile = imageFile;
         this.imageType = imageType;
         this.product = product;
     }

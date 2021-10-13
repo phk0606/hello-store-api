@@ -1,13 +1,12 @@
 package com.hellostore.ecommerce.dto;
 
+import com.hellostore.ecommerce.entity.ImageFile;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.enumType.ImageType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -16,11 +15,7 @@ public class ProductImageDto {
 
     private Long id;
 
-    private String originalFileName;
-    private String fileName;
-    private String filePath;
-
-    private long fileSize;
+    private ImageFile imageFile;
 
     private ImageType imageType;
 
@@ -29,10 +24,7 @@ public class ProductImageDto {
 
     public ProductImageDto(ProductImage productImage) {
         this.id = productImage.getId();
-        this.originalFileName = productImage.getOriginalFileName();
-        this.fileName = productImage.getFileName();
-        this.filePath = productImage.getFilePath();
-        this.fileSize = productImage.getFileSize();
+        this.imageFile = productImage.getImageFile();
         this.imageType = productImage.getImageType();
     }
 }

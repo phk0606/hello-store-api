@@ -1,24 +1,22 @@
 package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.ProductImageDto;
+import com.hellostore.ecommerce.entity.ImageFile;
 import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.ProductImage;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.hellostore.ecommerce.repository.ProductImageRepository;
+import com.hellostore.ecommerce.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,9 +25,7 @@ import java.util.UUID;
 public class ProductImageService {
 
     private final ProductImageRepository productImageRepository;
-
-    @Value("${file.store.path}")
-    private String fileStorePath;
+    private final FileUtil fileUtil;
 
     public ProductImageDto getListImage(Long productId) throws IOException {
         ProductImage listImage = productImageRepository.getListImage(productId);
@@ -37,7 +33,7 @@ public class ProductImageService {
         ProductImageDto productImageDto = new ProductImageDto();
         productImageDto.setByteImage(
                 Files.readAllBytes(
-                        Paths.get(listImage.getFilePath(), listImage.getFileName())));
+                        Paths.get(listImage.getImageFile().getFilePath(), listImage.getImageFile().getFileName())));
         return productImageDto;
     }
 
@@ -45,7 +41,7 @@ public class ProductImageService {
     public void removeProductImage(Long productId) throws IOException {
         List<ProductImage> productImages = productImageRepository.getProductImages(productId);
         for (ProductImage productImage : productImages) {
-            Files.deleteIfExists(Paths.get(productImage.getFilePath(), productImage.getFileName()));
+            fileUtil.deleteIfExists(productImage.getImageFile().getFilePath(), productImage.getImageFile().getFileName());
         }
         productImageRepository.removeProductImage(productId);
     }
@@ -53,35 +49,16 @@ public class ProductImageService {
     @Transactional
     public void uploadProductImage(List<MultipartFile> productImages, Product product) {
 
+        for (MultipartFile multipartFile : productImages) {
 
-        for (MultipartFile productImage : productImages) {
-
-            log.debug("OriginalFilename: {}", productImage.getOriginalFilename());
-            String fileNameWithImageType[] = productImage.getOriginalFilename().split("_");
+            log.debug("OriginalFilename: {}", multipartFile.getOriginalFilename());
+            String fileNameWithImageType[] = multipartFile.getOriginalFilename().split("_");
             ImageType imageType = ImageType.valueOf(fileNameWithImageType[0]);
-            String originalFileName = fileNameWithImageType[1];
 
-            String fileName = UUID.randomUUID().toString() + "_" + originalFileName;
-            long fileSize = productImage.getSize();
+            ImageFile imageFile = fileUtil.fileUpload(multipartFile);
 
-            if (!Files.exists(Paths.get(fileStorePath))) {
-
-                try {
-                    Files.createDirectories(Paths.get(fileStorePath));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            try (InputStream inputStream = productImage.getInputStream()) {
-
-                Files.copy(inputStream, Paths.get(fileStorePath, fileName), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            ProductImage productImage1 = ProductImage.builder().originalFileName(originalFileName)
-                    .fileName(fileName).filePath(fileStorePath)
-                    .fileSize(fileSize)
+            ProductImage productImage1 = ProductImage.builder()
+                    .imageFile(imageFile)
                     .imageType(imageType)
                     .product(product)
                     .build();

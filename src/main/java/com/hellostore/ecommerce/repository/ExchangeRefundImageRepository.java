@@ -31,10 +31,10 @@ public class ExchangeRefundImageRepository {
 
         return queryFactory.select(
                 new QExchangeRefundImageDto(
-                        exchangeRefundImage.originalFileName,
-                        exchangeRefundImage.fileName,
-                        exchangeRefundImage.filePath,
-                        exchangeRefundImage.fileSize))
+                        exchangeRefundImage.imageFile.originalFileName,
+                        exchangeRefundImage.imageFile.fileName,
+                        exchangeRefundImage.imageFile.filePath,
+                        exchangeRefundImage.imageFile.fileSize))
                 .from(exchangeRefundImage)
                 .where(exchangeRefundImage.exchangeRefund.id.eq(exchangeRefundId))
                 .fetch();

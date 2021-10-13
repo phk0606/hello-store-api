@@ -1,18 +1,14 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.CartProductOptionDto;
-import com.hellostore.ecommerce.dto.OrderProductOptionDto;
 import com.hellostore.ecommerce.dto.QCartProductOptionDto;
-import com.hellostore.ecommerce.dto.QOrderProductOptionDto;
-import com.hellostore.ecommerce.entity.QCartProductOption;
-import com.hellostore.ecommerce.entity.QOrderProductOption;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+
+import static com.hellostore.ecommerce.entity.QCartProductOption.cartProductOption;
 
 @Repository
 public class CartProductOptionRepository {
@@ -25,8 +21,13 @@ public class CartProductOptionRepository {
         this.em = em;
     }
 
+    public void removeCartProductOptions(List<Long> cartProductIds) {
+        queryFactory.delete(cartProductOption)
+                .where(cartProductOption.cartProduct.id.in(cartProductIds))
+                .execute();
+    }
+
     public List<CartProductOptionDto> getCartProductOption(Long cartProductId) {
-        QCartProductOption cartProductOption = QCartProductOption.cartProductOption;
 
         return queryFactory.select(
                         new QCartProductOptionDto(

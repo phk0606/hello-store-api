@@ -33,12 +33,6 @@ public class EventImageRepository {
                 .fetchOne();
     }
 
-    public void removeEventImage(Long eventId) {
-        queryFactory.delete(eventImage)
-                .where(eventImage.event.id.eq(eventId))
-                .execute();
-    }
-
     public void removeEventImages(List<Long> eventIds) {
         queryFactory.delete(eventImage)
                 .where(eventImage.event.id.in(eventIds))

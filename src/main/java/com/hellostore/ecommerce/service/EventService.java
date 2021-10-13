@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -51,7 +52,7 @@ public class EventService {
 
     public EventDto getEvent(Long eventId) throws IOException {
         EventDto event = eventRepository.getEvent(eventId);
-        byte[] bytes = Files.readAllBytes(Paths.get(event.getFilePath(), event.getFileName()));
+        byte[] bytes = Files.readAllBytes(Paths.get(event.getImageFile().getFilePath(), event.getImageFile().getFileName()));
         event.setImage(bytes);
         return event;
     }
@@ -71,6 +72,7 @@ public class EventService {
 
         if (eventImage != null) {
             eventImageService.removeEventImage(eventDto.getEventId());
+            eventImageRepository.removeEventImages(Arrays.asList(eventDto.getEventId()));
             eventImageService.uploadEventImage(eventImage, event1);
         }
     }
@@ -81,6 +83,7 @@ public class EventService {
         for (Long eventId : eventIds) {
             eventImageService.removeEventImage(eventId);
         }
+        eventImageRepository.removeEventImages(eventIds);
         eventRepository.removeEvents(eventIds);
     }
 }

@@ -151,7 +151,7 @@ public class OrderRepository {
                         new QOrderProductDto(
                                 orderProduct.order.id,
                                 orderProduct.id, product.name,
-                                productImage.filePath, productImage.fileName
+                                productImage.imageFile.filePath, productImage.imageFile.fileName
                                 ))
                 .from(orderProduct)
                 .join(product).on(orderProduct.product.id.eq(product.id))

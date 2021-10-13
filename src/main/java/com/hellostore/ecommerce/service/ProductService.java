@@ -30,9 +30,11 @@ public class ProductService {
     private final CategoryService categoryService;
     private final ProductOptionService productOptionService;
     private final ProductImageService productImageService;
-    private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
     private final StockQuantityRepository stockQuantityRepository;
+    private final CartService cartService;
+    private final OrderProductRepository orderProductRepository;
+    private final ProductOptionRepository productOptionRepository;
 
     @Transactional
     public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) {
@@ -71,8 +73,17 @@ public class ProductService {
     @Transactional
     public void removeProducts(List<Long> productIds) throws IOException {
 
+        boolean orderProductsExist = orderProductRepository.getOrderProductsExist(productIds);
+
+        log.debug("orderProductsExist: {}", orderProductsExist);
+        if (orderProductsExist) {
+            throw new IllegalStateException("주문 상품이 존재하여 삭제할 수 없습니다.");
+        }
+
         for (Long productId : productIds) {
 
+            stockQuantityRepository.removeStockQuantity(productId);
+            cartService.removeCartProducts(productId);
             categoryProductRepository.removeCategoryProduct(productId);
             productOptionService.removeProductOption(productId);
             productImageService.removeProductImage(productId);
@@ -127,23 +138,24 @@ public class ProductService {
 
     public ProductModifyDto getProductById(Long id) throws IOException {
         ProductModifyDto productModifyDto = productRepository.getProductById(id);
-//        List<ProductOptionDto> productOptions1 = productOptionRepository.getProductOptions(id, 1);
-//
-//        List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
-//        for (ProductOptionDto productOption : productOptions1) {
-//            productOptionDtos1.add(productOption);
-//        }
-//
-//        productModifyDto.setFirstOptions(productOptionDtos1);
 
-//        List<ProductOptionDto> productOptions2 = productOptionRepository.getProductOptions(id, 2);
-//
-//        List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
-//        for (ProductOptionDto productOption : productOptions2) {
-//            productOptionDtos2.add(productOption);
-//        }
-//
-//        productModifyDto.setSecondOptions(productOptionDtos2);
+        List<ProductOptionDto> productOptions1 = productOptionRepository.getProductOptions(id, 1);
+
+        List<ProductOptionDto> productOptionDtos1 = new ArrayList<>();
+        for (ProductOptionDto productOption : productOptions1) {
+            productOptionDtos1.add(productOption);
+        }
+
+        productModifyDto.setFirstOptions(productOptionDtos1);
+
+        List<ProductOptionDto> productOptions2 = productOptionRepository.getProductOptions(id, 2);
+
+        List<ProductOptionDto> productOptionDtos2 = new ArrayList<>();
+        for (ProductOptionDto productOption : productOptions2) {
+            productOptionDtos2.add(productOption);
+        }
+
+        productModifyDto.setSecondOptions(productOptionDtos2);
 
         List<ProductImage> productImages = productImageRepository.getProductImages(id);
 
@@ -153,7 +165,7 @@ public class ProductService {
             ProductImageDto productImageDto = new ProductImageDto(productImage);
             productImageDto.setByteImage(
                     Files.readAllBytes(
-                            Paths.get(productImage.getFilePath(), productImage.getFileName())));
+                            Paths.get(productImage.getImageFile().getFilePath(), productImage.getImageFile().getFileName())));
 
             productImageDtos.add(productImageDto);
         }
@@ -163,7 +175,7 @@ public class ProductService {
     }
 
     public Page<ProductListDto> getProductsPage(
-            ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
+            ProductSearchCondition productSearchCondition, Pageable pageable) {
 
         Page<ProductListDto> result =
                 productRepository.getProductsPage(productSearchCondition, pageable);
