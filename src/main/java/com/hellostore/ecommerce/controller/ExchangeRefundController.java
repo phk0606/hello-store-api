@@ -1,8 +1,8 @@
 package com.hellostore.ecommerce.controller;
 
-import com.hellostore.ecommerce.dto.ExchangeRefundDto;
-import com.hellostore.ecommerce.dto.ExchangeRefundSearchCondition;
-import com.hellostore.ecommerce.service.ExchangeRefundService;
+import com.hellostore.ecommerce.dto.ExchangeReturnDto;
+import com.hellostore.ecommerce.dto.ExchangeReturnSearchCondition;
+import com.hellostore.ecommerce.service.ExchangeReturnService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,45 +14,45 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/exchangeRefund")
+@RequestMapping("/api/exchangeReturn")
 @RequiredArgsConstructor
 @Slf4j
 public class ExchangeRefundController {
 
-    private final ExchangeRefundService exchangeRefundService;
+    private final ExchangeReturnService exchangeReturnService;
 
-    @PostMapping("/createExchangeRefund")
+    @PostMapping("/createExchangeReturn")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public void createExchangeRefund(@RequestPart ExchangeRefundDto exchangeRefundDto,
+    public void createExchangeReturn(@RequestPart ExchangeReturnDto exchangeReturnDto,
                                      @RequestParam(required = false)
-                                             List<MultipartFile> exchangeRefundImages) {
+                                             List<MultipartFile> exchangeReturnImages) {
 
-        log.debug("exchangeRefundDto: {}", exchangeRefundDto);
+        log.debug("exchangeReturnDto: {}", exchangeReturnDto);
 
         // 상품평 저장
-        exchangeRefundService.createExchangeRefund(exchangeRefundDto, exchangeRefundImages);
+        exchangeReturnService.createExchangeReturn(exchangeReturnDto, exchangeReturnImages);
     }
 
-    @GetMapping("/getExchangeRefunds")
+    @GetMapping("/getExchangeReturns")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public Page<ExchangeRefundDto> getExchangeRefunds (
-            ExchangeRefundSearchCondition exchangeRefundSearchCondition, Pageable pageable) {
+    public Page<ExchangeReturnDto> getExchangeReturns (
+            ExchangeReturnSearchCondition exchangeReturnSearchCondition, Pageable pageable) {
 
-        return exchangeRefundService.getExchangeRefunds(exchangeRefundSearchCondition, pageable);
+        return exchangeReturnService.getExchangeReturns(exchangeReturnSearchCondition, pageable);
     }
 
-    @GetMapping("/getExchangeRefund")
+    @GetMapping("/getExchangeReturn")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-    public ExchangeRefundDto getExchangeRefund (@RequestParam Long exchangeRefundId) {
+    public ExchangeReturnDto getExchangeReturn (@RequestParam Long exchangeReturnId) {
 
-        return exchangeRefundService.getExchangeRefund(exchangeRefundId);
+        return exchangeReturnService.getExchangeReturn(exchangeReturnId);
     }
 
-    @PutMapping("/modifyExchangeRefundStatus")
+    @PutMapping("/modifyExchangeReturnStatus")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void modifyExchangeRefundStatus(@RequestBody ExchangeRefundDto exchangeRefundDto) {
+    public void modifyExchangeReturnStatus(@RequestBody ExchangeReturnDto exchangeReturnDto) {
 
-        exchangeRefundService.modifyExchangeRefundStatus(
-                exchangeRefundDto.getExchangeRefundIds(), exchangeRefundDto.getExchangeRefundStatus());
+        exchangeReturnService.modifyExchangeReturnStatus(
+                exchangeReturnDto.getExchangeReturnIds(), exchangeReturnDto.getExchangeReturnStatus());
     }
 }

@@ -10,23 +10,23 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExchangeRefundImage extends BaseEntity {
+public class ExchangeReturnImage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exchange_refund_image_id")
+    @Column(name = "exchange_return_image_id")
     private Long id;
 
     @Embedded
     private ImageFile imageFile;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "exchange_refund_id")
-    private ExchangeRefund exchangeRefund;
+    @JoinColumn(name = "exchange_return_id")
+    private ExchangeReturn exchangeReturn;
 
     @Builder
-    public ExchangeRefundImage(ImageFile imageFile, ExchangeRefund exchangeRefund) {
+    public ExchangeReturnImage(ImageFile imageFile, ExchangeReturn exchangeReturn) {
         this.imageFile = imageFile;
-        this.exchangeRefund = exchangeRefund;
+        this.exchangeReturn = exchangeReturn;
     }
 }

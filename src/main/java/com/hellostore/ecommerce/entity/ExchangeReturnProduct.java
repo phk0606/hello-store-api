@@ -1,7 +1,7 @@
 package com.hellostore.ecommerce.entity;
 
 
-import com.hellostore.ecommerce.enumType.ExchangeRefundType;
+import com.hellostore.ecommerce.enumType.ExchangeReturnType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Getter
 @EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ExchangeRefundProduct {
+public class ExchangeReturnProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "exchange_refund_product_id")
+    @Column(name = "exchange_return_product_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,16 +22,16 @@ public class ExchangeRefundProduct {
     private OrderProduct orderProduct;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "exchange_refund_id")
-    private ExchangeRefund exchangeRefund;
+    @JoinColumn(name = "exchange_return_id")
+    private ExchangeReturn exchangeReturn;
 
     @Enumerated(EnumType.STRING)
-    private ExchangeRefundType exchangeRefundType;
+    private ExchangeReturnType exchangeReturnType;
 
     @Builder
-    public ExchangeRefundProduct(OrderProduct orderProduct, ExchangeRefund exchangeRefund, ExchangeRefundType exchangeRefundType) {
+    public ExchangeReturnProduct(OrderProduct orderProduct, ExchangeReturn exchangeReturn, ExchangeReturnType exchangeReturnType) {
         this.orderProduct = orderProduct;
-        this.exchangeRefund = exchangeRefund;
-        this.exchangeRefundType = exchangeRefundType;
+        this.exchangeReturn = exchangeReturn;
+        this.exchangeReturnType = exchangeReturnType;
     }
 }

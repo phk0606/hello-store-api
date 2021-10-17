@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @ToString
-public class ExchangeRefundImageDto {
+public class ExchangeReturnImageDto {
 
     private String originalFileName;
     private String fileName;
@@ -17,7 +17,7 @@ public class ExchangeRefundImageDto {
     private long fileSize;
 
     @QueryProjection
-    public ExchangeRefundImageDto(String originalFileName, String fileName, String filePath, long fileSize) {
+    public ExchangeReturnImageDto(String originalFileName, String fileName, String filePath, long fileSize) {
         this.originalFileName = originalFileName;
         this.fileName = fileName;
         this.filePath = filePath;

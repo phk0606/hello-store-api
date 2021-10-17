@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ExchangeRefundReasonType {
+public enum ExchangeReturnReasonType {
 
     COLOR_SIZE_CHANGE("색상/사이즈 변경"),
     MIND_CHANGE("단순 변심"),

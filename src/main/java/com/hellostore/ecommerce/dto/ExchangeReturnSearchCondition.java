@@ -1,6 +1,6 @@
 package com.hellostore.ecommerce.dto;
 
-import com.hellostore.ecommerce.enumType.ExchangeRefundStatus;
+import com.hellostore.ecommerce.enumType.ExchangeReturnStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-public class ExchangeRefundSearchCondition {
+public class ExchangeReturnSearchCondition {
 
     private String applicationDateA;
     private String applicationDateB;
@@ -19,5 +19,5 @@ public class ExchangeRefundSearchCondition {
     private String productName;
     private String username;
     private String name;
-    private ExchangeRefundStatus exchangeRefundStatus;
+    private ExchangeReturnStatus exchangeReturnStatus;
 }
