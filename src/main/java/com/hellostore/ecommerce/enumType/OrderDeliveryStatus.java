@@ -6,12 +6,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum OrderDeliveryStatus {
-    BEFORE_CONFIRM("주문 확인 전"),
-    CONFIRM_ORDER("주문 확인"),
-    ORDER_CANCEL("주문 취소"),
-    READY_SHIP("배송 준비 중"),
+    ORDER_CONFIRM_BEFORE("주문 확인 전"),
+    ORDER_CONFIRM_COMPLETE("주문 확인 완료"),
+    ORDER_CANCEL_PROCESS("주문 취소 처리 중"),
+    ORDER_CANCEL_COMPLETE("주문 취소 완료"),
+    SHIPPING_READY("배송 준비 중"),
     SHIPPING("배송 중"),
-    COMPLETE_SHIP("배송 완료");
+    SHIPPING_COMPLETE("배송 완료");
 
     private final String value;
 }

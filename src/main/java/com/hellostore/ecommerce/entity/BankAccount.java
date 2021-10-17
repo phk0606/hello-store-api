@@ -20,9 +20,6 @@ public class BankAccount {
     private String accountHolder;
     private String showYn;
 
-    @OneToOne(mappedBy = "bankAccount", fetch = FetchType.LAZY)
-    private Order order;
-
     @Builder
     public BankAccount(String bankName, String accountNumber, String accountHolder, String showYn) {
         this.bankName = bankName;

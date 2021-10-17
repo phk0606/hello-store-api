@@ -29,6 +29,7 @@ public class OderProductOptionRepository {
         List<OrderProductOptionDto> orderProductOptionDtos = queryFactory.select(
                         new QOrderProductOptionDto(
                                 orderProductOption.id, orderProductOption.orderProduct.id,
+                                orderProductOption.optionId,
                                 orderProductOption.optionGroupNumber, orderProductOption.optionName,
                                 orderProductOption.optionValue))
                 .from(orderProductOption)

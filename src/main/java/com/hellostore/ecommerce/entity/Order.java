@@ -55,7 +55,7 @@ public class Order extends BaseEntity{
 
 //    private String depositAccount;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
 
@@ -88,7 +88,7 @@ public class Order extends BaseEntity{
             order.addOrderProduct(orderProduct);
         }
 
-        order.setStatus(OrderDeliveryStatus.BEFORE_CONFIRM);
+        order.setStatus(OrderDeliveryStatus.ORDER_CONFIRM_BEFORE);
         if (orderDto.getPaymentMethodType().equals(PaymentMethodType.WITHOUT_BANKBOOK)) {
             order.setPaymentStatus(PaymentStatus.BEFORE);
         } else {
@@ -107,16 +107,19 @@ public class Order extends BaseEntity{
     }
 
     public void cancel() {
-        if (this.getStatus() == OrderDeliveryStatus.READY_SHIP
+        if (this.getStatus() == OrderDeliveryStatus.SHIPPING_READY
         || this.getStatus() == OrderDeliveryStatus.SHIPPING
-        || this.getStatus() == OrderDeliveryStatus.COMPLETE_SHIP) {
+        || this.getStatus() == OrderDeliveryStatus.SHIPPING_COMPLETE) {
             throw new IllegalStateException("이미 배송 준비, 배송 중, 배송 완료인 상품은 취소가 불가능 합니다.");
         }
 
-        this.setStatus(OrderDeliveryStatus.ORDER_CANCEL);
-        this.setPaymentStatus(
-                this.paymentStatus.equals(PaymentStatus.BEFORE)
-                        ? PaymentStatus.CANCEL_FINISHED : PaymentStatus.CANCEL_BEFORE);
+        // 무통장 결제 완료 상태
+        boolean WBF = this.paymentStatus.equals(PaymentStatus.FINISHED)
+                && this.paymentMethodType.equals(PaymentMethodType.WITHOUT_BANKBOOK);
+        // 무통장 결제 완료 시 주문 취소 처리 중, 이외 취소 완료
+        this.setStatus(WBF ? OrderDeliveryStatus.ORDER_CANCEL_PROCESS : OrderDeliveryStatus.ORDER_CANCEL_COMPLETE);
+        // 무통장 결제 완료 시 결제 취소 전, 이외 결제 취소 완료
+        this.setPaymentStatus(WBF ? PaymentStatus.CANCEL_BEFORE : PaymentStatus.CANCEL_FINISHED);
         this.setOrderCancelDate(LocalDateTime.now());
 //        for (OrderProduct orderProduct : orderProducts) {
 //            orderProduct.cancel();

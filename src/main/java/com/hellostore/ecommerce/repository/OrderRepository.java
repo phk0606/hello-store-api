@@ -207,8 +207,8 @@ public class OrderRepository {
 
         return !isEmpty(orderDeliveryStatus)
                 ? order.status.eq(orderDeliveryStatus)
-                .and(order.status.ne(OrderDeliveryStatus.ORDER_CANCEL))
-                : order.status.eq(OrderDeliveryStatus.ORDER_CANCEL)
+                .and(order.status.notIn(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS))
+                : order.status.in(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS)
                 .and(order.paymentStatus.eq(paymentStatus));
     }
 
@@ -251,6 +251,11 @@ public class OrderRepository {
     public void modifyPaymentStatus(List<Long> orderIds, PaymentStatus paymentStatus) {
         queryFactory.update(order)
                 .set(order.paymentStatus, paymentStatus)
+                .set(order.status,
+                        paymentStatus.equals(PaymentStatus.CANCEL_FINISHED)
+                                ? OrderDeliveryStatus.ORDER_CANCEL_COMPLETE
+                                : OrderDeliveryStatus.ORDER_CANCEL_PROCESS
+                        )
                 .where(order.id.in(orderIds))
                 .execute();
     }

@@ -204,7 +204,12 @@ public class OrderService {
     public void cancelOrder(Long orderId) {
 
         Order order = orderRepository.findOne(orderId);
+
         order.cancel();
+
+        if(!order.getStatus().equals(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE)) {
+            return;
+        }
 
         List<OrderProductDto> orderProducts = orderProductRepository.getOrderProducts(orderId);
 
