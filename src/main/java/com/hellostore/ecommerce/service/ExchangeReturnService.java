@@ -3,6 +3,7 @@ package com.hellostore.ecommerce.service;
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.ExchangeReturn;
 import com.hellostore.ecommerce.entity.ExchangeReturnProduct;
+import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.enumType.ExchangeReturnStatus;
 import com.hellostore.ecommerce.repository.*;
@@ -28,6 +29,7 @@ public class ExchangeReturnService {
     private final ExchangeReturnRepository exchangeReturnRepository;
     private final ExchangeReturnProductRepository exchangeReturnProductRepository;
     private final OrderProductRepository orderProductRepository;
+    private final OrderRepository orderRepository;
     private final ExchangeReturnImageService exchangeReturnImageService;
     private final ExchangeReturnImageRepository exchangeReturnImageRepository;
     private final OderProductOptionRepository oderProductOptionRepository;
@@ -36,8 +38,10 @@ public class ExchangeReturnService {
     public void createExchangeReturn(ExchangeReturnDto exchangeReturnDto,
                                      List<MultipartFile> exchangeReturnImages) {
 
+        Order order = orderRepository.findOne(exchangeReturnDto.getOrderId());
         // 교환 환불 신청서 저장
         ExchangeReturn exchangeReturn = ExchangeReturn.builder()
+                .order(order)
                 .exchangeReturnReasonType(exchangeReturnDto.getExchangeReturnReasonType())
                 .exchangeReturnStatus(ExchangeReturnStatus.REQUESTED)
                 .content(exchangeReturnDto.getContent()).build();

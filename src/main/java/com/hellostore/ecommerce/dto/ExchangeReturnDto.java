@@ -19,6 +19,7 @@ import java.util.List;
 public class ExchangeReturnDto {
 
     private Long exchangeReturnId;
+    private Long orderId;
 
     private List<Long> exchangeReturnIds;
 
@@ -40,8 +41,9 @@ public class ExchangeReturnDto {
     private Long exchangeReturnProductCount;
 
     @QueryProjection
-    public ExchangeReturnDto(Long exchangeReturnId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content, Long exchangeReturnProductCount) {
+    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content, Long exchangeReturnProductCount) {
         this.exchangeReturnId = exchangeReturnId;
+        this.orderId = orderId;
         this.createdDate = createdDate;
         this.username = username;
         this.name = name;
@@ -53,8 +55,9 @@ public class ExchangeReturnDto {
     }
 
     @QueryProjection
-    public ExchangeReturnDto(Long exchangeReturnId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content) {
+    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content) {
         this.exchangeReturnId = exchangeReturnId;
+        this.orderId = orderId;
         this.createdDate = createdDate;
         this.username = username;
         this.name = name;

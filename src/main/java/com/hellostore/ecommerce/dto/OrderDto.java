@@ -61,7 +61,9 @@ public class OrderDto {
     private String requirement;
     private Address address;
 
-    Long orderProductCount;
+    private Long orderProductCount;
+
+    private Long exchangeReturnId;
 
     @Builder
     public OrderDto(Order order) {
@@ -85,7 +87,7 @@ public class OrderDto {
                     Long deliveryId,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
-                    Integer usedPoint) {
+                    Integer usedPoint, Long exchangeReturnId) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.orderCancelDate = orderCancelDate;
@@ -109,6 +111,7 @@ public class OrderDto {
         this.requirement = requirement;
         this.address = address;
         this.usedPoint = ObjectUtils.isEmpty(usedPoint) ? 0 : usedPoint;
+        this.exchangeReturnId = exchangeReturnId;
     }
 
     @QueryProjection
@@ -121,7 +124,7 @@ public class OrderDto {
                     OrderDeliveryStatus orderDeliveryStatus,
                     String recipientName, String recipientPhoneNumber,
                     String requirement, Address address,
-                    Long orderProductCount) {
+                    Long orderProductCount, Long exchangeReturnId) {
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.orderCancelDate = orderCancelDate;
@@ -143,5 +146,6 @@ public class OrderDto {
         this.requirement = requirement;
         this.address = address;
         this.orderProductCount = orderProductCount;
+        this.exchangeReturnId = exchangeReturnId;
     }
 }

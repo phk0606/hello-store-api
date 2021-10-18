@@ -4,7 +4,6 @@ import com.hellostore.ecommerce.dto.ExchangeReturnDto;
 import com.hellostore.ecommerce.dto.ExchangeReturnSearchCondition;
 import com.hellostore.ecommerce.dto.QExchangeReturnDto;
 import com.hellostore.ecommerce.entity.ExchangeReturn;
-import com.hellostore.ecommerce.entity.QExchangeReturnProduct;
 import com.hellostore.ecommerce.entity.QOrderProduct;
 import com.hellostore.ecommerce.entity.QProduct;
 import com.hellostore.ecommerce.enumType.ExchangeReturnStatus;
@@ -23,7 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QExchangeReturn.exchangeReturn;
-import static com.hellostore.ecommerce.entity.QExchangeReturnProduct.*;
+import static com.hellostore.ecommerce.entity.QExchangeReturnProduct.exchangeReturnProduct;
 import static com.hellostore.ecommerce.entity.QUser.user;
 import static org.springframework.util.ObjectUtils.isEmpty;
 
@@ -51,6 +50,7 @@ public class ExchangeReturnRepository {
         QueryResults<ExchangeReturnDto> results = queryFactory.select(
                         new QExchangeReturnDto(
                                 exchangeReturn.id,
+                                exchangeReturn.order.id,
                                 exchangeReturn.createdDate,
                                 exchangeReturn.createdBy,
                                 user.name,
@@ -70,6 +70,7 @@ public class ExchangeReturnRepository {
                 .join(user).on(user.username.eq(exchangeReturn.createdBy))
                 .join(exchangeReturnProduct)
                 .on(exchangeReturnProduct.exchangeReturn.id.eq(exchangeReturn.id))
+                .groupBy(exchangeReturn.id)
                 .orderBy(exchangeReturn.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -117,6 +118,7 @@ public class ExchangeReturnRepository {
         return queryFactory.select(
                 new QExchangeReturnDto(
                         exchangeReturn.id,
+                        exchangeReturn.order.id,
                         exchangeReturn.createdDate,
                         exchangeReturn.createdBy,
                         user.name,

@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QBankAccount.bankAccount;
 import static com.hellostore.ecommerce.entity.QDelivery.delivery;
+import static com.hellostore.ecommerce.entity.QExchangeReturn.exchangeReturn;
 import static com.hellostore.ecommerce.entity.QOrder.order;
 import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
 import static com.hellostore.ecommerce.entity.QOrderUsePoint.orderUsePoint;
@@ -82,9 +83,11 @@ public class OrderRepository {
                         delivery.id,
                         delivery.recipientName, delivery.phoneNumber, delivery.requirement,
                         delivery.address,
-                        pointHistory.point
+                        pointHistory.point,
+                        exchangeReturn.id
                 ))
                 .from(order)
+                .leftJoin(exchangeReturn).on(exchangeReturn.order.id.eq(order.id))
                 .leftJoin(orderUsePoint)
                 .on(orderUsePoint.order.id.eq(order.id))
                 .leftJoin(pointHistory)
@@ -111,11 +114,13 @@ public class OrderRepository {
                                 order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                                delivery.address, orderProduct.id.count()))
+                                delivery.address, orderProduct.id.count(),
+                                exchangeReturn.id))
                 .from(order)
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                .leftJoin(exchangeReturn).on(exchangeReturn.order.id.eq(order.id))
                 .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))
                 .where(
                         user.username.eq(orderSearchCondition.getUsername()),
@@ -175,7 +180,8 @@ public class OrderRepository {
                                 order.depositorName, order.depositDueDate,
                                 order.paymentStatus, order.status,
                                 delivery.recipientName, delivery.phoneNumber, delivery.requirement,
-                                delivery.address, orderProduct.id.count()))
+                                delivery.address, orderProduct.id.count(),
+                                exchangeReturn.id))
                 .from(order)
                 .where(
                         orderDeliveryStatusEq(orderSearchCondition.getOrderDeliveryStatus(),
@@ -190,6 +196,7 @@ public class OrderRepository {
                 .join(user).on(order.user.id.eq(user.id))
                 .join(delivery).on(order.delivery.id.eq(delivery.id))
                 .join(orderProduct).on(orderProduct.order.id.eq(order.id))
+                .leftJoin(exchangeReturn).on(exchangeReturn.order.id.eq(order.id))
                 .leftJoin(bankAccount).on(bankAccount.id.eq(order.bankAccount.id))
                 .groupBy(order.id)
                 .orderBy(order.id.desc())
@@ -205,9 +212,14 @@ public class OrderRepository {
     private BooleanExpression orderDeliveryStatusEq(
             OrderDeliveryStatus orderDeliveryStatus, PaymentStatus paymentStatus) {
 
-        return !isEmpty(orderDeliveryStatus)
-                ? order.status.eq(orderDeliveryStatus)
-                .and(order.status.notIn(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS))
+        // 결제 상태가 없으면 주문 관리
+        return isEmpty(paymentStatus)
+                // 주문 상태가 없으면 전체 조회
+                ? !isEmpty(orderDeliveryStatus)
+                    ? order.status.eq(orderDeliveryStatus)
+                        .and(order.status.notIn(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS))
+                    : order.status.notIn(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS)
+                // 결제 상태가 있으면 주문 취소 관리
                 : order.status.in(OrderDeliveryStatus.ORDER_CANCEL_COMPLETE, OrderDeliveryStatus.ORDER_CANCEL_PROCESS)
                 .and(order.paymentStatus.eq(paymentStatus));
     }

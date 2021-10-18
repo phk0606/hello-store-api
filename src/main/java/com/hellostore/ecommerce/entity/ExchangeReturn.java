@@ -19,8 +19,12 @@ public class ExchangeReturn extends BaseEntity {
     @Column(name = "exchange_return_id")
     private Long id;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private Order order;
+
     @OneToMany(mappedBy = "exchangeReturn", cascade = CascadeType.ALL)
-    private List<ExchangeReturnProduct> exchangeRefundProducts = new ArrayList<>();
+    private List<ExchangeReturnProduct> exchangeReturnProducts = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ExchangeReturnReasonType exchangeReturnReasonType;
@@ -30,11 +34,14 @@ public class ExchangeReturn extends BaseEntity {
 
     private String content;
 
+    private String memo;
+
     @OneToMany(mappedBy = "exchangeReturn", cascade = CascadeType.ALL)
     private List<ExchangeReturnImage> exchangeReturnImages = new ArrayList<>();
 
     @Builder
-    public ExchangeReturn(ExchangeReturnReasonType exchangeReturnReasonType, ExchangeReturnStatus exchangeReturnStatus, String content) {
+    public ExchangeReturn(Order order, ExchangeReturnReasonType exchangeReturnReasonType, ExchangeReturnStatus exchangeReturnStatus, String content) {
+        this.order = order;
         this.exchangeReturnReasonType = exchangeReturnReasonType;
         this.exchangeReturnStatus = exchangeReturnStatus;
         this.content = content;

@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/api/exchangeReturn")
 @RequiredArgsConstructor
 @Slf4j
-public class ExchangeRefundController {
+public class ExchangeReturnController {
 
     private final ExchangeReturnService exchangeReturnService;
 
