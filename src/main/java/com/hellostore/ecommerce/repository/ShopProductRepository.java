@@ -64,6 +64,7 @@ public class ShopProductRepository {
                 .on(product.id.eq(productImage.product.id))
                 .on(productImage.imageType.eq(ImageType.LIST))
                 .where(
+                        productNameContains(condition.getProductName()),
                         productProperty(condition.getProductProperty()),
                         firstCategoryEq(condition.getFirstCategoryId()),
                         secondCategoryEq(condition.getSecondCategoryId()),
@@ -78,6 +79,11 @@ public class ShopProductRepository {
         List<ShopProductDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private BooleanExpression productNameContains(String productName) {
+        return !isEmpty(productName)
+                ? product.name.contains(productName) : null;
     }
 
     private BooleanExpression firstCategoryEq(Long firstCategoryId) {
