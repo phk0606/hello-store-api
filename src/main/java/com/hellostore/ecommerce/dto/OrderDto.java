@@ -5,6 +5,7 @@ import com.hellostore.ecommerce.entity.Address;
 import com.hellostore.ecommerce.entity.BankAccount;
 import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
+import com.hellostore.ecommerce.enumType.OrderType;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import com.querydsl.core.annotations.QueryProjection;
@@ -32,6 +33,9 @@ public class OrderDto {
     private String name;
     private String phoneNumber;
 
+    @Setter
+    private OrderType orderType;
+    private String orderTypeValue;
     private PaymentMethodType paymentMethodType;
     private String paymentMethodTypeValue;
     private PaymentStatus paymentStatus;
@@ -77,7 +81,8 @@ public class OrderDto {
     }
 
     @QueryProjection
-    public OrderDto(Long orderId, LocalDateTime createdDate, LocalDateTime orderCancelDate,
+    public OrderDto(Long orderId, OrderType orderType,
+                    LocalDateTime createdDate, LocalDateTime orderCancelDate,
                     Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     PaymentStatus paymentStatus,
@@ -89,6 +94,8 @@ public class OrderDto {
                     String requirement, Address address,
                     Integer usedPoint, Long exchangeReturnId) {
         this.orderId = orderId;
+        this.orderType = orderType;
+        this.orderTypeValue = orderType.getValue();
         this.createdDate = createdDate;
         this.orderCancelDate = orderCancelDate;
         this.userNo = userNo;
@@ -115,7 +122,8 @@ public class OrderDto {
     }
 
     @QueryProjection
-    public OrderDto(Long orderId, LocalDateTime createdDate, LocalDateTime orderCancelDate,
+    public OrderDto(Long orderId, OrderType orderType,
+                    LocalDateTime createdDate, LocalDateTime orderCancelDate,
                     Long userNo, String username, String name,
                     String phoneNumber, PaymentMethodType paymentMethodType, Integer paymentPrice,
                     String depositAccount,
@@ -126,6 +134,8 @@ public class OrderDto {
                     String requirement, Address address,
                     Long orderProductCount, Long exchangeReturnId) {
         this.orderId = orderId;
+        this.orderType = orderType;
+        this.orderTypeValue = orderType.getValue();
         this.createdDate = createdDate;
         this.orderCancelDate = orderCancelDate;
         this.userNo = userNo;

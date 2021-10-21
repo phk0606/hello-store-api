@@ -1,10 +1,9 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ExchangeReturnDto;
 import com.hellostore.ecommerce.dto.ExchangeReturnProductDto;
 import com.hellostore.ecommerce.dto.QExchangeReturnProductDto;
 import com.hellostore.ecommerce.entity.ExchangeReturnProduct;
-import com.hellostore.ecommerce.entity.QExchangeReturnProduct;
-import com.hellostore.ecommerce.entity.QOrderProduct;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.hellostore.ecommerce.entity.QExchangeReturnProduct.exchangeReturnProduct;
+import static com.hellostore.ecommerce.entity.QOrderProduct.orderProduct;
 import static com.hellostore.ecommerce.entity.QProduct.product;
 import static com.hellostore.ecommerce.entity.QProductImage.productImage;
 
@@ -32,19 +33,19 @@ public class ExchangeReturnProductRepository {
 
     public List<ExchangeReturnProductDto> getExchangeReturnProduct(List<Long> exchangeReturnIds) {
 
-        QExchangeReturnProduct exchangeReturnProduct = QExchangeReturnProduct.exchangeReturnProduct;
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-
         List<ExchangeReturnProductDto> exchangeReturnProductDtos = queryFactory.select(
                         new QExchangeReturnProductDto(
                                 exchangeReturnProduct.orderProduct.id,
                                 exchangeReturnProduct.exchangeReturnType,
                                 exchangeReturnProduct.exchangeReturn.id,
                                 exchangeReturnProduct.id,
+                                product.id,
                                 product.name,
                                 orderProduct.salePrice,
                                 orderProduct.quantity,
-                                productImage.imageFile.filePath, productImage.imageFile.fileName
+                                orderProduct.point,
+                                productImage.imageFile.filePath, productImage.imageFile.fileName,
+                                exchangeReturnProduct.newOrderId
                         )
                 )
                 .from(exchangeReturnProduct)
@@ -57,5 +58,18 @@ public class ExchangeReturnProductRepository {
                 .fetch();
 
         return exchangeReturnProductDtos;
+    }
+
+    public void removeExchangeReturnProduct(ExchangeReturnDto exchangeReturnDto) {
+        queryFactory.delete(exchangeReturnProduct)
+                .where(exchangeReturnProduct.exchangeReturn.id.eq(exchangeReturnDto.getExchangeReturnId()))
+                .execute();
+    }
+
+    public void updateNewOrderId(Long exchangeReturnProductId, Long newOrderId) {
+        queryFactory.update(exchangeReturnProduct)
+                .set(exchangeReturnProduct.newOrderId, newOrderId)
+                .where(exchangeReturnProduct.id.eq(exchangeReturnProductId))
+                .execute();
     }
 }

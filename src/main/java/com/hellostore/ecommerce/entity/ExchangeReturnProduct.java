@@ -28,6 +28,8 @@ public class ExchangeReturnProduct {
     @Enumerated(EnumType.STRING)
     private ExchangeReturnType exchangeReturnType;
 
+    private Long newOrderId;
+
     @Builder
     public ExchangeReturnProduct(OrderProduct orderProduct, ExchangeReturn exchangeReturn, ExchangeReturnType exchangeReturnType) {
         this.orderProduct = orderProduct;

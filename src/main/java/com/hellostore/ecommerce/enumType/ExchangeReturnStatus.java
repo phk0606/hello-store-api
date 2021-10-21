@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Getter
 public enum ExchangeReturnStatus {
-    REQUESTED("신청 완료"),
+    REQUESTED("신청"),
     PROCESSING("처리 중"),
     FINISHED("처리 완료");
 

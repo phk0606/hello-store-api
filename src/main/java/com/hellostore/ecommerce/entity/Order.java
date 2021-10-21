@@ -1,7 +1,9 @@
 package com.hellostore.ecommerce.entity;
 
 import com.hellostore.ecommerce.dto.OrderDto;
+import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
+import com.hellostore.ecommerce.enumType.OrderType;
 import com.hellostore.ecommerce.enumType.PaymentMethodType;
 import com.hellostore.ecommerce.enumType.PaymentStatus;
 import lombok.*;
@@ -43,6 +45,9 @@ public class Order extends BaseEntity{
     private LocalDateTime orderCancelDate;
 
     @Enumerated(EnumType.STRING)
+    private OrderType orderType;
+
+    @Enumerated(EnumType.STRING)
     private OrderDeliveryStatus status;
 
     @Enumerated(EnumType.STRING)
@@ -81,6 +86,7 @@ public class Order extends BaseEntity{
                                     List<OrderProduct> orderProducts,
                                     OrderDto orderDto) {
         Order order = new Order();
+        order.setOrderType(orderDto.getOrderType());
         order.setUser(user.get());
         order.setDelivery(delivery);
         order.setPhoneNumber(orderDto.getPhoneNumber());

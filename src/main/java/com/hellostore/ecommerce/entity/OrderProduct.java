@@ -72,4 +72,13 @@ public class OrderProduct {
         return getSalePrice() * getQuantity();
     }
 
+    @Builder
+    public OrderProduct(Product product, int salePrice, int quantity, Integer point, Integer shippingFee, int totalPrice) {
+        this.product = product;
+        this.salePrice = salePrice;
+        this.quantity = quantity;
+        this.point = point;
+        this.shippingFee = shippingFee;
+        this.totalPrice = totalPrice;
+    }
 }

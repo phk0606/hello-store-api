@@ -53,6 +53,13 @@ public class OderProductOptionRepository {
                 .fetch();
     }
 
+    public List<OrderProductOption> getOrderProductOptionsByOrderProductId(Long orderProductId) {
+
+        return queryFactory.selectFrom(orderProductOption)
+                .where(orderProductOption.orderProduct.id.eq(orderProductId))
+                .fetch();
+    }
+
     public void removeProductOption(Long orderProductId) {
         queryFactory.delete(orderProductOption)
                 .where(orderProductOption.orderProduct.id.eq(orderProductId))

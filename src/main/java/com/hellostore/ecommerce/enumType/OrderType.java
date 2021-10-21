@@ -5,8 +5,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ExchangeReturnType {
+public enum OrderType {
 
+    NEW("신규"),
     EXCHANGE("교환"),
     RETURN("반품");
 

@@ -6,6 +6,7 @@ import com.hellostore.ecommerce.entity.ExchangeReturnProduct;
 import com.hellostore.ecommerce.entity.Order;
 import com.hellostore.ecommerce.entity.OrderProduct;
 import com.hellostore.ecommerce.enumType.ExchangeReturnStatus;
+import com.hellostore.ecommerce.enumType.ExchangeReturnType;
 import com.hellostore.ecommerce.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ public class ExchangeReturnService {
     private final ExchangeReturnImageService exchangeReturnImageService;
     private final ExchangeReturnImageRepository exchangeReturnImageRepository;
     private final OderProductOptionRepository oderProductOptionRepository;
+    private final StockQuantityRepository stockQuantityRepository;
 
     @Transactional
     public void createExchangeReturn(ExchangeReturnDto exchangeReturnDto,
@@ -77,7 +79,7 @@ public class ExchangeReturnService {
         Page<ExchangeReturnDto> exchangeReturns
                 = exchangeReturnRepository.getExchangeReturns(exchangeReturnSearchCondition, pageable);
 
-        // exchangeRefund product 가져오기
+        // exchangeReturn product 가져오기
         List<ExchangeReturnProductDto> exchangeReturnProduct = exchangeReturnProductRepository
                 .getExchangeReturnProduct(toExchangeReturnIds(exchangeReturns.getContent()));
 
@@ -115,6 +117,14 @@ public class ExchangeReturnService {
         List<ExchangeReturnProductDto> exchangeReturnProducts = exchangeReturnProductRepository
                 .getExchangeReturnProduct(Arrays.asList(exchangeReturnId));
 
+        for (ExchangeReturnProductDto exchangeReturnProduct : exchangeReturnProducts) {
+            if (exchangeReturnProduct.getExchangeReturnType().equals(ExchangeReturnType.EXCHANGE)) {
+                List<ProductOptionDto> firstOptionsInStockQuantity
+                        = stockQuantityRepository.getFirstOptionsInStockQuantity(exchangeReturnProduct.getProductId());
+                exchangeReturnProduct.setFirstOptions(firstOptionsInStockQuantity);
+            }
+        }
+
         // orderProductOptions 조회
         Map<Long, List<OrderProductOptionDto>> orderProductOptionMap
                 = oderProductOptionRepository
@@ -132,5 +142,17 @@ public class ExchangeReturnService {
     @Transactional
     public void modifyExchangeReturnStatus(List<Long> exchangeReturnIds, ExchangeReturnStatus exchangeReturnStatus) {
         exchangeReturnRepository.modifyExchangeReturnStatus(exchangeReturnIds, exchangeReturnStatus);
+    }
+
+    @Transactional
+    public void modifyExchangeReturn(ExchangeReturnDto exchangeReturnDto) {
+        exchangeReturnRepository.modifyExchangeReturn(exchangeReturnDto);
+    }
+
+    @Transactional
+    public void removeExchangeReturn(ExchangeReturnDto exchangeReturnDto) {
+        exchangeReturnImageRepository.removeExchangeReturnImage(exchangeReturnDto);
+        exchangeReturnProductRepository.removeExchangeReturnProduct(exchangeReturnDto);
+        exchangeReturnRepository.removeExchangeReturn(exchangeReturnDto);
     }
 }

@@ -2,12 +2,10 @@ package com.hellostore.ecommerce.service;
 
 import com.hellostore.ecommerce.dto.*;
 import com.hellostore.ecommerce.entity.*;
-import com.hellostore.ecommerce.enumType.OrderDeliveryStatus;
-import com.hellostore.ecommerce.enumType.PaymentStatus;
-import com.hellostore.ecommerce.enumType.PointUseDetailType;
-import com.hellostore.ecommerce.enumType.PointUseType;
+import com.hellostore.ecommerce.enumType.*;
 import com.hellostore.ecommerce.exception.NotEnoughStockException;
 import com.hellostore.ecommerce.repository.*;
+import com.hellostore.ecommerce.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,10 +17,7 @@ import org.springframework.util.ObjectUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +37,7 @@ public class OrderService {
     private final OrderPointRepository orderPointRepository;
     private final DeliveryRepository deliveryRepository;
     private final StockQuantityRepository stockQuantityRepository;
+    private final ExchangeReturnProductRepository exchangeReturnProductRepository;
 
     @Transactional
     public Long order(OrderDto orderDto) {
@@ -139,6 +135,122 @@ public class OrderService {
         return order.getId();
     }
 
+    @Transactional
+    public Long createExchangeReturnOrder(ExchangeReturnOrderDto exchangeReturnOrderDto) throws IOException {
+
+        // 교환: 기존 상품 재고 증가, 변경 상품 재고 감소
+        //       기존 상품 조회 후 옵션 변경 이외 동일 내용으로 교환 주문 생성
+        // 반품: 기존 상품 재고 증가, 사용자 포인트 감소
+        //       기존 상품 조회 후 동일 내용으로 반품 주문 생성
+
+        // 주문 수량 복구
+        OrderProduct orderProduct1 = orderProductRepository.getOrderProductById(exchangeReturnOrderDto.getOrderProductId());
+        List<OrderProductOptionDto> orderProductOptions1
+                = oderProductOptionRepository.getOrderProductOptions(exchangeReturnOrderDto.getOrderProductId());
+
+        Long firstOptionId1 = 0l;
+        Long secondOptionId1 = 0l;
+        for (OrderProductOptionDto productOption : orderProductOptions1) {
+            if(productOption.getOptionGroupNumber() == 1) {
+                firstOptionId1 = productOption.getOptionId();
+            } else {
+                secondOptionId1 = productOption.getOptionId();
+            }
+        }
+        StockQuantityDto stockQuantityDto1 = StockQuantityDto.builder()
+                .productId(exchangeReturnOrderDto.getProductId())
+                .firstOptionId(firstOptionId1)
+                .secondOptionId(secondOptionId1)
+                .stockQuantity(orderProduct1.getQuantity())
+                .build();
+        stockQuantityRepository.addStockQuantity(stockQuantityDto1);
+
+        Long orderId = exchangeReturnOrderDto.getOrderId();
+        OrderDto orderDto = this.getOrder(orderId);
+        Product product = productRepository.getProduct(exchangeReturnOrderDto.getProductId());
+        //주문상품 생성
+        OrderProduct orderProduct
+                = orderProductRepository.getOrderProductById(exchangeReturnOrderDto.getOrderProductId());
+
+        OrderProductDto orderProductDto = new OrderProductDto(orderProduct);
+
+        OrderProduct orderProduct2 = OrderProduct.builder()
+                .product(product)
+                .salePrice(orderProductDto.getSalePrice())
+                .quantity(orderProductDto.getQuantity())
+                .point(orderProductDto.getPoint())
+                .shippingFee(orderProductDto.getShippingFee())
+                .totalPrice(orderProductDto.getTotalPrice())
+                .build();
+
+        List<OrderProductOption> orderProductOptions = new ArrayList<>();
+        // 교환 시 바뀐 옵션으로 새로 생성
+        if (exchangeReturnOrderDto.getOrderType().equals(OrderType.EXCHANGE)) {
+            ProductOption productFirstOption = productOptionRepository.getProductOption(exchangeReturnOrderDto.getNewFirstOptionId());
+            ProductOption productSecondOption = productOptionRepository.getProductOption(exchangeReturnOrderDto.getNewSecondOptionId());
+
+            OrderProductOption orderProductOption = OrderProductOption.builder()
+                    .orderProduct(orderProduct2)
+                    .optionId(productFirstOption.getId())
+                    .optionGroupNumber(productFirstOption.getOptionGroupNumber())
+                    .optionName(productFirstOption.getOptionName())
+                    .optionValue(productFirstOption.getOptionValue())
+                    .build();
+
+            OrderProductOption orderProductOption1 = OrderProductOption.builder()
+                    .orderProduct(orderProduct2)
+                    .optionId(productSecondOption.getId())
+                    .optionGroupNumber(productSecondOption.getOptionGroupNumber())
+                    .optionName(productSecondOption.getOptionName())
+                    .optionValue(productSecondOption.getOptionValue())
+                    .build();
+
+            orderProductOptions.add(orderProductOption);
+            orderProductOptions.add(orderProductOption1);
+
+            // 상품 재고 빼기
+            StockQuantityDto stockQuantityDto = StockQuantityDto.builder()
+                    .productId(exchangeReturnOrderDto.getProductId())
+                    .firstOptionId(exchangeReturnOrderDto.getNewFirstOptionId())
+                    .secondOptionId(exchangeReturnOrderDto.getNewSecondOptionId())
+                    .stockQuantity(orderProductDto.getQuantity())
+                    .build();
+
+            boolean stockQuantityCheck = stockQuantityRepository.stockQuantityCheck(stockQuantityDto);
+            if (stockQuantityCheck) {
+                throw new NotEnoughStockException("재고 부족");
+            }
+            stockQuantityRepository.subtractStockQuantity(stockQuantityDto);
+        } else if (exchangeReturnOrderDto.getOrderType().equals(OrderType.RETURN)) {
+
+            orderProductOptions
+                    = oderProductOptionRepository
+                    .getOrderProductOptionsByOrderProductId(exchangeReturnOrderDto.getOrderProductId());
+        }
+        orderProduct2.setOrderProductOptions(orderProductOptions);
+
+        orderDto.setOrderType(exchangeReturnOrderDto.getOrderType());
+
+        //배송 정보
+        Delivery delivery = Delivery.builder()
+                .address(orderDto.getAddress())
+                .phoneNumber(orderDto.getRecipientPhoneNumber())
+                .recipientName(orderDto.getRecipientName())
+                .requirement(orderDto.getRequirement())
+                .build();
+
+//        Optional<User> user = userRepository.findByUsername(exchangeReturnOrderDto.getUsername());
+        Optional<User> user = userRepository.findByUsername(SecurityUtil.getCurrentUsername());
+        //주문 생성
+        Order order = Order.createOrder(user, delivery, Arrays.asList(orderProduct2), orderDto);
+
+        //주문 저장
+        Order order1 = orderRepository.save(order);
+
+        exchangeReturnProductRepository.updateNewOrderId(exchangeReturnOrderDto.getExchangeReturnProductId(), order1.getId());
+        return order1.getId();
+    }
+
     public List<OrderProductDto> getOrderProductsByUsername(String username) {
         return orderProductRepository.getOrderProductsByUsername(username);
     }
@@ -188,8 +300,6 @@ public class OrderService {
         orderProductDtos.forEach(o -> o.setProductOptions(orderProductOptionMap.get(o.getOrderProductId())));
 
         orderDto.setOrderProducts(orderProductDtos);
-
-        // delivery 가져오기
 
         return orderDto;
     }

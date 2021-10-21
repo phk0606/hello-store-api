@@ -27,6 +27,7 @@ public class ExchangeReturnDto {
     private LocalDateTime createdDate;
     private String username;
     private String name;
+    private Long userNo;
     private ExchangeReturnStatus exchangeReturnStatus;
     private String exchangeReturnStatusValue;
 
@@ -39,31 +40,36 @@ public class ExchangeReturnDto {
     private String content;
 
     private Long exchangeReturnProductCount;
+    private String memo;
 
     @QueryProjection
-    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content, Long exchangeReturnProductCount) {
+    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, Long userNo, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content, Long exchangeReturnProductCount, String memo) {
         this.exchangeReturnId = exchangeReturnId;
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.username = username;
         this.name = name;
+        this.userNo = userNo;
         this.exchangeReturnStatus = exchangeReturnStatus;
         this.exchangeReturnStatusValue = exchangeReturnStatus.getValue();
         this.exchangeReturnReasonType = exchangeReturnReasonType;
         this.content = content;
         this.exchangeReturnProductCount = exchangeReturnProductCount;
+        this.memo = memo;
     }
 
     @QueryProjection
-    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content) {
+    public ExchangeReturnDto(Long exchangeReturnId, Long orderId, LocalDateTime createdDate, String username, String name, Long userNo, ExchangeReturnStatus exchangeReturnStatus, ExchangeReturnReasonType exchangeReturnReasonType, String content, String memo) {
         this.exchangeReturnId = exchangeReturnId;
         this.orderId = orderId;
         this.createdDate = createdDate;
         this.username = username;
         this.name = name;
+        this.userNo = userNo;
         this.exchangeReturnStatus = exchangeReturnStatus;
         this.exchangeReturnStatusValue = exchangeReturnStatus.getValue();
         this.exchangeReturnReasonType = exchangeReturnReasonType;
         this.content = content;
+        this.memo = memo;
     }
 }

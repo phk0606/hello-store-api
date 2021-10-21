@@ -1,14 +1,16 @@
 package com.hellostore.ecommerce.repository;
 
+import com.hellostore.ecommerce.dto.ExchangeReturnDto;
 import com.hellostore.ecommerce.dto.ExchangeReturnImageDto;
 import com.hellostore.ecommerce.dto.QExchangeReturnImageDto;
 import com.hellostore.ecommerce.entity.ExchangeReturnImage;
-import com.hellostore.ecommerce.entity.QExchangeReturnImage;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+
+import static com.hellostore.ecommerce.entity.QExchangeReturnImage.exchangeReturnImage;
 
 @Repository
 public class ExchangeReturnImageRepository {
@@ -28,7 +30,6 @@ public class ExchangeReturnImageRepository {
 
     public List<ExchangeReturnImageDto> getExchangeReturnImages(Long exchangeReturnId) {
 
-        QExchangeReturnImage exchangeReturnImage = QExchangeReturnImage.exchangeReturnImage;
         return queryFactory.select(
                 new QExchangeReturnImageDto(
                         exchangeReturnImage.imageFile.originalFileName,
@@ -38,5 +39,11 @@ public class ExchangeReturnImageRepository {
                 .from(exchangeReturnImage)
                 .where(exchangeReturnImage.exchangeReturn.id.eq(exchangeReturnId))
                 .fetch();
+    }
+
+    public void removeExchangeReturnImage(ExchangeReturnDto exchangeReturnDto) {
+        queryFactory.delete(exchangeReturnImage)
+                .where(exchangeReturnImage.exchangeReturn.id.eq(exchangeReturnDto.getExchangeReturnId()))
+                .execute();
     }
 }

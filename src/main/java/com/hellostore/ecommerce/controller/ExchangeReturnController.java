@@ -29,7 +29,6 @@ public class ExchangeReturnController {
 
         log.debug("exchangeReturnDto: {}", exchangeReturnDto);
 
-        // 상품평 저장
         exchangeReturnService.createExchangeReturn(exchangeReturnDto, exchangeReturnImages);
     }
 
@@ -54,5 +53,17 @@ public class ExchangeReturnController {
 
         exchangeReturnService.modifyExchangeReturnStatus(
                 exchangeReturnDto.getExchangeReturnIds(), exchangeReturnDto.getExchangeReturnStatus());
+    }
+
+    @PutMapping("/modifyExchangeReturn")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void modifyExchangeReturn(@RequestBody ExchangeReturnDto exchangeReturnDto) {
+        exchangeReturnService.modifyExchangeReturn(exchangeReturnDto);
+    }
+
+    @DeleteMapping("/removeExchangeReturn")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void removeExchangeReturn(@RequestBody ExchangeReturnDto exchangeReturnDto) {
+        exchangeReturnService.removeExchangeReturn(exchangeReturnDto);
     }
 }

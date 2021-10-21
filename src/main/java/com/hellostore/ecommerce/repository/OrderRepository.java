@@ -72,7 +72,7 @@ public class OrderRepository {
 
         return queryFactory.select(
                 new QOrderDto(
-                        order.id, order.createdDate, order.orderCancelDate,
+                        order.id, order.orderType, order.createdDate, order.orderCancelDate,
                         order.user.id, user.username, user.name,
                         order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                         order.paymentStatus,
@@ -106,7 +106,7 @@ public class OrderRepository {
     public Page<OrderDto> getOrdersByUsername(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
-                        new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
+                        new QOrderDto(order.id, order.orderType, order.createdDate, order.orderCancelDate,
                                 order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                                 bankAccount.bankName.concat(" ").concat(bankAccount.accountNumber).concat(" ")
@@ -172,7 +172,7 @@ public class OrderRepository {
     public Page<OrderDto> getOrders(Pageable pageable, OrderSearchCondition orderSearchCondition) {
 
         QueryResults<OrderDto> results = queryFactory.select(
-                        new QOrderDto(order.id, order.createdDate, order.orderCancelDate,
+                        new QOrderDto(order.id, order.orderType, order.createdDate, order.orderCancelDate,
                                 order.user.id, user.username, user.name,
                                 order.phoneNumber, order.paymentMethodType, order.paymentPrice,
                                 bankAccount.bankName.concat(" ").concat(bankAccount.accountNumber).concat(" ")

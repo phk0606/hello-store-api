@@ -45,8 +45,6 @@ public class ExchangeReturnRepository {
     public Page<ExchangeReturnDto> getExchangeReturns (
             ExchangeReturnSearchCondition exchangeReturnSearchCondition, Pageable pageable) {
 
-        QOrderProduct orderProduct = QOrderProduct.orderProduct;
-        QProduct product = QProduct.product;
         QueryResults<ExchangeReturnDto> results = queryFactory.select(
                         new QExchangeReturnDto(
                                 exchangeReturn.id,
@@ -54,10 +52,12 @@ public class ExchangeReturnRepository {
                                 exchangeReturn.createdDate,
                                 exchangeReturn.createdBy,
                                 user.name,
+                                user.id,
                                 exchangeReturn.exchangeReturnStatus,
                                 exchangeReturn.exchangeReturnReasonType,
                                 exchangeReturn.content,
-                                exchangeReturnProduct.id.count()))
+                                exchangeReturnProduct.id.count(),
+                                exchangeReturn.memo))
                 .from(exchangeReturn)
                 .where(
                         applicationDateA(exchangeReturnSearchCondition.getApplicationDateA()),
@@ -122,9 +122,11 @@ public class ExchangeReturnRepository {
                         exchangeReturn.createdDate,
                         exchangeReturn.createdBy,
                         user.name,
+                        user.id,
                         exchangeReturn.exchangeReturnStatus,
                         exchangeReturn.exchangeReturnReasonType,
-                        exchangeReturn.content
+                        exchangeReturn.content,
+                        exchangeReturn.memo
                         )
                 )
                 .from(exchangeReturn)
@@ -137,6 +139,23 @@ public class ExchangeReturnRepository {
         queryFactory.update(exchangeReturn)
                 .set(exchangeReturn.exchangeReturnStatus, exchangeReturnStatus)
                 .where(exchangeReturn.id.in(exchangeReturnIds))
+                .execute();
+    }
+
+    public void modifyExchangeReturn(ExchangeReturnDto exchangeReturnDto) {
+        queryFactory.update(exchangeReturn)
+                .set(exchangeReturn.exchangeReturnStatus, exchangeReturnDto.getExchangeReturnStatus())
+                .set(exchangeReturn.exchangeReturnReasonType, exchangeReturnDto.getExchangeReturnReasonType())
+                .set(exchangeReturn.content, exchangeReturnDto.getContent())
+                .set(exchangeReturn.memo, exchangeReturnDto.getMemo())
+                .where(exchangeReturn.id.eq(exchangeReturnDto.getExchangeReturnId()))
+                .execute();
+    }
+
+    public void removeExchangeReturn(ExchangeReturnDto exchangeReturnDto) {
+
+        queryFactory.delete(exchangeReturn)
+                .where(exchangeReturn.id.eq(exchangeReturnDto.getExchangeReturnId()))
                 .execute();
     }
 }

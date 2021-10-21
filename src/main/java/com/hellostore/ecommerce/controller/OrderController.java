@@ -1,5 +1,6 @@
 package com.hellostore.ecommerce.controller;
 
+import com.hellostore.ecommerce.dto.ExchangeReturnOrderDto;
 import com.hellostore.ecommerce.dto.OrderDto;
 import com.hellostore.ecommerce.dto.OrderProductDto;
 import com.hellostore.ecommerce.dto.OrderSearchCondition;
@@ -28,6 +29,14 @@ public class OrderController {
         log.debug("orderDto: {}", orderDto);
 
         return orderService.order(orderDto);
+    }
+
+    @PostMapping("/createExchangeReturnOrder")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public Long createExchangeReturnOrder(@RequestBody ExchangeReturnOrderDto exchangeReturnOrderDto) throws IOException {
+        log.debug("exchangeReturnOrderDto: {}", exchangeReturnOrderDto);
+
+        return orderService.createExchangeReturnOrder(exchangeReturnOrderDto);
     }
 
     @GetMapping("/getOrder")

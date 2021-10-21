@@ -1,6 +1,8 @@
 package com.hellostore.ecommerce.dto;
 
+import com.hellostore.ecommerce.entity.OrderProduct;
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,6 +18,7 @@ public class OrderProductOptionDto {
     private Integer optionGroupNumber;
     private String optionName;
     private String optionValue;
+    private OrderProduct orderProduct;
 
     @QueryProjection
     public OrderProductOptionDto(Long orderProductOptionId, Long orderProductId, Integer optionGroupNumber, String optionName, String optionValue) {
@@ -34,5 +37,14 @@ public class OrderProductOptionDto {
         this.optionGroupNumber = optionGroupNumber;
         this.optionName = optionName;
         this.optionValue = optionValue;
+    }
+
+    @Builder
+    public OrderProductOptionDto(Long optionId, Integer optionGroupNumber, String optionName, String optionValue, OrderProduct orderProduct) {
+        this.optionId = optionId;
+        this.optionGroupNumber = optionGroupNumber;
+        this.optionName = optionName;
+        this.optionValue = optionValue;
+        this.orderProduct = orderProduct;
     }
 }

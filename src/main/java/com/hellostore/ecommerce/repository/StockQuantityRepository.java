@@ -83,7 +83,7 @@ public class StockQuantityRepository {
 
     public boolean stockQuantityCheck(StockQuantityDto stockQuantityDto) {
 
-        Long fetchOne = queryFactory.select(stockQuantity1.id.count().subtract(stockQuantityDto.getStockQuantity()))
+        Integer fetchOne = queryFactory.select(stockQuantity1.stockQuantity.subtract(stockQuantityDto.getStockQuantity()))
                 .from(stockQuantity1)
                 .where(
                         stockQuantity1.product.id.eq(stockQuantityDto.getProductId()),
