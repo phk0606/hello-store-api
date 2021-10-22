@@ -44,6 +44,14 @@ public class StyleShopNoticeRepository {
                 .execute();
     }
 
+    public void updateStyleShopNotice(Long categoryId, String content) {
+
+        queryFactory.update(styleShopNotice)
+                .set(styleShopNotice.content, content)
+                .where(styleShopNotice.category.id.eq(categoryId))
+                .execute();
+    }
+
     public StyleShopNoticeDto getCategoryNotice(Long categoryId) {
         QStyleShopNotice styleShopNotice = QStyleShopNotice.styleShopNotice;
         return queryFactory.select(

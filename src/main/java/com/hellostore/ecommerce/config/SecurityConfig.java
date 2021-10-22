@@ -70,6 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/manToManQnA/getManToManQuestionTypes")
                 .antMatchers("/api/stockQuantity/getFirstOptionsInStockQuantity")
                 .antMatchers("/api/stockQuantity/getSecondOptionsInStockQuantity")
+                .antMatchers("/api/styleShopNotice/getCategoryNotice")
 
         ;
     }

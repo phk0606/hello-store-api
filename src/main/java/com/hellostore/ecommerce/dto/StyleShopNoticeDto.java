@@ -13,6 +13,7 @@ public class StyleShopNoticeDto {
     private Long id;
     private Long categoryId;
     private String content;
+    private Boolean allCategoriesSame;
 
     @QueryProjection
     public StyleShopNoticeDto(Long id, String content) {

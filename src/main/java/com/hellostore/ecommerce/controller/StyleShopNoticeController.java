@@ -16,7 +16,6 @@ public class StyleShopNoticeController {
     private final StyleShopNoticeService styleShopNoticeService;
 
     @GetMapping("/getCategoryNotice")
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public StyleShopNoticeDto getCategoryNotice(Long categoryId) {
 
         return styleShopNoticeService.getCategoryNotice(categoryId);
