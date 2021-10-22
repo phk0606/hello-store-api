@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/getCategories")
                 .antMatchers("/api/getChildCategories")
                 .antMatchers("/api/getCategory")
+                .antMatchers("/api/getCategoryName")
                 .antMatchers("/api/shop/getProductsPageCondition")
                 .antMatchers("/api/shop/getProductById")
                 .antMatchers("/api/shop/getListImage")

@@ -12,6 +12,7 @@ public class StyleShopNoticeDto {
 
     private Long id;
     private Long categoryId;
+    private String categoryName;
     private String content;
     private Boolean allCategoriesSame;
 

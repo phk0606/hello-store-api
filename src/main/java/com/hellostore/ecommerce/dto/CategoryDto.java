@@ -64,4 +64,12 @@ public class CategoryDto {
         this.id = id;
         this.name = name;
     }
+
+    @QueryProjection
+    public CategoryDto(Long id, String name, Long parentId, String parentName) {
+        this.id = id;
+        this.name = name;
+        this.parentId = parentId;
+        this.parentName = parentName;
+    }
 }

@@ -69,4 +69,8 @@ public class CategoryService {
         Category category = categoryDto.toEntity(categoryDto);
         repository.deleteCategory(category);
     }
+
+    public CategoryDto getCategoryName(Long categoryId) {
+        return repository.getCategoryName(categoryId);
+    }
 }

@@ -33,6 +33,11 @@ public class CategoryController {
         return categoryService.getCategory(parentId);
     }
 
+    @GetMapping("/getCategoryName")
+    public CategoryDto getCategoryName(@RequestParam Long categoryId) {
+        return categoryService.getCategoryName(categoryId);
+    }
+
     @PostMapping("/createCategory")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public void createCategory(@RequestBody CategoryDto productCategoryDto) {

@@ -116,4 +116,16 @@ public class CategoryDslRepository {
     }
 
 
+    public CategoryDto getCategoryName(Long categoryId) {
+        QCategory parent = new QCategory("parent");
+        QCategory child = new QCategory("child");
+        return queryFactory.select(
+                new QCategoryDto(
+                        child.id, child.name,
+                        parent.id, parent.name))
+                .from(child)
+                .leftJoin(parent).on(child.parent.id.eq(parent.id))
+                .where(child.id.eq(categoryId))
+                .fetchOne();
+    }
 }
