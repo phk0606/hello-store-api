@@ -27,7 +27,7 @@ public class ProductDto {
     private Integer maxPurchaseQuantity;
 //    private int stockQuantity;
     private PointType pointType;
-    private Integer pointPerPrice;
+    private Double pointPerPrice;
     private ShippingFeeType shippingFeeType;
     private Integer eachShippingFee;
     private Boolean newArrival;

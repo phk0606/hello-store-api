@@ -25,7 +25,7 @@ public class ShopProductDto {
     private int salePrice;
     private int regularPrice;
     private PointType pointType;
-    private int pointPerPrice;
+    private Double pointPerPrice;
     @Setter
     private double point;
     private ShippingFeeType shippingFeeType;
@@ -80,7 +80,7 @@ public class ShopProductDto {
     }
 
     @QueryProjection
-    public ShopProductDto(Long productId, String productName, int salePrice, int regularPrice, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, String description, Boolean newArrival, Boolean best, Boolean discount, ProductShowType productShowType, String detailInfo, String shippingInfo, String exchangeReturnInfo) {
+    public ShopProductDto(Long productId, String productName, int salePrice, int regularPrice, PointType pointType, Double pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, String description, Boolean newArrival, Boolean best, Boolean discount, ProductShowType productShowType, String detailInfo, String shippingInfo, String exchangeReturnInfo) {
 
         this.productId = productId;
         this.productName = productName;

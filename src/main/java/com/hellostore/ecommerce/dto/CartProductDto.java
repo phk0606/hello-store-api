@@ -31,7 +31,7 @@ public class CartProductDto {
     private int totalPrice;
 
     private PointType pointType;
-    private int pointPerPrice;
+    private Double pointPerPrice;
 
     @Setter
     private double point;
@@ -50,7 +50,7 @@ public class CartProductDto {
     private String fileName;
 
     @QueryProjection
-    public CartProductDto(Long cartId, Long cartProductId, Long productId, int quantity, String productName, int salePrice, int totalPrice, PointType pointType, int pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, String filePath, String fileName) {
+    public CartProductDto(Long cartId, Long cartProductId, Long productId, int quantity, String productName, int salePrice, int totalPrice, PointType pointType, Double pointPerPrice, ShippingFeeType shippingFeeType, int eachShippingFee, String filePath, String fileName) {
         this.cartId = cartId;
         this.cartProductId = cartProductId;
         this.productId = productId;

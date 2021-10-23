@@ -36,7 +36,7 @@ public class Product extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private PointType pointType;
-    private Integer pointPerPrice;
+    private Double pointPerPrice;
 
     @Enumerated(EnumType.STRING)
     private ShippingFeeType shippingFeeType;
@@ -89,7 +89,7 @@ public class Product extends BaseEntity {
         this.id = id;
     }
 
-    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Double pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
 
         this.name = name;
         this.salePrice = salePrice;
@@ -110,7 +110,7 @@ public class Product extends BaseEntity {
     }
 
     @Builder
-    public Product(Long id, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Integer pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
+    public Product(Long id, String name, int salePrice, int regularPrice, int maxPurchaseQuantity, PointType pointType, Double pointPerPrice, ShippingFeeType shippingFeeType, Integer eachShippingFee, Boolean newArrival, Boolean best, Boolean discount, String description,  String detailInfo, String shippingInfo, String exchangeReturnInfo, ProductShowType productShowType) {
         this.id = id;
         this.name = name;
         this.salePrice = salePrice;
