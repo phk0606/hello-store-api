@@ -29,7 +29,7 @@ public class ProductCommentController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public void createProductComment(@RequestPart ProductCommentDto productCommentDto,
                                      @RequestParam(required = false)
-                                             List<MultipartFile> productCommentImages) {
+                                             List<MultipartFile> productCommentImages) throws IOException {
 
         log.debug("productCommentDto: {}", productCommentDto);
 

@@ -20,7 +20,7 @@ public class FileUtil {
     @Value("${file.store.path}")
     private String fileStorePath;
 
-    public ImageFile fileUpload(MultipartFile multipartFile) {
+    public ImageFile fileUpload(MultipartFile multipartFile) throws IOException {
 
         String originalFilename = multipartFile.getOriginalFilename();
         log.debug("OriginalFilename: {}", originalFilename);
@@ -35,17 +35,11 @@ public class FileUtil {
 
         if (!Files.exists(Paths.get(fileStorePath))) {
 
-            try {
-                Files.createDirectories(Paths.get(fileStorePath));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Files.createDirectories(Paths.get(fileStorePath));
         }
         try (InputStream inputStream = multipartFile.getInputStream()) {
 
             Files.copy(inputStream, Paths.get(fileStorePath, fileName), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         return new ImageFile(originalFilename, fileName, fileStorePath, fileSize);

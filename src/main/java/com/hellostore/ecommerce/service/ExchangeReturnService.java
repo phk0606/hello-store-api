@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class ExchangeReturnService {
 
     @Transactional
     public void createExchangeReturn(ExchangeReturnDto exchangeReturnDto,
-                                     List<MultipartFile> exchangeReturnImages) {
+                                     List<MultipartFile> exchangeReturnImages) throws IOException {
 
         Order order = orderRepository.findOne(exchangeReturnDto.getOrderId());
         // 교환 환불 신청서 저장

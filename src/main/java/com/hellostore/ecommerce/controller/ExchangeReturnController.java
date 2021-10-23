@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class ExchangeReturnController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public void createExchangeReturn(@RequestPart ExchangeReturnDto exchangeReturnDto,
                                      @RequestParam(required = false)
-                                             List<MultipartFile> exchangeReturnImages) {
+                                             List<MultipartFile> exchangeReturnImages) throws IOException {
 
         log.debug("exchangeReturnDto: {}", exchangeReturnDto);
 

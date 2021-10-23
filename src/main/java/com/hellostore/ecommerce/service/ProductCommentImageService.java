@@ -34,7 +34,7 @@ public class ProductCommentImageService {
 
     @Transactional
     public void uploadProductCommentImage(List<MultipartFile> productCommentImages,
-                                          ProductComment productComment) {
+                                          ProductComment productComment) throws IOException {
 
         for (MultipartFile multipartFile : productCommentImages) {
 

@@ -25,7 +25,7 @@ public class ProductController {
 
     @PostMapping("/createProduct")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void createProduct(@RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) {
+    public void createProduct(@RequestPart ProductDto productDto, @RequestParam(required = false) List<MultipartFile> productImages) throws IOException {
 
         log.debug("productDto: {}", productDto);
 

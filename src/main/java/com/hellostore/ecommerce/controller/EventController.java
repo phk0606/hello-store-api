@@ -24,7 +24,7 @@ public class EventController {
 
     @PostMapping("/createEvent")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void createNotice(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) {
+    public void createNotice(@RequestPart EventDto eventDto, @RequestParam MultipartFile eventImage) throws IOException {
         log.debug("noticeDto: {}", eventDto);
         eventService.createEvent(eventDto, eventImage);
     }

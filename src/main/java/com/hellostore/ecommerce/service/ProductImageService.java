@@ -47,7 +47,7 @@ public class ProductImageService {
     }
 
     @Transactional
-    public void uploadProductImage(List<MultipartFile> productImages, Product product) {
+    public void uploadProductImage(List<MultipartFile> productImages, Product product) throws IOException {
 
         for (MultipartFile multipartFile : productImages) {
 

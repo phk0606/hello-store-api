@@ -37,7 +37,7 @@ public class ProductService {
     private final ProductOptionRepository productOptionRepository;
 
     @Transactional
-    public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) {
+    public Product createProduct(ProductDto productDto, List<MultipartFile> productImages) throws IOException {
 
         // 카테고리 조회
         Category category = categoryService.getCategoryOne(productDto.getCategoryId());

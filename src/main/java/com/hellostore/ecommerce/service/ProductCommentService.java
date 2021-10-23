@@ -36,7 +36,7 @@ public class ProductCommentService {
 
     @Transactional
     public void createProductComment(ProductCommentDto productCommentDto,
-                                     List<MultipartFile> productCommentImages) {
+                                     List<MultipartFile> productCommentImages) throws IOException {
 
         // 상품 조회
         Product product = productRepository.getProduct(productCommentDto.getProductId());

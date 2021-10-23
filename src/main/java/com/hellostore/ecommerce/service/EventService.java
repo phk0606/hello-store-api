@@ -30,7 +30,7 @@ public class EventService {
     private final EventImageRepository eventImageRepository;
 
     @Transactional
-    public void createEvent(EventDto eventDto, MultipartFile eventImage) {
+    public void createEvent(EventDto eventDto, MultipartFile eventImage) throws IOException {
 
         Event event = Event.builder().title(eventDto.getTitle())
                 .description(eventDto.getDescription())

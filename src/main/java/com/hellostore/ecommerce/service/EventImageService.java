@@ -24,7 +24,7 @@ public class EventImageService {
 
     @Transactional
     public void uploadEventImage(MultipartFile multipartFile,
-                                          Event event) {
+                                          Event event) throws IOException {
 
         ImageFile imageFile = fileUtil.fileUpload(multipartFile);
 
