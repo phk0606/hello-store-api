@@ -31,9 +31,9 @@ public class ShopProductController {
 
     @GetMapping("/getProductsPageCondition")
     public Page<ShopProductDto> getProductsPageCondition(
-            ProductSearchCondition productSearchCondition, Pageable pageable) throws IOException {
+            ProductSearchCondition productSearchCondition, Pageable pageable) {
 
-        log.debug("productSearchCondition: {}", productSearchCondition);
+        log.debug("productSearchCondition: {}, pageable: {}", productSearchCondition, pageable);
         return shopProductService.getProductsPageCondition(productSearchCondition, pageable);
     }
 

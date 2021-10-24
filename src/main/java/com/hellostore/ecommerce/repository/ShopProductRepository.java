@@ -1,19 +1,26 @@
 package com.hellostore.ecommerce.repository;
 
 import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.entity.Product;
 import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.entity.QStockQuantity;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.hellostore.ecommerce.entity.QCategory.category;
@@ -24,6 +31,7 @@ import static org.springframework.util.ObjectUtils.isEmpty;
 import static org.springframework.util.StringUtils.hasText;
 
 @Repository
+@Slf4j
 public class ShopProductRepository {
 
     private final JPAQueryFactory queryFactory;
@@ -71,7 +79,10 @@ public class ShopProductRepository {
                         JPAExpressions.select(stockQuantity.id.count()).from(stockQuantity)
                                 .where(stockQuantity.product.id.eq(product.id)).gt(0l)
                 )
-                .orderBy(product.id.desc())
+                .orderBy(
+                        getOrderSpecifiers(pageable.getSort())
+                                .stream().toArray(OrderSpecifier[]::new)
+                )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetchResults();
@@ -79,6 +90,25 @@ public class ShopProductRepository {
         List<ShopProductDto> content = results.getResults();
         long total = results.getTotal();
         return new PageImpl<>(content, pageable, total);
+    }
+
+    private List<OrderSpecifier> getOrderSpecifiers(Sort sort) {
+
+        List<OrderSpecifier> orders = new ArrayList<>();
+
+        log.debug("sort: {}", sort);
+        if (!sort.isUnsorted()) {
+            sort.stream().forEach(order -> {
+                Order direction = order.isAscending() ? Order.ASC : Order.DESC;
+                String property = order.getProperty();
+                PathBuilder orderByExpression = new PathBuilder(Product.class, "product");
+                orders.add(new OrderSpecifier(direction, orderByExpression.get(property)));
+            });
+        } else {
+            PathBuilder orderByExpression = new PathBuilder(Product.class, "product");
+            orders.add(new OrderSpecifier(Order.DESC, orderByExpression.get("id")));
+        }
+        return orders;
     }
 
     private BooleanExpression productNameContains(String productName) {
