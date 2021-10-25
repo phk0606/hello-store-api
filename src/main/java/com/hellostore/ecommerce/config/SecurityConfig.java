@@ -68,6 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/faq/getCategories")
                 .antMatchers("/api/faq/getFaqs")
                 .antMatchers("/api/faq/getFaq")
+                .antMatchers("/api/event/getEvents")
+                .antMatchers("/api/event/getEvent")
                 .antMatchers("/api/manToManQnA/getManToManQuestionTypes")
                 .antMatchers("/api/stockQuantity/getFirstOptionsInStockQuantity")
                 .antMatchers("/api/stockQuantity/getSecondOptionsInStockQuantity")
