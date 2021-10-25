@@ -8,7 +8,6 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductCommentReply extends BaseEntity {
 

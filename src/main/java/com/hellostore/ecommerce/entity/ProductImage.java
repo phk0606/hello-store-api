@@ -9,9 +9,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of = {"originalFileName", "fileName", "filePath", "fileSize", "imageType"})
 public class ProductImage extends BaseEntity {
 
     @Id

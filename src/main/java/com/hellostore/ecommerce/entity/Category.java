@@ -10,7 +10,6 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "name", "sequence", "showYn"})
 public class Category extends BaseEntity {

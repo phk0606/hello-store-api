@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Community extends BaseEntity {
 

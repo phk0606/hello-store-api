@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PointHistory extends BaseTimeEntity {
 

@@ -10,10 +10,8 @@ import java.util.Set;
 
 @Entity
 @Getter
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class User extends BaseTimeEntity {
 
     @JsonIgnore
@@ -58,4 +56,17 @@ public class User extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
+
+    @Builder
+    public User(Long id, String username, String password, String email, boolean activated, String name, String phoneNumber, Address address, Set<Authority> authorities) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.activated = activated;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.authorities = authorities;
+    }
 }

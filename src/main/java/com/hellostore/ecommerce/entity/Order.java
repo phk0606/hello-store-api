@@ -20,7 +20,6 @@ import java.util.Optional;
 @Getter
 @Setter
 @Table(name = "orders")
-@EqualsAndHashCode
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends BaseEntity{
 

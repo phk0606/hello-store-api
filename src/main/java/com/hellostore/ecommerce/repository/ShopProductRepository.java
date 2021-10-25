@@ -1,8 +1,9 @@
 package com.hellostore.ecommerce.repository;
 
-import com.hellostore.ecommerce.dto.*;
+import com.hellostore.ecommerce.dto.ProductSearchCondition;
+import com.hellostore.ecommerce.dto.QShopProductDto;
+import com.hellostore.ecommerce.dto.ShopProductDto;
 import com.hellostore.ecommerce.entity.Product;
-import com.hellostore.ecommerce.entity.QProductOption;
 import com.hellostore.ecommerce.entity.QStockQuantity;
 import com.hellostore.ecommerce.enumType.ImageType;
 import com.querydsl.core.QueryResults;
