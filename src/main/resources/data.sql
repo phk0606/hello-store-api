@@ -1,8 +1,38 @@
-INSERT INTO USER (USER_NO, USERNAME, PASSWORD, EMAIL, ACTIVATED, NAME, PHONE_NUMBER, ZONE_CODE, ROAD_ADDRESS, ADDRESS, DETAIL_ADDRESS)
+INSERT INTO user (USER_NO, USERNAME, PASSWORD, EMAIL, ACTIVATED, NAME, PHONE_NUMBER, ZONE_CODE, ROAD_ADDRESS, ADDRESS, DETAIL_ADDRESS)
 VALUES (1, 'admin', '$2a$08$lDnHPz7eUkSi6ao14Twuau08mzhWrL4kyZGGU5xfiGALO/Vxd5DOi', 'phk0606@naver.com', 1, '홍길동', '01094591234', '16322', '경기 수원시 장안구 하률로 25번길 13' ,'경기도 수원시 장안구 천천동 110-12', '101호');
 
-INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_USER');
-INSERT INTO AUTHORITY (AUTHORITY_NAME) values ('ROLE_ADMIN');
+INSERT INTO authority (AUTHORITY_NAME) values ('ROLE_USER');
+INSERT INTO authority (AUTHORITY_NAME) values ('ROLE_ADMIN');
 
-INSERT INTO USER_AUTHORITY (USER_NO, AUTHORITY_NAME) values (1, 'ROLE_USER');
-INSERT INTO USER_AUTHORITY (USER_NO, AUTHORITY_NAME) values (1, 'ROLE_ADMIN');
+INSERT INTO user_authority (USER_NO, AUTHORITY_NAME) values (1, 'ROLE_USER');
+INSERT INTO user_authority (USER_NO, AUTHORITY_NAME) values (1, 'ROLE_ADMIN');
+
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'OUTER', NULL, 1, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'TOP', NULL, 2, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'BOTTOM', NULL, 3, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'DRESS', NULL, 4, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'CARDIGAN', (select category_id from category c where c.name = 'OUTER'), 1, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'JACKET/JUMPER', (select category_id from category c where c.name = 'OUTER'), 2, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'COAT', (select category_id from category c where c.name = 'OUTER'), 3, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'VEST', (select category_id from category c where c.name = 'OUTER'), 4, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'PADDING', (select category_id from category c where c.name = 'OUTER'), 5, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'BLOUSE/SHIRT', (select category_id from category c where c.name = 'TOP'), 1, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'TEE', (select category_id from category c where c.name = 'TOP'), 2, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'MTM/HOOD', (select category_id from category c where c.name = 'TOP'), 3, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'KNIT/SWEATER', (select category_id from category c where c.name = 'TOP'), 4, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'SLEEVELESS', (select category_id from category c where c.name = 'TOP'), 5, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'PANTS', (select category_id from category c where c.name = 'BOTTOM'), 1, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'SKIRT', (select category_id from category c where c.name = 'BOTTOM'), 2, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'KNIT', (select category_id from category c where c.name = 'DRESS'), 1, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'LONG', (select category_id from category c where c.name = 'DRESS'), 2, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'FLOWER', (select category_id from category c where c.name = 'DRESS'), 3, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'STRIPE', (select category_id from category c where c.name = 'DRESS'), 4, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'OFF SHOULDER', (select category_id from category c where c.name = 'DRESS'), 5, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'LINEN', (select category_id from category c where c.name = 'DRESS'), 6, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'MINI/MIDI', (select category_id from category c where c.name = 'DRESS'), 7, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'HOOD', (select category_id from category c where c.name = 'DRESS'), 8, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'SEE-THROUGH', (select category_id from category c where c.name = 'DRESS'), 9, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'CHIFFON', (select category_id from category c where c.name = 'DRESS'), 10, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'SLEEVELESS', (select category_id from category c where c.name = 'DRESS'), 11, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'PATTERN', (select category_id from category c where c.name = 'DRESS'), 12, 'Y');
+insert into category (created_date, last_modified_date, created_by, last_modified_by, name, parent_id, sequence, show_yn) values (now(), now(), 'admin', 'admin', 'SUSPENDERS', (select category_id from category c where c.name = 'DRESS'), 13, 'Y');

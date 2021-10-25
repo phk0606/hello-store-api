@@ -13,7 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-@Rollback(value = false)
+@Rollback(value = true)
 @Slf4j
 @ActiveProfiles("test")
 class CategoryRepositoryTest {
