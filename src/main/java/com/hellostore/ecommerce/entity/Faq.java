@@ -17,6 +17,7 @@ public class Faq {
     private Long id;
 
     private String question;
+    @Lob
     private String answer;
 
     @Enumerated(EnumType.STRING)
