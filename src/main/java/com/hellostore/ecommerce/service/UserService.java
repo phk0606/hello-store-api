@@ -68,7 +68,9 @@ public class UserService {
 
         String randomPassword = getRandomPassword(10);
 
-        UserDto userDto = UserDto.builder().newPassword(randomPassword).build();
+        UserDto userDto = UserDto.builder()
+                .username(tempPasswordDto.getUsername())
+                .newPassword(randomPassword).build();
         userDslRepository.modifyPassword(userDto);
 
         tempPasswordDto.setTempPassword(randomPassword);
